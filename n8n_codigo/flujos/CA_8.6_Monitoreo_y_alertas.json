@@ -1,0 +1,295 @@
+{
+  "name": "CA_8.6_Monitoreo_y_alertas",
+  "nodes": [
+    {
+      "id": "m2",
+      "name": "CA86_Desde_otro_flujo",
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "position": [
+        0,
+        400
+      ],
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1
+    },
+    {
+      "id": "m3",
+      "name": "CA86_Parametros",
+      "notes": "Solo acepta letras, números, guion y guion bajo en el prefijo. Vacío = operación real.",
+      "parameters": {
+        "jsCode": "const j = ($input.first() && $input.first().json) || {};\nconst p = String(j.prefijo ?? '');\nif (!/^[A-Za-z0-9_-]*$/.test(p)) throw new Error('Prefijo inválido');\nreturn [{ json: { prefijo: p } }];"
+      },
+      "position": [
+        240,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "m4",
+      "name": "CA86_Interruptor",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "SELECT activo FROM control.interruptores WHERE flujo = '8.6 Monitoreo'"
+      },
+      "position": [
+        480,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "m5",
+      "name": "CA86_Si_encendido",
+      "notes": "Falla segura: si el interruptor está apagado, no existe o la consulta falla, no revisa. Con prefijo de prueba pasa igual.",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $('CA86_Parametros').first().json.prefijo !== '' || $json.activo === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        720,
+        300
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "m6",
+      "name": "CA86_Revisar_salud",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "=SELECT o_tipo, o_objeto, o_resultado FROM control.revisar_salud('{{ $('CA86_Parametros').first().json.prefijo }}')"
+      },
+      "position": [
+        960,
+        200
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "m7",
+      "name": "CA86_Resumen",
+      "parameters": {
+        "jsCode": "const prefijo = $('CA86_Parametros').first().json.prefijo;\nconst acc = $input.all().map((i) => i.json).filter((j) => j.o_tipo);\nconst n = (t) => acc.filter((a) => a.o_tipo === t).length;\nreturn [{ json: { estado: 'revisado', prefijo, acciones: acc, cortes: n('cortacircuitos'), interruptor_general: n('interruptor general') > 0,\n  alertas_cbu: n('alerta CBU'), aprobaciones_vencidas: n('aprobación vencida'), hubo_acciones: acc.length > 0 } }];"
+      },
+      "position": [
+        1200,
+        200
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "m8",
+      "name": "CA86_Hubo_acciones",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c2",
+              "leftValue": "={{ $json.hubo_acciones }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        1440,
+        200
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "m9",
+      "name": "CA86_Registrar_ejecucion",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "=INSERT INTO control.ejecuciones (automatizacion_id, documento_id, inicio, fin, estado) VALUES ('A11', '{{ $('CA86_Parametros').first().json.prefijo }}REVISION-' || to_char(now(), 'YYYYMMDDHH24MISS'), now(), now(), 'ok') RETURNING ejecucion_id"
+      },
+      "position": [
+        1680,
+        100
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "m10",
+      "name": "CA86_Resultado",
+      "parameters": {
+        "jsCode": "return [{ json: $('CA86_Resumen').first().json }];"
+      },
+      "position": [
+        1920,
+        200
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "m11",
+      "name": "CA86_Apagado",
+      "parameters": {
+        "jsCode": "return [{ json: { estado: 'apagado', prefijo: '', acciones: [], cortes: 0, interruptor_general: false, alertas_cbu: 0, aprobaciones_vencidas: 0, hubo_acciones: false } }];"
+      },
+      "position": [
+        960,
+        420
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA86_Desde_otro_flujo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86_Parametros",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86_Hubo_acciones": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86_Registrar_ejecucion",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA86_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86_Interruptor": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86_Si_encendido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86_Parametros": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86_Interruptor",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86_Registrar_ejecucion": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86_Resumen": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86_Hubo_acciones",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86_Revisar_salud": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86_Resumen",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86_Si_encendido": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86_Revisar_salud",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA86_Apagado",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

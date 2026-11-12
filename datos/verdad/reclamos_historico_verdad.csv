@@ -1,0 +1,4201 @@
+﻿reclamo_id,categoria_correcta,area_correcta,derivacion_correcta
+R-000001,Otros,Atención al cliente,True
+R-000002,Material dañado,Logística,True
+R-000003,Entrega demorada,Logística,True
+R-000004,Otros,Atención al cliente,True
+R-000005,Entrega demorada,Logística,True
+R-000006,Atención en sucursal,Ventas,True
+R-000007,Entrega demorada,Logística,True
+R-000008,Atención en sucursal,Ventas,True
+R-000009,Material dañado,Logística,False
+R-000010,Entrega demorada,Logística,True
+R-000011,Error de facturación,Administración,False
+R-000012,Error de facturación,Administración,True
+R-000013,Material dañado,Logística,True
+R-000014,Error de facturación,Administración,False
+R-000015,Faltante en la entrega,Logística,True
+R-000016,Entrega demorada,Logística,False
+R-000017,Entrega demorada,Logística,True
+R-000018,Otros,Atención al cliente,True
+R-000019,Error de facturación,Administración,True
+R-000020,Material dañado,Logística,True
+R-000021,Material dañado,Logística,True
+R-000022,Faltante en la entrega,Logística,True
+R-000023,Entrega demorada,Logística,True
+R-000024,Entrega demorada,Logística,True
+R-000025,Error de facturación,Administración,True
+R-000026,Faltante en la entrega,Logística,True
+R-000027,Error de facturación,Administración,True
+R-000028,Error de facturación,Administración,True
+R-000029,Faltante en la entrega,Logística,False
+R-000030,Error de facturación,Administración,True
+R-000031,Material dañado,Logística,False
+R-000032,Entrega demorada,Logística,False
+R-000033,Material dañado,Logística,False
+R-000034,Entrega demorada,Logística,True
+R-000035,Atención en sucursal,Ventas,True
+R-000036,Entrega demorada,Logística,True
+R-000037,Faltante en la entrega,Logística,True
+R-000038,Atención en sucursal,Ventas,True
+R-000039,Otros,Atención al cliente,True
+R-000040,Entrega demorada,Logística,True
+R-000041,Material dañado,Logística,True
+R-000042,Error de facturación,Administración,False
+R-000043,Entrega demorada,Logística,True
+R-000044,Entrega demorada,Logística,True
+R-000045,Entrega demorada,Logística,True
+R-000046,Entrega demorada,Logística,True
+R-000047,Entrega demorada,Logística,False
+R-000048,Material dañado,Logística,True
+R-000049,Atención en sucursal,Ventas,True
+R-000050,Entrega demorada,Logística,True
+R-000051,Faltante en la entrega,Logística,True
+R-000052,Error de facturación,Administración,True
+R-000053,Entrega demorada,Logística,True
+R-000054,Entrega demorada,Logística,False
+R-000055,Otros,Atención al cliente,True
+R-000056,Material dañado,Logística,True
+R-000057,Faltante en la entrega,Logística,True
+R-000058,Material dañado,Logística,True
+R-000059,Otros,Atención al cliente,True
+R-000060,Otros,Atención al cliente,True
+R-000061,Error de facturación,Administración,True
+R-000062,Atención en sucursal,Ventas,True
+R-000063,Material dañado,Logística,True
+R-000064,Atención en sucursal,Ventas,True
+R-000065,Entrega demorada,Logística,True
+R-000066,Atención en sucursal,Ventas,True
+R-000067,Entrega demorada,Logística,False
+R-000068,Entrega demorada,Logística,False
+R-000069,Entrega demorada,Logística,True
+R-000070,Faltante en la entrega,Logística,True
+R-000071,Error de facturación,Administración,False
+R-000072,Entrega demorada,Logística,True
+R-000073,Atención en sucursal,Ventas,True
+R-000074,Error de facturación,Administración,True
+R-000075,Atención en sucursal,Ventas,True
+R-000076,Atención en sucursal,Ventas,False
+R-000077,Entrega demorada,Logística,False
+R-000078,Entrega demorada,Logística,True
+R-000079,Material dañado,Logística,True
+R-000080,Entrega demorada,Logística,True
+R-000081,Error de facturación,Administración,True
+R-000082,Entrega demorada,Logística,True
+R-000083,Entrega demorada,Logística,True
+R-000084,Entrega demorada,Logística,True
+R-000085,Entrega demorada,Logística,True
+R-000086,Entrega demorada,Logística,False
+R-000087,Entrega demorada,Logística,True
+R-000088,Material dañado,Logística,True
+R-000089,Atención en sucursal,Ventas,True
+R-000090,Material dañado,Logística,True
+R-000091,Material dañado,Logística,True
+R-000092,Otros,Atención al cliente,True
+R-000093,Material dañado,Logística,True
+R-000094,Error de facturación,Administración,True
+R-000095,Entrega demorada,Logística,False
+R-000096,Atención en sucursal,Ventas,True
+R-000097,Material dañado,Logística,False
+R-000098,Error de facturación,Administración,False
+R-000099,Entrega demorada,Logística,True
+R-000100,Entrega demorada,Logística,False
+R-000101,Error de facturación,Administración,True
+R-000102,Material dañado,Logística,True
+R-000103,Error de facturación,Administración,True
+R-000104,Faltante en la entrega,Logística,True
+R-000105,Entrega demorada,Logística,True
+R-000106,Entrega demorada,Logística,True
+R-000107,Faltante en la entrega,Logística,True
+R-000108,Material dañado,Logística,True
+R-000109,Material dañado,Logística,False
+R-000110,Entrega demorada,Logística,True
+R-000111,Entrega demorada,Logística,True
+R-000112,Atención en sucursal,Ventas,True
+R-000113,Error de facturación,Administración,True
+R-000114,Error de facturación,Administración,True
+R-000115,Otros,Atención al cliente,True
+R-000116,Entrega demorada,Logística,True
+R-000117,Error de facturación,Administración,True
+R-000118,Error de facturación,Administración,True
+R-000119,Faltante en la entrega,Logística,True
+R-000120,Atención en sucursal,Ventas,True
+R-000121,Entrega demorada,Logística,True
+R-000122,Error de facturación,Administración,True
+R-000123,Material dañado,Logística,False
+R-000124,Entrega demorada,Logística,True
+R-000125,Faltante en la entrega,Logística,True
+R-000126,Entrega demorada,Logística,False
+R-000127,Material dañado,Logística,True
+R-000128,Error de facturación,Administración,False
+R-000129,Otros,Atención al cliente,False
+R-000130,Faltante en la entrega,Logística,False
+R-000131,Material dañado,Logística,True
+R-000132,Entrega demorada,Logística,False
+R-000133,Error de facturación,Administración,False
+R-000134,Error de facturación,Administración,True
+R-000135,Material dañado,Logística,False
+R-000136,Error de facturación,Administración,False
+R-000137,Faltante en la entrega,Logística,False
+R-000138,Faltante en la entrega,Logística,True
+R-000139,Faltante en la entrega,Logística,True
+R-000140,Faltante en la entrega,Logística,True
+R-000141,Entrega demorada,Logística,True
+R-000142,Entrega demorada,Logística,True
+R-000143,Material dañado,Logística,False
+R-000144,Atención en sucursal,Ventas,True
+R-000145,Atención en sucursal,Ventas,False
+R-000146,Entrega demorada,Logística,True
+R-000147,Atención en sucursal,Ventas,True
+R-000148,Material dañado,Logística,True
+R-000149,Material dañado,Logística,True
+R-000150,Entrega demorada,Logística,True
+R-000151,Material dañado,Logística,True
+R-000152,Atención en sucursal,Ventas,True
+R-000153,Error de facturación,Administración,True
+R-000154,Material dañado,Logística,True
+R-000155,Error de facturación,Administración,True
+R-000156,Error de facturación,Administración,False
+R-000157,Faltante en la entrega,Logística,True
+R-000158,Entrega demorada,Logística,True
+R-000159,Material dañado,Logística,True
+R-000160,Faltante en la entrega,Logística,True
+R-000161,Entrega demorada,Logística,True
+R-000162,Entrega demorada,Logística,True
+R-000163,Material dañado,Logística,True
+R-000164,Atención en sucursal,Ventas,True
+R-000165,Otros,Atención al cliente,True
+R-000166,Material dañado,Logística,True
+R-000167,Entrega demorada,Logística,True
+R-000168,Faltante en la entrega,Logística,True
+R-000169,Faltante en la entrega,Logística,True
+R-000170,Faltante en la entrega,Logística,True
+R-000171,Error de facturación,Administración,True
+R-000172,Material dañado,Logística,True
+R-000173,Entrega demorada,Logística,True
+R-000174,Otros,Atención al cliente,True
+R-000175,Entrega demorada,Logística,True
+R-000176,Material dañado,Logística,True
+R-000177,Entrega demorada,Logística,True
+R-000178,Material dañado,Logística,False
+R-000179,Entrega demorada,Logística,True
+R-000180,Faltante en la entrega,Logística,True
+R-000181,Material dañado,Logística,True
+R-000182,Otros,Atención al cliente,True
+R-000183,Faltante en la entrega,Logística,True
+R-000184,Otros,Atención al cliente,True
+R-000185,Error de facturación,Administración,True
+R-000186,Entrega demorada,Logística,False
+R-000187,Atención en sucursal,Ventas,True
+R-000188,Entrega demorada,Logística,True
+R-000189,Otros,Atención al cliente,True
+R-000190,Material dañado,Logística,True
+R-000191,Entrega demorada,Logística,True
+R-000192,Error de facturación,Administración,True
+R-000193,Otros,Atención al cliente,False
+R-000194,Material dañado,Logística,True
+R-000195,Material dañado,Logística,False
+R-000196,Material dañado,Logística,True
+R-000197,Faltante en la entrega,Logística,True
+R-000198,Faltante en la entrega,Logística,True
+R-000199,Entrega demorada,Logística,False
+R-000200,Faltante en la entrega,Logística,False
+R-000201,Faltante en la entrega,Logística,False
+R-000202,Material dañado,Logística,True
+R-000203,Otros,Atención al cliente,False
+R-000204,Faltante en la entrega,Logística,True
+R-000205,Entrega demorada,Logística,True
+R-000206,Otros,Atención al cliente,False
+R-000207,Atención en sucursal,Ventas,True
+R-000208,Entrega demorada,Logística,True
+R-000209,Error de facturación,Administración,False
+R-000210,Atención en sucursal,Ventas,False
+R-000211,Otros,Atención al cliente,True
+R-000212,Otros,Atención al cliente,False
+R-000213,Entrega demorada,Logística,True
+R-000214,Entrega demorada,Logística,True
+R-000215,Entrega demorada,Logística,True
+R-000216,Otros,Atención al cliente,True
+R-000217,Faltante en la entrega,Logística,True
+R-000218,Entrega demorada,Logística,True
+R-000219,Entrega demorada,Logística,True
+R-000220,Faltante en la entrega,Logística,True
+R-000221,Material dañado,Logística,True
+R-000222,Material dañado,Logística,True
+R-000223,Error de facturación,Administración,False
+R-000224,Atención en sucursal,Ventas,True
+R-000225,Faltante en la entrega,Logística,True
+R-000226,Faltante en la entrega,Logística,True
+R-000227,Atención en sucursal,Ventas,True
+R-000228,Otros,Atención al cliente,True
+R-000229,Entrega demorada,Logística,True
+R-000230,Faltante en la entrega,Logística,True
+R-000231,Otros,Atención al cliente,False
+R-000232,Entrega demorada,Logística,True
+R-000233,Error de facturación,Administración,True
+R-000234,Atención en sucursal,Ventas,True
+R-000235,Error de facturación,Administración,False
+R-000236,Error de facturación,Administración,True
+R-000237,Otros,Atención al cliente,True
+R-000238,Error de facturación,Administración,True
+R-000239,Atención en sucursal,Ventas,True
+R-000240,Material dañado,Logística,True
+R-000241,Entrega demorada,Logística,True
+R-000242,Atención en sucursal,Ventas,True
+R-000243,Entrega demorada,Logística,True
+R-000244,Atención en sucursal,Ventas,True
+R-000245,Material dañado,Logística,False
+R-000246,Error de facturación,Administración,True
+R-000247,Error de facturación,Administración,False
+R-000248,Entrega demorada,Logística,True
+R-000249,Entrega demorada,Logística,True
+R-000250,Entrega demorada,Logística,True
+R-000251,Otros,Atención al cliente,True
+R-000252,Material dañado,Logística,True
+R-000253,Entrega demorada,Logística,False
+R-000254,Atención en sucursal,Ventas,True
+R-000255,Otros,Atención al cliente,True
+R-000256,Material dañado,Logística,False
+R-000257,Atención en sucursal,Ventas,True
+R-000258,Entrega demorada,Logística,True
+R-000259,Otros,Atención al cliente,False
+R-000260,Entrega demorada,Logística,False
+R-000261,Material dañado,Logística,True
+R-000262,Error de facturación,Administración,True
+R-000263,Atención en sucursal,Ventas,True
+R-000264,Error de facturación,Administración,True
+R-000265,Material dañado,Logística,True
+R-000266,Faltante en la entrega,Logística,True
+R-000267,Faltante en la entrega,Logística,True
+R-000268,Entrega demorada,Logística,True
+R-000269,Entrega demorada,Logística,True
+R-000270,Otros,Atención al cliente,True
+R-000271,Entrega demorada,Logística,True
+R-000272,Entrega demorada,Logística,True
+R-000273,Entrega demorada,Logística,True
+R-000274,Faltante en la entrega,Logística,False
+R-000275,Faltante en la entrega,Logística,True
+R-000276,Material dañado,Logística,True
+R-000277,Entrega demorada,Logística,True
+R-000278,Material dañado,Logística,True
+R-000279,Material dañado,Logística,True
+R-000280,Faltante en la entrega,Logística,True
+R-000281,Entrega demorada,Logística,True
+R-000282,Entrega demorada,Logística,True
+R-000283,Material dañado,Logística,False
+R-000284,Material dañado,Logística,True
+R-000285,Material dañado,Logística,True
+R-000286,Atención en sucursal,Ventas,True
+R-000287,Error de facturación,Administración,True
+R-000288,Error de facturación,Administración,True
+R-000289,Entrega demorada,Logística,True
+R-000290,Faltante en la entrega,Logística,True
+R-000291,Atención en sucursal,Ventas,True
+R-000292,Faltante en la entrega,Logística,True
+R-000293,Material dañado,Logística,True
+R-000294,Entrega demorada,Logística,True
+R-000295,Error de facturación,Administración,True
+R-000296,Error de facturación,Administración,False
+R-000297,Material dañado,Logística,True
+R-000298,Material dañado,Logística,False
+R-000299,Atención en sucursal,Ventas,True
+R-000300,Atención en sucursal,Ventas,True
+R-000301,Entrega demorada,Logística,True
+R-000302,Otros,Atención al cliente,True
+R-000303,Entrega demorada,Logística,True
+R-000304,Material dañado,Logística,True
+R-000305,Otros,Atención al cliente,True
+R-000306,Material dañado,Logística,True
+R-000307,Entrega demorada,Logística,True
+R-000308,Entrega demorada,Logística,True
+R-000309,Entrega demorada,Logística,True
+R-000310,Entrega demorada,Logística,False
+R-000311,Material dañado,Logística,True
+R-000312,Error de facturación,Administración,False
+R-000313,Error de facturación,Administración,True
+R-000314,Otros,Atención al cliente,True
+R-000315,Otros,Atención al cliente,True
+R-000316,Entrega demorada,Logística,True
+R-000317,Atención en sucursal,Ventas,True
+R-000318,Entrega demorada,Logística,True
+R-000319,Material dañado,Logística,True
+R-000320,Material dañado,Logística,True
+R-000321,Error de facturación,Administración,True
+R-000322,Entrega demorada,Logística,True
+R-000323,Atención en sucursal,Ventas,True
+R-000324,Error de facturación,Administración,False
+R-000325,Entrega demorada,Logística,True
+R-000326,Entrega demorada,Logística,True
+R-000327,Error de facturación,Administración,True
+R-000328,Material dañado,Logística,False
+R-000329,Otros,Atención al cliente,True
+R-000330,Entrega demorada,Logística,True
+R-000331,Faltante en la entrega,Logística,True
+R-000332,Entrega demorada,Logística,False
+R-000333,Entrega demorada,Logística,True
+R-000334,Atención en sucursal,Ventas,True
+R-000335,Entrega demorada,Logística,True
+R-000336,Faltante en la entrega,Logística,True
+R-000337,Atención en sucursal,Ventas,True
+R-000338,Atención en sucursal,Ventas,True
+R-000339,Error de facturación,Administración,True
+R-000340,Entrega demorada,Logística,True
+R-000341,Faltante en la entrega,Logística,True
+R-000342,Atención en sucursal,Ventas,False
+R-000343,Atención en sucursal,Ventas,True
+R-000344,Entrega demorada,Logística,True
+R-000345,Material dañado,Logística,True
+R-000346,Entrega demorada,Logística,True
+R-000347,Material dañado,Logística,True
+R-000348,Entrega demorada,Logística,True
+R-000349,Material dañado,Logística,True
+R-000350,Entrega demorada,Logística,True
+R-000351,Faltante en la entrega,Logística,True
+R-000352,Error de facturación,Administración,True
+R-000353,Atención en sucursal,Ventas,True
+R-000354,Material dañado,Logística,True
+R-000355,Entrega demorada,Logística,False
+R-000356,Otros,Atención al cliente,True
+R-000357,Faltante en la entrega,Logística,False
+R-000358,Faltante en la entrega,Logística,True
+R-000359,Entrega demorada,Logística,False
+R-000360,Entrega demorada,Logística,True
+R-000361,Entrega demorada,Logística,True
+R-000362,Material dañado,Logística,True
+R-000363,Faltante en la entrega,Logística,False
+R-000364,Material dañado,Logística,False
+R-000365,Faltante en la entrega,Logística,True
+R-000366,Atención en sucursal,Ventas,True
+R-000367,Error de facturación,Administración,True
+R-000368,Entrega demorada,Logística,True
+R-000369,Entrega demorada,Logística,True
+R-000370,Entrega demorada,Logística,True
+R-000371,Entrega demorada,Logística,True
+R-000372,Atención en sucursal,Ventas,False
+R-000373,Material dañado,Logística,True
+R-000374,Material dañado,Logística,False
+R-000375,Entrega demorada,Logística,True
+R-000376,Entrega demorada,Logística,True
+R-000377,Material dañado,Logística,True
+R-000378,Entrega demorada,Logística,True
+R-000379,Material dañado,Logística,True
+R-000380,Otros,Atención al cliente,True
+R-000381,Faltante en la entrega,Logística,True
+R-000382,Error de facturación,Administración,True
+R-000383,Otros,Atención al cliente,True
+R-000384,Atención en sucursal,Ventas,False
+R-000385,Entrega demorada,Logística,True
+R-000386,Entrega demorada,Logística,True
+R-000387,Entrega demorada,Logística,True
+R-000388,Entrega demorada,Logística,True
+R-000389,Material dañado,Logística,True
+R-000390,Material dañado,Logística,False
+R-000391,Entrega demorada,Logística,True
+R-000392,Atención en sucursal,Ventas,True
+R-000393,Error de facturación,Administración,True
+R-000394,Material dañado,Logística,True
+R-000395,Error de facturación,Administración,True
+R-000396,Otros,Atención al cliente,True
+R-000397,Entrega demorada,Logística,True
+R-000398,Material dañado,Logística,False
+R-000399,Entrega demorada,Logística,True
+R-000400,Entrega demorada,Logística,True
+R-000401,Entrega demorada,Logística,True
+R-000402,Entrega demorada,Logística,True
+R-000403,Entrega demorada,Logística,True
+R-000404,Material dañado,Logística,True
+R-000405,Material dañado,Logística,False
+R-000406,Entrega demorada,Logística,True
+R-000407,Entrega demorada,Logística,True
+R-000408,Faltante en la entrega,Logística,True
+R-000409,Faltante en la entrega,Logística,True
+R-000410,Atención en sucursal,Ventas,True
+R-000411,Entrega demorada,Logística,False
+R-000412,Otros,Atención al cliente,True
+R-000413,Atención en sucursal,Ventas,False
+R-000414,Entrega demorada,Logística,True
+R-000415,Error de facturación,Administración,False
+R-000416,Atención en sucursal,Ventas,True
+R-000417,Material dañado,Logística,True
+R-000418,Error de facturación,Administración,True
+R-000419,Material dañado,Logística,True
+R-000420,Error de facturación,Administración,True
+R-000421,Error de facturación,Administración,True
+R-000422,Atención en sucursal,Ventas,True
+R-000423,Faltante en la entrega,Logística,True
+R-000424,Entrega demorada,Logística,True
+R-000425,Faltante en la entrega,Logística,True
+R-000426,Atención en sucursal,Ventas,True
+R-000427,Faltante en la entrega,Logística,True
+R-000428,Otros,Atención al cliente,True
+R-000429,Entrega demorada,Logística,True
+R-000430,Material dañado,Logística,True
+R-000431,Error de facturación,Administración,True
+R-000432,Atención en sucursal,Ventas,False
+R-000433,Material dañado,Logística,True
+R-000434,Error de facturación,Administración,True
+R-000435,Entrega demorada,Logística,True
+R-000436,Entrega demorada,Logística,True
+R-000437,Faltante en la entrega,Logística,False
+R-000438,Faltante en la entrega,Logística,True
+R-000439,Material dañado,Logística,True
+R-000440,Material dañado,Logística,True
+R-000441,Atención en sucursal,Ventas,True
+R-000442,Entrega demorada,Logística,True
+R-000443,Entrega demorada,Logística,True
+R-000444,Material dañado,Logística,True
+R-000445,Otros,Atención al cliente,True
+R-000446,Faltante en la entrega,Logística,True
+R-000447,Entrega demorada,Logística,True
+R-000448,Material dañado,Logística,True
+R-000449,Atención en sucursal,Ventas,True
+R-000450,Entrega demorada,Logística,True
+R-000451,Error de facturación,Administración,True
+R-000452,Entrega demorada,Logística,True
+R-000453,Otros,Atención al cliente,False
+R-000454,Error de facturación,Administración,False
+R-000455,Faltante en la entrega,Logística,True
+R-000456,Faltante en la entrega,Logística,True
+R-000457,Material dañado,Logística,True
+R-000458,Entrega demorada,Logística,True
+R-000459,Material dañado,Logística,True
+R-000460,Faltante en la entrega,Logística,True
+R-000461,Material dañado,Logística,True
+R-000462,Material dañado,Logística,True
+R-000463,Entrega demorada,Logística,True
+R-000464,Material dañado,Logística,True
+R-000465,Material dañado,Logística,True
+R-000466,Entrega demorada,Logística,True
+R-000467,Material dañado,Logística,True
+R-000468,Entrega demorada,Logística,True
+R-000469,Error de facturación,Administración,True
+R-000470,Entrega demorada,Logística,False
+R-000471,Entrega demorada,Logística,False
+R-000472,Otros,Atención al cliente,True
+R-000473,Material dañado,Logística,True
+R-000474,Atención en sucursal,Ventas,True
+R-000475,Faltante en la entrega,Logística,True
+R-000476,Material dañado,Logística,True
+R-000477,Faltante en la entrega,Logística,True
+R-000478,Entrega demorada,Logística,True
+R-000479,Material dañado,Logística,True
+R-000480,Otros,Atención al cliente,True
+R-000481,Atención en sucursal,Ventas,True
+R-000482,Entrega demorada,Logística,True
+R-000483,Error de facturación,Administración,True
+R-000484,Faltante en la entrega,Logística,True
+R-000485,Otros,Atención al cliente,True
+R-000486,Material dañado,Logística,False
+R-000487,Error de facturación,Administración,True
+R-000488,Entrega demorada,Logística,True
+R-000489,Atención en sucursal,Ventas,True
+R-000490,Atención en sucursal,Ventas,True
+R-000491,Entrega demorada,Logística,True
+R-000492,Material dañado,Logística,True
+R-000493,Entrega demorada,Logística,True
+R-000494,Faltante en la entrega,Logística,True
+R-000495,Otros,Atención al cliente,True
+R-000496,Atención en sucursal,Ventas,False
+R-000497,Faltante en la entrega,Logística,True
+R-000498,Atención en sucursal,Ventas,True
+R-000499,Atención en sucursal,Ventas,True
+R-000500,Error de facturación,Administración,True
+R-000501,Faltante en la entrega,Logística,True
+R-000502,Atención en sucursal,Ventas,True
+R-000503,Otros,Atención al cliente,True
+R-000504,Faltante en la entrega,Logística,True
+R-000505,Material dañado,Logística,False
+R-000506,Atención en sucursal,Ventas,True
+R-000507,Error de facturación,Administración,True
+R-000508,Faltante en la entrega,Logística,False
+R-000509,Material dañado,Logística,True
+R-000510,Material dañado,Logística,True
+R-000511,Material dañado,Logística,True
+R-000512,Material dañado,Logística,True
+R-000513,Material dañado,Logística,True
+R-000514,Entrega demorada,Logística,True
+R-000515,Error de facturación,Administración,False
+R-000516,Entrega demorada,Logística,True
+R-000517,Atención en sucursal,Ventas,True
+R-000518,Entrega demorada,Logística,True
+R-000519,Entrega demorada,Logística,True
+R-000520,Material dañado,Logística,True
+R-000521,Entrega demorada,Logística,True
+R-000522,Entrega demorada,Logística,True
+R-000523,Material dañado,Logística,False
+R-000524,Entrega demorada,Logística,False
+R-000525,Faltante en la entrega,Logística,False
+R-000526,Entrega demorada,Logística,True
+R-000527,Otros,Atención al cliente,True
+R-000528,Entrega demorada,Logística,True
+R-000529,Entrega demorada,Logística,True
+R-000530,Entrega demorada,Logística,True
+R-000531,Entrega demorada,Logística,True
+R-000532,Material dañado,Logística,True
+R-000533,Entrega demorada,Logística,True
+R-000534,Otros,Atención al cliente,True
+R-000535,Faltante en la entrega,Logística,True
+R-000536,Entrega demorada,Logística,True
+R-000537,Faltante en la entrega,Logística,False
+R-000538,Error de facturación,Administración,True
+R-000539,Atención en sucursal,Ventas,True
+R-000540,Material dañado,Logística,True
+R-000541,Entrega demorada,Logística,True
+R-000542,Entrega demorada,Logística,True
+R-000543,Otros,Atención al cliente,True
+R-000544,Error de facturación,Administración,True
+R-000545,Entrega demorada,Logística,True
+R-000546,Error de facturación,Administración,True
+R-000547,Faltante en la entrega,Logística,True
+R-000548,Entrega demorada,Logística,True
+R-000549,Material dañado,Logística,True
+R-000550,Atención en sucursal,Ventas,True
+R-000551,Entrega demorada,Logística,True
+R-000552,Entrega demorada,Logística,True
+R-000553,Otros,Atención al cliente,True
+R-000554,Entrega demorada,Logística,True
+R-000555,Faltante en la entrega,Logística,True
+R-000556,Error de facturación,Administración,True
+R-000557,Entrega demorada,Logística,True
+R-000558,Error de facturación,Administración,True
+R-000559,Entrega demorada,Logística,True
+R-000560,Atención en sucursal,Ventas,True
+R-000561,Entrega demorada,Logística,True
+R-000562,Error de facturación,Administración,True
+R-000563,Entrega demorada,Logística,False
+R-000564,Entrega demorada,Logística,False
+R-000565,Material dañado,Logística,True
+R-000566,Faltante en la entrega,Logística,True
+R-000567,Faltante en la entrega,Logística,False
+R-000568,Error de facturación,Administración,True
+R-000569,Otros,Atención al cliente,True
+R-000570,Entrega demorada,Logística,True
+R-000571,Atención en sucursal,Ventas,True
+R-000572,Atención en sucursal,Ventas,True
+R-000573,Atención en sucursal,Ventas,True
+R-000574,Error de facturación,Administración,True
+R-000575,Error de facturación,Administración,True
+R-000576,Entrega demorada,Logística,True
+R-000577,Faltante en la entrega,Logística,True
+R-000578,Entrega demorada,Logística,True
+R-000579,Otros,Atención al cliente,True
+R-000580,Entrega demorada,Logística,False
+R-000581,Material dañado,Logística,True
+R-000582,Error de facturación,Administración,True
+R-000583,Entrega demorada,Logística,True
+R-000584,Entrega demorada,Logística,True
+R-000585,Entrega demorada,Logística,True
+R-000586,Entrega demorada,Logística,True
+R-000587,Faltante en la entrega,Logística,True
+R-000588,Error de facturación,Administración,False
+R-000589,Entrega demorada,Logística,True
+R-000590,Otros,Atención al cliente,True
+R-000591,Otros,Atención al cliente,True
+R-000592,Faltante en la entrega,Logística,True
+R-000593,Faltante en la entrega,Logística,True
+R-000594,Otros,Atención al cliente,True
+R-000595,Entrega demorada,Logística,True
+R-000596,Entrega demorada,Logística,True
+R-000597,Entrega demorada,Logística,True
+R-000598,Faltante en la entrega,Logística,False
+R-000599,Otros,Atención al cliente,True
+R-000600,Error de facturación,Administración,True
+R-000601,Entrega demorada,Logística,True
+R-000602,Material dañado,Logística,False
+R-000603,Faltante en la entrega,Logística,True
+R-000604,Entrega demorada,Logística,True
+R-000605,Material dañado,Logística,True
+R-000606,Material dañado,Logística,False
+R-000607,Error de facturación,Administración,True
+R-000608,Entrega demorada,Logística,True
+R-000609,Atención en sucursal,Ventas,True
+R-000610,Error de facturación,Administración,True
+R-000611,Material dañado,Logística,True
+R-000612,Entrega demorada,Logística,True
+R-000613,Error de facturación,Administración,True
+R-000614,Entrega demorada,Logística,True
+R-000615,Entrega demorada,Logística,True
+R-000616,Error de facturación,Administración,True
+R-000617,Atención en sucursal,Ventas,True
+R-000618,Atención en sucursal,Ventas,True
+R-000619,Error de facturación,Administración,True
+R-000620,Atención en sucursal,Ventas,True
+R-000621,Faltante en la entrega,Logística,True
+R-000622,Entrega demorada,Logística,True
+R-000623,Faltante en la entrega,Logística,True
+R-000624,Entrega demorada,Logística,False
+R-000625,Material dañado,Logística,True
+R-000626,Entrega demorada,Logística,True
+R-000627,Entrega demorada,Logística,False
+R-000628,Faltante en la entrega,Logística,True
+R-000629,Entrega demorada,Logística,True
+R-000630,Error de facturación,Administración,True
+R-000631,Faltante en la entrega,Logística,True
+R-000632,Entrega demorada,Logística,True
+R-000633,Error de facturación,Administración,True
+R-000634,Faltante en la entrega,Logística,True
+R-000635,Faltante en la entrega,Logística,False
+R-000636,Material dañado,Logística,True
+R-000637,Entrega demorada,Logística,True
+R-000638,Error de facturación,Administración,True
+R-000639,Faltante en la entrega,Logística,True
+R-000640,Entrega demorada,Logística,True
+R-000641,Atención en sucursal,Ventas,True
+R-000642,Material dañado,Logística,True
+R-000643,Entrega demorada,Logística,True
+R-000644,Faltante en la entrega,Logística,True
+R-000645,Faltante en la entrega,Logística,True
+R-000646,Entrega demorada,Logística,True
+R-000647,Entrega demorada,Logística,True
+R-000648,Faltante en la entrega,Logística,True
+R-000649,Material dañado,Logística,True
+R-000650,Otros,Atención al cliente,True
+R-000651,Otros,Atención al cliente,True
+R-000652,Entrega demorada,Logística,True
+R-000653,Material dañado,Logística,True
+R-000654,Entrega demorada,Logística,True
+R-000655,Entrega demorada,Logística,True
+R-000656,Entrega demorada,Logística,True
+R-000657,Error de facturación,Administración,True
+R-000658,Entrega demorada,Logística,True
+R-000659,Entrega demorada,Logística,True
+R-000660,Entrega demorada,Logística,True
+R-000661,Entrega demorada,Logística,True
+R-000662,Error de facturación,Administración,True
+R-000663,Entrega demorada,Logística,True
+R-000664,Atención en sucursal,Ventas,True
+R-000665,Error de facturación,Administración,False
+R-000666,Faltante en la entrega,Logística,True
+R-000667,Entrega demorada,Logística,False
+R-000668,Material dañado,Logística,True
+R-000669,Entrega demorada,Logística,True
+R-000670,Material dañado,Logística,False
+R-000671,Atención en sucursal,Ventas,True
+R-000672,Otros,Atención al cliente,False
+R-000673,Entrega demorada,Logística,True
+R-000674,Faltante en la entrega,Logística,True
+R-000675,Entrega demorada,Logística,True
+R-000676,Entrega demorada,Logística,True
+R-000677,Otros,Atención al cliente,True
+R-000678,Entrega demorada,Logística,True
+R-000679,Otros,Atención al cliente,False
+R-000680,Error de facturación,Administración,True
+R-000681,Material dañado,Logística,True
+R-000682,Faltante en la entrega,Logística,True
+R-000683,Entrega demorada,Logística,True
+R-000684,Error de facturación,Administración,True
+R-000685,Material dañado,Logística,True
+R-000686,Faltante en la entrega,Logística,False
+R-000687,Error de facturación,Administración,False
+R-000688,Faltante en la entrega,Logística,True
+R-000689,Entrega demorada,Logística,True
+R-000690,Atención en sucursal,Ventas,True
+R-000691,Atención en sucursal,Ventas,True
+R-000692,Material dañado,Logística,True
+R-000693,Entrega demorada,Logística,True
+R-000694,Material dañado,Logística,True
+R-000695,Entrega demorada,Logística,True
+R-000696,Error de facturación,Administración,True
+R-000697,Material dañado,Logística,False
+R-000698,Error de facturación,Administración,True
+R-000699,Otros,Atención al cliente,True
+R-000700,Error de facturación,Administración,True
+R-000701,Error de facturación,Administración,True
+R-000702,Otros,Atención al cliente,True
+R-000703,Otros,Atención al cliente,True
+R-000704,Faltante en la entrega,Logística,True
+R-000705,Entrega demorada,Logística,True
+R-000706,Faltante en la entrega,Logística,False
+R-000707,Error de facturación,Administración,True
+R-000708,Atención en sucursal,Ventas,True
+R-000709,Material dañado,Logística,True
+R-000710,Error de facturación,Administración,True
+R-000711,Material dañado,Logística,True
+R-000712,Atención en sucursal,Ventas,True
+R-000713,Material dañado,Logística,False
+R-000714,Entrega demorada,Logística,True
+R-000715,Material dañado,Logística,True
+R-000716,Material dañado,Logística,False
+R-000717,Atención en sucursal,Ventas,True
+R-000718,Entrega demorada,Logística,True
+R-000719,Atención en sucursal,Ventas,False
+R-000720,Entrega demorada,Logística,True
+R-000721,Faltante en la entrega,Logística,False
+R-000722,Faltante en la entrega,Logística,True
+R-000723,Entrega demorada,Logística,True
+R-000724,Material dañado,Logística,True
+R-000725,Otros,Atención al cliente,True
+R-000726,Entrega demorada,Logística,True
+R-000727,Material dañado,Logística,True
+R-000728,Material dañado,Logística,True
+R-000729,Error de facturación,Administración,True
+R-000730,Faltante en la entrega,Logística,True
+R-000731,Entrega demorada,Logística,True
+R-000732,Error de facturación,Administración,True
+R-000733,Error de facturación,Administración,True
+R-000734,Faltante en la entrega,Logística,False
+R-000735,Material dañado,Logística,False
+R-000736,Material dañado,Logística,True
+R-000737,Entrega demorada,Logística,False
+R-000738,Entrega demorada,Logística,False
+R-000739,Faltante en la entrega,Logística,True
+R-000740,Entrega demorada,Logística,True
+R-000741,Error de facturación,Administración,True
+R-000742,Material dañado,Logística,True
+R-000743,Entrega demorada,Logística,True
+R-000744,Material dañado,Logística,True
+R-000745,Material dañado,Logística,True
+R-000746,Entrega demorada,Logística,False
+R-000747,Error de facturación,Administración,True
+R-000748,Atención en sucursal,Ventas,True
+R-000749,Atención en sucursal,Ventas,True
+R-000750,Entrega demorada,Logística,True
+R-000751,Entrega demorada,Logística,True
+R-000752,Entrega demorada,Logística,True
+R-000753,Error de facturación,Administración,True
+R-000754,Faltante en la entrega,Logística,True
+R-000755,Entrega demorada,Logística,True
+R-000756,Faltante en la entrega,Logística,True
+R-000757,Otros,Atención al cliente,False
+R-000758,Otros,Atención al cliente,True
+R-000759,Entrega demorada,Logística,False
+R-000760,Entrega demorada,Logística,True
+R-000761,Entrega demorada,Logística,True
+R-000762,Error de facturación,Administración,False
+R-000763,Error de facturación,Administración,True
+R-000764,Error de facturación,Administración,True
+R-000765,Atención en sucursal,Ventas,True
+R-000766,Otros,Atención al cliente,True
+R-000767,Atención en sucursal,Ventas,True
+R-000768,Error de facturación,Administración,True
+R-000769,Material dañado,Logística,False
+R-000770,Otros,Atención al cliente,True
+R-000771,Material dañado,Logística,True
+R-000772,Faltante en la entrega,Logística,True
+R-000773,Atención en sucursal,Ventas,True
+R-000774,Entrega demorada,Logística,True
+R-000775,Entrega demorada,Logística,True
+R-000776,Material dañado,Logística,True
+R-000777,Entrega demorada,Logística,True
+R-000778,Error de facturación,Administración,True
+R-000779,Material dañado,Logística,True
+R-000780,Entrega demorada,Logística,False
+R-000781,Faltante en la entrega,Logística,True
+R-000782,Material dañado,Logística,True
+R-000783,Faltante en la entrega,Logística,True
+R-000784,Faltante en la entrega,Logística,True
+R-000785,Otros,Atención al cliente,True
+R-000786,Otros,Atención al cliente,True
+R-000787,Faltante en la entrega,Logística,False
+R-000788,Material dañado,Logística,True
+R-000789,Faltante en la entrega,Logística,True
+R-000790,Entrega demorada,Logística,True
+R-000791,Material dañado,Logística,True
+R-000792,Material dañado,Logística,True
+R-000793,Material dañado,Logística,True
+R-000794,Atención en sucursal,Ventas,True
+R-000795,Error de facturación,Administración,True
+R-000796,Entrega demorada,Logística,False
+R-000797,Faltante en la entrega,Logística,True
+R-000798,Faltante en la entrega,Logística,True
+R-000799,Entrega demorada,Logística,True
+R-000800,Atención en sucursal,Ventas,True
+R-000801,Entrega demorada,Logística,False
+R-000802,Entrega demorada,Logística,True
+R-000803,Entrega demorada,Logística,False
+R-000804,Material dañado,Logística,False
+R-000805,Atención en sucursal,Ventas,False
+R-000806,Atención en sucursal,Ventas,True
+R-000807,Entrega demorada,Logística,True
+R-000808,Faltante en la entrega,Logística,False
+R-000809,Material dañado,Logística,True
+R-000810,Atención en sucursal,Ventas,True
+R-000811,Entrega demorada,Logística,True
+R-000812,Error de facturación,Administración,False
+R-000813,Entrega demorada,Logística,True
+R-000814,Faltante en la entrega,Logística,True
+R-000815,Faltante en la entrega,Logística,True
+R-000816,Entrega demorada,Logística,True
+R-000817,Faltante en la entrega,Logística,True
+R-000818,Entrega demorada,Logística,False
+R-000819,Faltante en la entrega,Logística,True
+R-000820,Entrega demorada,Logística,True
+R-000821,Faltante en la entrega,Logística,True
+R-000822,Error de facturación,Administración,True
+R-000823,Faltante en la entrega,Logística,True
+R-000824,Atención en sucursal,Ventas,True
+R-000825,Otros,Atención al cliente,True
+R-000826,Faltante en la entrega,Logística,True
+R-000827,Atención en sucursal,Ventas,True
+R-000828,Error de facturación,Administración,True
+R-000829,Atención en sucursal,Ventas,True
+R-000830,Material dañado,Logística,True
+R-000831,Entrega demorada,Logística,True
+R-000832,Entrega demorada,Logística,True
+R-000833,Faltante en la entrega,Logística,True
+R-000834,Entrega demorada,Logística,False
+R-000835,Atención en sucursal,Ventas,True
+R-000836,Atención en sucursal,Ventas,True
+R-000837,Faltante en la entrega,Logística,True
+R-000838,Entrega demorada,Logística,True
+R-000839,Entrega demorada,Logística,False
+R-000840,Error de facturación,Administración,True
+R-000841,Material dañado,Logística,False
+R-000842,Entrega demorada,Logística,True
+R-000843,Faltante en la entrega,Logística,True
+R-000844,Material dañado,Logística,False
+R-000845,Atención en sucursal,Ventas,True
+R-000846,Entrega demorada,Logística,True
+R-000847,Error de facturación,Administración,True
+R-000848,Atención en sucursal,Ventas,True
+R-000849,Entrega demorada,Logística,True
+R-000850,Atención en sucursal,Ventas,True
+R-000851,Atención en sucursal,Ventas,True
+R-000852,Error de facturación,Administración,False
+R-000853,Entrega demorada,Logística,True
+R-000854,Entrega demorada,Logística,True
+R-000855,Entrega demorada,Logística,True
+R-000856,Faltante en la entrega,Logística,True
+R-000857,Atención en sucursal,Ventas,False
+R-000858,Faltante en la entrega,Logística,True
+R-000859,Material dañado,Logística,True
+R-000860,Atención en sucursal,Ventas,True
+R-000861,Error de facturación,Administración,True
+R-000862,Entrega demorada,Logística,True
+R-000863,Otros,Atención al cliente,True
+R-000864,Faltante en la entrega,Logística,True
+R-000865,Material dañado,Logística,True
+R-000866,Atención en sucursal,Ventas,True
+R-000867,Faltante en la entrega,Logística,True
+R-000868,Atención en sucursal,Ventas,True
+R-000869,Material dañado,Logística,True
+R-000870,Entrega demorada,Logística,True
+R-000871,Atención en sucursal,Ventas,True
+R-000872,Material dañado,Logística,True
+R-000873,Atención en sucursal,Ventas,True
+R-000874,Error de facturación,Administración,True
+R-000875,Faltante en la entrega,Logística,True
+R-000876,Material dañado,Logística,False
+R-000877,Atención en sucursal,Ventas,True
+R-000878,Atención en sucursal,Ventas,True
+R-000879,Entrega demorada,Logística,False
+R-000880,Material dañado,Logística,True
+R-000881,Material dañado,Logística,True
+R-000882,Error de facturación,Administración,True
+R-000883,Material dañado,Logística,True
+R-000884,Error de facturación,Administración,True
+R-000885,Error de facturación,Administración,True
+R-000886,Error de facturación,Administración,True
+R-000887,Atención en sucursal,Ventas,True
+R-000888,Material dañado,Logística,True
+R-000889,Entrega demorada,Logística,True
+R-000890,Faltante en la entrega,Logística,True
+R-000891,Faltante en la entrega,Logística,True
+R-000892,Entrega demorada,Logística,True
+R-000893,Faltante en la entrega,Logística,True
+R-000894,Entrega demorada,Logística,True
+R-000895,Error de facturación,Administración,True
+R-000896,Entrega demorada,Logística,False
+R-000897,Faltante en la entrega,Logística,True
+R-000898,Faltante en la entrega,Logística,True
+R-000899,Faltante en la entrega,Logística,True
+R-000900,Faltante en la entrega,Logística,True
+R-000901,Error de facturación,Administración,True
+R-000902,Material dañado,Logística,True
+R-000903,Faltante en la entrega,Logística,True
+R-000904,Entrega demorada,Logística,True
+R-000905,Faltante en la entrega,Logística,True
+R-000906,Faltante en la entrega,Logística,True
+R-000907,Faltante en la entrega,Logística,True
+R-000908,Entrega demorada,Logística,False
+R-000909,Otros,Atención al cliente,True
+R-000910,Entrega demorada,Logística,True
+R-000911,Entrega demorada,Logística,True
+R-000912,Entrega demorada,Logística,True
+R-000913,Material dañado,Logística,True
+R-000914,Material dañado,Logística,True
+R-000915,Entrega demorada,Logística,True
+R-000916,Entrega demorada,Logística,True
+R-000917,Entrega demorada,Logística,True
+R-000918,Material dañado,Logística,True
+R-000919,Error de facturación,Administración,True
+R-000920,Otros,Atención al cliente,True
+R-000921,Error de facturación,Administración,True
+R-000922,Material dañado,Logística,True
+R-000923,Entrega demorada,Logística,True
+R-000924,Faltante en la entrega,Logística,True
+R-000925,Material dañado,Logística,True
+R-000926,Faltante en la entrega,Logística,True
+R-000927,Entrega demorada,Logística,True
+R-000928,Entrega demorada,Logística,True
+R-000929,Entrega demorada,Logística,True
+R-000930,Error de facturación,Administración,True
+R-000931,Material dañado,Logística,True
+R-000932,Error de facturación,Administración,True
+R-000933,Atención en sucursal,Ventas,False
+R-000934,Atención en sucursal,Ventas,False
+R-000935,Material dañado,Logística,True
+R-000936,Material dañado,Logística,True
+R-000937,Otros,Atención al cliente,False
+R-000938,Error de facturación,Administración,True
+R-000939,Otros,Atención al cliente,True
+R-000940,Entrega demorada,Logística,False
+R-000941,Entrega demorada,Logística,True
+R-000942,Entrega demorada,Logística,True
+R-000943,Entrega demorada,Logística,False
+R-000944,Atención en sucursal,Ventas,True
+R-000945,Atención en sucursal,Ventas,True
+R-000946,Material dañado,Logística,True
+R-000947,Material dañado,Logística,True
+R-000948,Error de facturación,Administración,False
+R-000949,Entrega demorada,Logística,True
+R-000950,Material dañado,Logística,True
+R-000951,Error de facturación,Administración,False
+R-000952,Error de facturación,Administración,True
+R-000953,Entrega demorada,Logística,True
+R-000954,Error de facturación,Administración,True
+R-000955,Entrega demorada,Logística,True
+R-000956,Entrega demorada,Logística,True
+R-000957,Entrega demorada,Logística,True
+R-000958,Error de facturación,Administración,True
+R-000959,Entrega demorada,Logística,True
+R-000960,Atención en sucursal,Ventas,True
+R-000961,Entrega demorada,Logística,True
+R-000962,Material dañado,Logística,True
+R-000963,Otros,Atención al cliente,False
+R-000964,Entrega demorada,Logística,True
+R-000965,Error de facturación,Administración,True
+R-000966,Entrega demorada,Logística,True
+R-000967,Atención en sucursal,Ventas,True
+R-000968,Material dañado,Logística,True
+R-000969,Entrega demorada,Logística,False
+R-000970,Material dañado,Logística,True
+R-000971,Material dañado,Logística,True
+R-000972,Entrega demorada,Logística,True
+R-000973,Atención en sucursal,Ventas,True
+R-000974,Error de facturación,Administración,True
+R-000975,Error de facturación,Administración,True
+R-000976,Material dañado,Logística,True
+R-000977,Otros,Atención al cliente,True
+R-000978,Entrega demorada,Logística,True
+R-000979,Faltante en la entrega,Logística,False
+R-000980,Material dañado,Logística,True
+R-000981,Material dañado,Logística,True
+R-000982,Faltante en la entrega,Logística,True
+R-000983,Entrega demorada,Logística,False
+R-000984,Atención en sucursal,Ventas,False
+R-000985,Otros,Atención al cliente,False
+R-000986,Faltante en la entrega,Logística,True
+R-000987,Otros,Atención al cliente,True
+R-000988,Otros,Atención al cliente,False
+R-000989,Material dañado,Logística,True
+R-000990,Entrega demorada,Logística,True
+R-000991,Error de facturación,Administración,True
+R-000992,Atención en sucursal,Ventas,True
+R-000993,Error de facturación,Administración,True
+R-000994,Faltante en la entrega,Logística,True
+R-000995,Entrega demorada,Logística,True
+R-000996,Entrega demorada,Logística,True
+R-000997,Entrega demorada,Logística,True
+R-000998,Material dañado,Logística,True
+R-000999,Faltante en la entrega,Logística,False
+R-001000,Otros,Atención al cliente,True
+R-001001,Error de facturación,Administración,True
+R-001002,Material dañado,Logística,True
+R-001003,Material dañado,Logística,True
+R-001004,Entrega demorada,Logística,False
+R-001005,Material dañado,Logística,True
+R-001006,Faltante en la entrega,Logística,True
+R-001007,Error de facturación,Administración,True
+R-001008,Material dañado,Logística,True
+R-001009,Error de facturación,Administración,True
+R-001010,Faltante en la entrega,Logística,False
+R-001011,Entrega demorada,Logística,False
+R-001012,Faltante en la entrega,Logística,True
+R-001013,Entrega demorada,Logística,True
+R-001014,Faltante en la entrega,Logística,True
+R-001015,Error de facturación,Administración,True
+R-001016,Entrega demorada,Logística,True
+R-001017,Faltante en la entrega,Logística,True
+R-001018,Error de facturación,Administración,True
+R-001019,Error de facturación,Administración,True
+R-001020,Otros,Atención al cliente,True
+R-001021,Material dañado,Logística,True
+R-001022,Atención en sucursal,Ventas,True
+R-001023,Atención en sucursal,Ventas,True
+R-001024,Material dañado,Logística,False
+R-001025,Entrega demorada,Logística,True
+R-001026,Entrega demorada,Logística,True
+R-001027,Atención en sucursal,Ventas,False
+R-001028,Entrega demorada,Logística,False
+R-001029,Entrega demorada,Logística,False
+R-001030,Error de facturación,Administración,True
+R-001031,Entrega demorada,Logística,True
+R-001032,Faltante en la entrega,Logística,True
+R-001033,Atención en sucursal,Ventas,True
+R-001034,Entrega demorada,Logística,False
+R-001035,Otros,Atención al cliente,True
+R-001036,Atención en sucursal,Ventas,True
+R-001037,Material dañado,Logística,True
+R-001038,Atención en sucursal,Ventas,True
+R-001039,Otros,Atención al cliente,True
+R-001040,Entrega demorada,Logística,True
+R-001041,Material dañado,Logística,True
+R-001042,Faltante en la entrega,Logística,True
+R-001043,Material dañado,Logística,True
+R-001044,Material dañado,Logística,False
+R-001045,Otros,Atención al cliente,True
+R-001046,Error de facturación,Administración,False
+R-001047,Material dañado,Logística,True
+R-001048,Entrega demorada,Logística,True
+R-001049,Otros,Atención al cliente,True
+R-001050,Entrega demorada,Logística,True
+R-001051,Atención en sucursal,Ventas,True
+R-001052,Error de facturación,Administración,True
+R-001053,Entrega demorada,Logística,False
+R-001054,Entrega demorada,Logística,True
+R-001055,Error de facturación,Administración,True
+R-001056,Material dañado,Logística,True
+R-001057,Error de facturación,Administración,True
+R-001058,Error de facturación,Administración,True
+R-001059,Faltante en la entrega,Logística,False
+R-001060,Otros,Atención al cliente,True
+R-001061,Error de facturación,Administración,True
+R-001062,Entrega demorada,Logística,True
+R-001063,Error de facturación,Administración,True
+R-001064,Atención en sucursal,Ventas,True
+R-001065,Faltante en la entrega,Logística,True
+R-001066,Entrega demorada,Logística,True
+R-001067,Entrega demorada,Logística,True
+R-001068,Material dañado,Logística,False
+R-001069,Entrega demorada,Logística,True
+R-001070,Atención en sucursal,Ventas,True
+R-001071,Entrega demorada,Logística,False
+R-001072,Material dañado,Logística,True
+R-001073,Faltante en la entrega,Logística,True
+R-001074,Entrega demorada,Logística,False
+R-001075,Entrega demorada,Logística,True
+R-001076,Entrega demorada,Logística,False
+R-001077,Entrega demorada,Logística,True
+R-001078,Material dañado,Logística,True
+R-001079,Faltante en la entrega,Logística,True
+R-001080,Entrega demorada,Logística,True
+R-001081,Entrega demorada,Logística,True
+R-001082,Faltante en la entrega,Logística,True
+R-001083,Atención en sucursal,Ventas,True
+R-001084,Material dañado,Logística,True
+R-001085,Entrega demorada,Logística,True
+R-001086,Material dañado,Logística,True
+R-001087,Atención en sucursal,Ventas,True
+R-001088,Faltante en la entrega,Logística,True
+R-001089,Otros,Atención al cliente,True
+R-001090,Material dañado,Logística,True
+R-001091,Entrega demorada,Logística,False
+R-001092,Entrega demorada,Logística,False
+R-001093,Atención en sucursal,Ventas,True
+R-001094,Error de facturación,Administración,False
+R-001095,Faltante en la entrega,Logística,True
+R-001096,Faltante en la entrega,Logística,True
+R-001097,Entrega demorada,Logística,True
+R-001098,Entrega demorada,Logística,True
+R-001099,Entrega demorada,Logística,True
+R-001100,Faltante en la entrega,Logística,True
+R-001101,Entrega demorada,Logística,True
+R-001102,Faltante en la entrega,Logística,True
+R-001103,Entrega demorada,Logística,True
+R-001104,Material dañado,Logística,True
+R-001105,Entrega demorada,Logística,True
+R-001106,Otros,Atención al cliente,True
+R-001107,Error de facturación,Administración,True
+R-001108,Error de facturación,Administración,True
+R-001109,Entrega demorada,Logística,True
+R-001110,Entrega demorada,Logística,True
+R-001111,Faltante en la entrega,Logística,True
+R-001112,Material dañado,Logística,True
+R-001113,Atención en sucursal,Ventas,True
+R-001114,Entrega demorada,Logística,False
+R-001115,Faltante en la entrega,Logística,False
+R-001116,Entrega demorada,Logística,True
+R-001117,Atención en sucursal,Ventas,True
+R-001118,Error de facturación,Administración,True
+R-001119,Error de facturación,Administración,True
+R-001120,Entrega demorada,Logística,True
+R-001121,Faltante en la entrega,Logística,True
+R-001122,Faltante en la entrega,Logística,True
+R-001123,Error de facturación,Administración,True
+R-001124,Faltante en la entrega,Logística,True
+R-001125,Faltante en la entrega,Logística,False
+R-001126,Entrega demorada,Logística,True
+R-001127,Atención en sucursal,Ventas,True
+R-001128,Entrega demorada,Logística,True
+R-001129,Material dañado,Logística,True
+R-001130,Otros,Atención al cliente,True
+R-001131,Atención en sucursal,Ventas,True
+R-001132,Atención en sucursal,Ventas,False
+R-001133,Error de facturación,Administración,True
+R-001134,Error de facturación,Administración,False
+R-001135,Material dañado,Logística,True
+R-001136,Material dañado,Logística,True
+R-001137,Error de facturación,Administración,True
+R-001138,Otros,Atención al cliente,False
+R-001139,Faltante en la entrega,Logística,True
+R-001140,Otros,Atención al cliente,False
+R-001141,Otros,Atención al cliente,True
+R-001142,Error de facturación,Administración,True
+R-001143,Material dañado,Logística,True
+R-001144,Atención en sucursal,Ventas,True
+R-001145,Error de facturación,Administración,True
+R-001146,Entrega demorada,Logística,True
+R-001147,Atención en sucursal,Ventas,False
+R-001148,Error de facturación,Administración,True
+R-001149,Material dañado,Logística,True
+R-001150,Atención en sucursal,Ventas,True
+R-001151,Entrega demorada,Logística,True
+R-001152,Atención en sucursal,Ventas,True
+R-001153,Atención en sucursal,Ventas,True
+R-001154,Otros,Atención al cliente,True
+R-001155,Entrega demorada,Logística,True
+R-001156,Error de facturación,Administración,True
+R-001157,Faltante en la entrega,Logística,True
+R-001158,Entrega demorada,Logística,True
+R-001159,Entrega demorada,Logística,True
+R-001160,Material dañado,Logística,True
+R-001161,Material dañado,Logística,False
+R-001162,Material dañado,Logística,True
+R-001163,Error de facturación,Administración,True
+R-001164,Error de facturación,Administración,True
+R-001165,Faltante en la entrega,Logística,True
+R-001166,Otros,Atención al cliente,True
+R-001167,Entrega demorada,Logística,True
+R-001168,Entrega demorada,Logística,False
+R-001169,Error de facturación,Administración,True
+R-001170,Entrega demorada,Logística,True
+R-001171,Otros,Atención al cliente,True
+R-001172,Material dañado,Logística,True
+R-001173,Atención en sucursal,Ventas,True
+R-001174,Entrega demorada,Logística,True
+R-001175,Material dañado,Logística,True
+R-001176,Entrega demorada,Logística,True
+R-001177,Material dañado,Logística,True
+R-001178,Entrega demorada,Logística,True
+R-001179,Material dañado,Logística,True
+R-001180,Material dañado,Logística,True
+R-001181,Faltante en la entrega,Logística,True
+R-001182,Entrega demorada,Logística,True
+R-001183,Faltante en la entrega,Logística,True
+R-001184,Otros,Atención al cliente,True
+R-001185,Material dañado,Logística,True
+R-001186,Faltante en la entrega,Logística,True
+R-001187,Faltante en la entrega,Logística,True
+R-001188,Entrega demorada,Logística,True
+R-001189,Atención en sucursal,Ventas,True
+R-001190,Entrega demorada,Logística,True
+R-001191,Entrega demorada,Logística,True
+R-001192,Entrega demorada,Logística,True
+R-001193,Entrega demorada,Logística,True
+R-001194,Faltante en la entrega,Logística,True
+R-001195,Error de facturación,Administración,False
+R-001196,Material dañado,Logística,True
+R-001197,Error de facturación,Administración,True
+R-001198,Error de facturación,Administración,True
+R-001199,Otros,Atención al cliente,True
+R-001200,Error de facturación,Administración,False
+R-001201,Entrega demorada,Logística,True
+R-001202,Material dañado,Logística,True
+R-001203,Material dañado,Logística,False
+R-001204,Atención en sucursal,Ventas,True
+R-001205,Otros,Atención al cliente,True
+R-001206,Material dañado,Logística,False
+R-001207,Error de facturación,Administración,True
+R-001208,Entrega demorada,Logística,True
+R-001209,Material dañado,Logística,True
+R-001210,Otros,Atención al cliente,True
+R-001211,Material dañado,Logística,False
+R-001212,Error de facturación,Administración,True
+R-001213,Otros,Atención al cliente,True
+R-001214,Entrega demorada,Logística,True
+R-001215,Otros,Atención al cliente,False
+R-001216,Error de facturación,Administración,True
+R-001217,Error de facturación,Administración,True
+R-001218,Atención en sucursal,Ventas,True
+R-001219,Faltante en la entrega,Logística,True
+R-001220,Material dañado,Logística,True
+R-001221,Entrega demorada,Logística,True
+R-001222,Material dañado,Logística,True
+R-001223,Entrega demorada,Logística,False
+R-001224,Entrega demorada,Logística,True
+R-001225,Material dañado,Logística,False
+R-001226,Material dañado,Logística,False
+R-001227,Error de facturación,Administración,True
+R-001228,Error de facturación,Administración,True
+R-001229,Entrega demorada,Logística,False
+R-001230,Otros,Atención al cliente,True
+R-001231,Error de facturación,Administración,True
+R-001232,Material dañado,Logística,True
+R-001233,Error de facturación,Administración,True
+R-001234,Error de facturación,Administración,False
+R-001235,Entrega demorada,Logística,False
+R-001236,Error de facturación,Administración,True
+R-001237,Faltante en la entrega,Logística,False
+R-001238,Entrega demorada,Logística,False
+R-001239,Entrega demorada,Logística,True
+R-001240,Entrega demorada,Logística,True
+R-001241,Faltante en la entrega,Logística,False
+R-001242,Error de facturación,Administración,True
+R-001243,Entrega demorada,Logística,True
+R-001244,Material dañado,Logística,True
+R-001245,Atención en sucursal,Ventas,True
+R-001246,Entrega demorada,Logística,True
+R-001247,Material dañado,Logística,True
+R-001248,Material dañado,Logística,True
+R-001249,Otros,Atención al cliente,True
+R-001250,Entrega demorada,Logística,True
+R-001251,Material dañado,Logística,True
+R-001252,Material dañado,Logística,True
+R-001253,Material dañado,Logística,True
+R-001254,Entrega demorada,Logística,True
+R-001255,Error de facturación,Administración,True
+R-001256,Material dañado,Logística,True
+R-001257,Material dañado,Logística,True
+R-001258,Error de facturación,Administración,True
+R-001259,Entrega demorada,Logística,True
+R-001260,Entrega demorada,Logística,True
+R-001261,Material dañado,Logística,True
+R-001262,Material dañado,Logística,True
+R-001263,Material dañado,Logística,True
+R-001264,Atención en sucursal,Ventas,True
+R-001265,Atención en sucursal,Ventas,True
+R-001266,Material dañado,Logística,True
+R-001267,Material dañado,Logística,True
+R-001268,Atención en sucursal,Ventas,True
+R-001269,Faltante en la entrega,Logística,True
+R-001270,Error de facturación,Administración,True
+R-001271,Atención en sucursal,Ventas,True
+R-001272,Faltante en la entrega,Logística,True
+R-001273,Entrega demorada,Logística,True
+R-001274,Entrega demorada,Logística,True
+R-001275,Error de facturación,Administración,True
+R-001276,Entrega demorada,Logística,True
+R-001277,Material dañado,Logística,True
+R-001278,Error de facturación,Administración,True
+R-001279,Entrega demorada,Logística,True
+R-001280,Error de facturación,Administración,True
+R-001281,Material dañado,Logística,True
+R-001282,Atención en sucursal,Ventas,False
+R-001283,Faltante en la entrega,Logística,False
+R-001284,Faltante en la entrega,Logística,True
+R-001285,Error de facturación,Administración,True
+R-001286,Atención en sucursal,Ventas,True
+R-001287,Error de facturación,Administración,True
+R-001288,Entrega demorada,Logística,True
+R-001289,Faltante en la entrega,Logística,True
+R-001290,Error de facturación,Administración,False
+R-001291,Error de facturación,Administración,False
+R-001292,Otros,Atención al cliente,True
+R-001293,Atención en sucursal,Ventas,True
+R-001294,Entrega demorada,Logística,True
+R-001295,Material dañado,Logística,True
+R-001296,Material dañado,Logística,False
+R-001297,Atención en sucursal,Ventas,True
+R-001298,Entrega demorada,Logística,False
+R-001299,Material dañado,Logística,True
+R-001300,Entrega demorada,Logística,True
+R-001301,Entrega demorada,Logística,True
+R-001302,Atención en sucursal,Ventas,True
+R-001303,Material dañado,Logística,True
+R-001304,Entrega demorada,Logística,True
+R-001305,Entrega demorada,Logística,True
+R-001306,Error de facturación,Administración,True
+R-001307,Material dañado,Logística,True
+R-001308,Faltante en la entrega,Logística,True
+R-001309,Faltante en la entrega,Logística,True
+R-001310,Entrega demorada,Logística,False
+R-001311,Entrega demorada,Logística,True
+R-001312,Material dañado,Logística,True
+R-001313,Error de facturación,Administración,True
+R-001314,Otros,Atención al cliente,True
+R-001315,Atención en sucursal,Ventas,True
+R-001316,Entrega demorada,Logística,True
+R-001317,Material dañado,Logística,True
+R-001318,Entrega demorada,Logística,True
+R-001319,Faltante en la entrega,Logística,True
+R-001320,Atención en sucursal,Ventas,True
+R-001321,Entrega demorada,Logística,True
+R-001322,Material dañado,Logística,True
+R-001323,Faltante en la entrega,Logística,True
+R-001324,Entrega demorada,Logística,True
+R-001325,Material dañado,Logística,True
+R-001326,Error de facturación,Administración,True
+R-001327,Error de facturación,Administración,True
+R-001328,Entrega demorada,Logística,True
+R-001329,Entrega demorada,Logística,True
+R-001330,Error de facturación,Administración,False
+R-001331,Faltante en la entrega,Logística,False
+R-001332,Atención en sucursal,Ventas,True
+R-001333,Entrega demorada,Logística,True
+R-001334,Error de facturación,Administración,True
+R-001335,Error de facturación,Administración,False
+R-001336,Entrega demorada,Logística,True
+R-001337,Material dañado,Logística,True
+R-001338,Error de facturación,Administración,False
+R-001339,Entrega demorada,Logística,True
+R-001340,Material dañado,Logística,True
+R-001341,Entrega demorada,Logística,True
+R-001342,Error de facturación,Administración,True
+R-001343,Faltante en la entrega,Logística,True
+R-001344,Otros,Atención al cliente,True
+R-001345,Entrega demorada,Logística,True
+R-001346,Otros,Atención al cliente,True
+R-001347,Faltante en la entrega,Logística,True
+R-001348,Faltante en la entrega,Logística,True
+R-001349,Entrega demorada,Logística,True
+R-001350,Atención en sucursal,Ventas,True
+R-001351,Faltante en la entrega,Logística,False
+R-001352,Error de facturación,Administración,True
+R-001353,Entrega demorada,Logística,True
+R-001354,Entrega demorada,Logística,True
+R-001355,Faltante en la entrega,Logística,True
+R-001356,Atención en sucursal,Ventas,False
+R-001357,Entrega demorada,Logística,True
+R-001358,Otros,Atención al cliente,True
+R-001359,Atención en sucursal,Ventas,True
+R-001360,Entrega demorada,Logística,True
+R-001361,Error de facturación,Administración,False
+R-001362,Faltante en la entrega,Logística,False
+R-001363,Faltante en la entrega,Logística,True
+R-001364,Otros,Atención al cliente,False
+R-001365,Entrega demorada,Logística,False
+R-001366,Entrega demorada,Logística,True
+R-001367,Error de facturación,Administración,True
+R-001368,Entrega demorada,Logística,True
+R-001369,Faltante en la entrega,Logística,True
+R-001370,Faltante en la entrega,Logística,True
+R-001371,Entrega demorada,Logística,False
+R-001372,Atención en sucursal,Ventas,True
+R-001373,Material dañado,Logística,True
+R-001374,Material dañado,Logística,True
+R-001375,Faltante en la entrega,Logística,True
+R-001376,Error de facturación,Administración,True
+R-001377,Atención en sucursal,Ventas,False
+R-001378,Entrega demorada,Logística,False
+R-001379,Entrega demorada,Logística,True
+R-001380,Atención en sucursal,Ventas,True
+R-001381,Error de facturación,Administración,True
+R-001382,Entrega demorada,Logística,True
+R-001383,Faltante en la entrega,Logística,False
+R-001384,Entrega demorada,Logística,True
+R-001385,Otros,Atención al cliente,True
+R-001386,Error de facturación,Administración,True
+R-001387,Atención en sucursal,Ventas,True
+R-001388,Material dañado,Logística,True
+R-001389,Material dañado,Logística,True
+R-001390,Faltante en la entrega,Logística,True
+R-001391,Atención en sucursal,Ventas,True
+R-001392,Entrega demorada,Logística,True
+R-001393,Entrega demorada,Logística,True
+R-001394,Entrega demorada,Logística,True
+R-001395,Entrega demorada,Logística,True
+R-001396,Faltante en la entrega,Logística,True
+R-001397,Material dañado,Logística,True
+R-001398,Otros,Atención al cliente,True
+R-001399,Material dañado,Logística,True
+R-001400,Faltante en la entrega,Logística,True
+R-001401,Entrega demorada,Logística,True
+R-001402,Error de facturación,Administración,True
+R-001403,Entrega demorada,Logística,True
+R-001404,Atención en sucursal,Ventas,True
+R-001405,Material dañado,Logística,True
+R-001406,Faltante en la entrega,Logística,True
+R-001407,Entrega demorada,Logística,False
+R-001408,Atención en sucursal,Ventas,True
+R-001409,Error de facturación,Administración,True
+R-001410,Atención en sucursal,Ventas,True
+R-001411,Entrega demorada,Logística,True
+R-001412,Atención en sucursal,Ventas,False
+R-001413,Error de facturación,Administración,True
+R-001414,Error de facturación,Administración,True
+R-001415,Entrega demorada,Logística,True
+R-001416,Material dañado,Logística,True
+R-001417,Entrega demorada,Logística,True
+R-001418,Material dañado,Logística,True
+R-001419,Faltante en la entrega,Logística,False
+R-001420,Entrega demorada,Logística,True
+R-001421,Material dañado,Logística,True
+R-001422,Atención en sucursal,Ventas,False
+R-001423,Entrega demorada,Logística,True
+R-001424,Material dañado,Logística,True
+R-001425,Material dañado,Logística,True
+R-001426,Error de facturación,Administración,True
+R-001427,Entrega demorada,Logística,True
+R-001428,Atención en sucursal,Ventas,True
+R-001429,Material dañado,Logística,True
+R-001430,Error de facturación,Administración,True
+R-001431,Material dañado,Logística,True
+R-001432,Entrega demorada,Logística,True
+R-001433,Error de facturación,Administración,True
+R-001434,Error de facturación,Administración,True
+R-001435,Entrega demorada,Logística,True
+R-001436,Error de facturación,Administración,True
+R-001437,Error de facturación,Administración,True
+R-001438,Material dañado,Logística,True
+R-001439,Faltante en la entrega,Logística,True
+R-001440,Error de facturación,Administración,True
+R-001441,Faltante en la entrega,Logística,True
+R-001442,Error de facturación,Administración,True
+R-001443,Faltante en la entrega,Logística,True
+R-001444,Entrega demorada,Logística,True
+R-001445,Faltante en la entrega,Logística,True
+R-001446,Faltante en la entrega,Logística,True
+R-001447,Entrega demorada,Logística,True
+R-001448,Otros,Atención al cliente,True
+R-001449,Faltante en la entrega,Logística,True
+R-001450,Entrega demorada,Logística,False
+R-001451,Faltante en la entrega,Logística,True
+R-001452,Entrega demorada,Logística,True
+R-001453,Faltante en la entrega,Logística,True
+R-001454,Material dañado,Logística,True
+R-001455,Entrega demorada,Logística,True
+R-001456,Material dañado,Logística,True
+R-001457,Entrega demorada,Logística,False
+R-001458,Entrega demorada,Logística,True
+R-001459,Error de facturación,Administración,True
+R-001460,Material dañado,Logística,True
+R-001461,Atención en sucursal,Ventas,False
+R-001462,Faltante en la entrega,Logística,True
+R-001463,Material dañado,Logística,True
+R-001464,Entrega demorada,Logística,True
+R-001465,Entrega demorada,Logística,True
+R-001466,Material dañado,Logística,True
+R-001467,Entrega demorada,Logística,True
+R-001468,Entrega demorada,Logística,False
+R-001469,Faltante en la entrega,Logística,True
+R-001470,Error de facturación,Administración,True
+R-001471,Material dañado,Logística,True
+R-001472,Entrega demorada,Logística,True
+R-001473,Atención en sucursal,Ventas,True
+R-001474,Faltante en la entrega,Logística,False
+R-001475,Faltante en la entrega,Logística,True
+R-001476,Entrega demorada,Logística,True
+R-001477,Faltante en la entrega,Logística,False
+R-001478,Faltante en la entrega,Logística,True
+R-001479,Entrega demorada,Logística,True
+R-001480,Atención en sucursal,Ventas,True
+R-001481,Entrega demorada,Logística,True
+R-001482,Material dañado,Logística,True
+R-001483,Material dañado,Logística,False
+R-001484,Entrega demorada,Logística,True
+R-001485,Entrega demorada,Logística,True
+R-001486,Entrega demorada,Logística,False
+R-001487,Atención en sucursal,Ventas,False
+R-001488,Atención en sucursal,Ventas,True
+R-001489,Entrega demorada,Logística,True
+R-001490,Faltante en la entrega,Logística,True
+R-001491,Atención en sucursal,Ventas,True
+R-001492,Error de facturación,Administración,True
+R-001493,Material dañado,Logística,True
+R-001494,Otros,Atención al cliente,True
+R-001495,Faltante en la entrega,Logística,True
+R-001496,Faltante en la entrega,Logística,True
+R-001497,Faltante en la entrega,Logística,True
+R-001498,Otros,Atención al cliente,True
+R-001499,Error de facturación,Administración,True
+R-001500,Otros,Atención al cliente,True
+R-001501,Atención en sucursal,Ventas,True
+R-001502,Faltante en la entrega,Logística,True
+R-001503,Entrega demorada,Logística,True
+R-001504,Material dañado,Logística,True
+R-001505,Material dañado,Logística,False
+R-001506,Entrega demorada,Logística,True
+R-001507,Entrega demorada,Logística,True
+R-001508,Material dañado,Logística,True
+R-001509,Error de facturación,Administración,False
+R-001510,Material dañado,Logística,True
+R-001511,Atención en sucursal,Ventas,True
+R-001512,Atención en sucursal,Ventas,True
+R-001513,Material dañado,Logística,True
+R-001514,Atención en sucursal,Ventas,True
+R-001515,Entrega demorada,Logística,False
+R-001516,Faltante en la entrega,Logística,True
+R-001517,Entrega demorada,Logística,True
+R-001518,Atención en sucursal,Ventas,True
+R-001519,Atención en sucursal,Ventas,True
+R-001520,Error de facturación,Administración,True
+R-001521,Atención en sucursal,Ventas,True
+R-001522,Faltante en la entrega,Logística,False
+R-001523,Error de facturación,Administración,True
+R-001524,Faltante en la entrega,Logística,True
+R-001525,Faltante en la entrega,Logística,True
+R-001526,Faltante en la entrega,Logística,True
+R-001527,Error de facturación,Administración,True
+R-001528,Faltante en la entrega,Logística,False
+R-001529,Atención en sucursal,Ventas,True
+R-001530,Entrega demorada,Logística,True
+R-001531,Error de facturación,Administración,True
+R-001532,Atención en sucursal,Ventas,True
+R-001533,Entrega demorada,Logística,True
+R-001534,Material dañado,Logística,True
+R-001535,Material dañado,Logística,True
+R-001536,Atención en sucursal,Ventas,True
+R-001537,Material dañado,Logística,False
+R-001538,Entrega demorada,Logística,False
+R-001539,Faltante en la entrega,Logística,True
+R-001540,Error de facturación,Administración,True
+R-001541,Entrega demorada,Logística,True
+R-001542,Entrega demorada,Logística,True
+R-001543,Entrega demorada,Logística,False
+R-001544,Faltante en la entrega,Logística,False
+R-001545,Faltante en la entrega,Logística,True
+R-001546,Atención en sucursal,Ventas,True
+R-001547,Material dañado,Logística,False
+R-001548,Entrega demorada,Logística,False
+R-001549,Material dañado,Logística,True
+R-001550,Entrega demorada,Logística,True
+R-001551,Entrega demorada,Logística,True
+R-001552,Error de facturación,Administración,True
+R-001553,Entrega demorada,Logística,True
+R-001554,Error de facturación,Administración,True
+R-001555,Otros,Atención al cliente,True
+R-001556,Error de facturación,Administración,True
+R-001557,Entrega demorada,Logística,True
+R-001558,Entrega demorada,Logística,True
+R-001559,Error de facturación,Administración,True
+R-001560,Faltante en la entrega,Logística,True
+R-001561,Entrega demorada,Logística,True
+R-001562,Entrega demorada,Logística,True
+R-001563,Error de facturación,Administración,True
+R-001564,Material dañado,Logística,True
+R-001565,Entrega demorada,Logística,True
+R-001566,Atención en sucursal,Ventas,True
+R-001567,Error de facturación,Administración,True
+R-001568,Otros,Atención al cliente,True
+R-001569,Otros,Atención al cliente,True
+R-001570,Atención en sucursal,Ventas,True
+R-001571,Faltante en la entrega,Logística,True
+R-001572,Faltante en la entrega,Logística,True
+R-001573,Entrega demorada,Logística,True
+R-001574,Material dañado,Logística,True
+R-001575,Material dañado,Logística,True
+R-001576,Atención en sucursal,Ventas,True
+R-001577,Material dañado,Logística,True
+R-001578,Entrega demorada,Logística,True
+R-001579,Material dañado,Logística,False
+R-001580,Material dañado,Logística,True
+R-001581,Error de facturación,Administración,True
+R-001582,Entrega demorada,Logística,True
+R-001583,Otros,Atención al cliente,False
+R-001584,Error de facturación,Administración,True
+R-001585,Error de facturación,Administración,True
+R-001586,Atención en sucursal,Ventas,True
+R-001587,Faltante en la entrega,Logística,True
+R-001588,Faltante en la entrega,Logística,False
+R-001589,Material dañado,Logística,False
+R-001590,Entrega demorada,Logística,True
+R-001591,Entrega demorada,Logística,True
+R-001592,Material dañado,Logística,True
+R-001593,Entrega demorada,Logística,True
+R-001594,Error de facturación,Administración,True
+R-001595,Otros,Atención al cliente,True
+R-001596,Material dañado,Logística,True
+R-001597,Error de facturación,Administración,True
+R-001598,Entrega demorada,Logística,True
+R-001599,Otros,Atención al cliente,True
+R-001600,Material dañado,Logística,True
+R-001601,Material dañado,Logística,True
+R-001602,Entrega demorada,Logística,True
+R-001603,Error de facturación,Administración,True
+R-001604,Atención en sucursal,Ventas,True
+R-001605,Otros,Atención al cliente,True
+R-001606,Material dañado,Logística,True
+R-001607,Faltante en la entrega,Logística,True
+R-001608,Error de facturación,Administración,True
+R-001609,Atención en sucursal,Ventas,False
+R-001610,Otros,Atención al cliente,True
+R-001611,Material dañado,Logística,True
+R-001612,Material dañado,Logística,True
+R-001613,Error de facturación,Administración,True
+R-001614,Entrega demorada,Logística,True
+R-001615,Material dañado,Logística,True
+R-001616,Material dañado,Logística,True
+R-001617,Faltante en la entrega,Logística,True
+R-001618,Error de facturación,Administración,True
+R-001619,Entrega demorada,Logística,True
+R-001620,Material dañado,Logística,True
+R-001621,Faltante en la entrega,Logística,True
+R-001622,Entrega demorada,Logística,True
+R-001623,Atención en sucursal,Ventas,True
+R-001624,Entrega demorada,Logística,True
+R-001625,Entrega demorada,Logística,True
+R-001626,Faltante en la entrega,Logística,True
+R-001627,Entrega demorada,Logística,True
+R-001628,Faltante en la entrega,Logística,True
+R-001629,Error de facturación,Administración,True
+R-001630,Entrega demorada,Logística,True
+R-001631,Otros,Atención al cliente,True
+R-001632,Faltante en la entrega,Logística,True
+R-001633,Entrega demorada,Logística,True
+R-001634,Entrega demorada,Logística,True
+R-001635,Atención en sucursal,Ventas,True
+R-001636,Faltante en la entrega,Logística,True
+R-001637,Error de facturación,Administración,True
+R-001638,Error de facturación,Administración,False
+R-001639,Entrega demorada,Logística,True
+R-001640,Entrega demorada,Logística,True
+R-001641,Entrega demorada,Logística,True
+R-001642,Faltante en la entrega,Logística,True
+R-001643,Error de facturación,Administración,True
+R-001644,Error de facturación,Administración,True
+R-001645,Entrega demorada,Logística,True
+R-001646,Entrega demorada,Logística,True
+R-001647,Material dañado,Logística,False
+R-001648,Entrega demorada,Logística,True
+R-001649,Material dañado,Logística,True
+R-001650,Error de facturación,Administración,True
+R-001651,Error de facturación,Administración,True
+R-001652,Entrega demorada,Logística,False
+R-001653,Faltante en la entrega,Logística,True
+R-001654,Otros,Atención al cliente,False
+R-001655,Entrega demorada,Logística,True
+R-001656,Error de facturación,Administración,False
+R-001657,Otros,Atención al cliente,True
+R-001658,Error de facturación,Administración,True
+R-001659,Error de facturación,Administración,True
+R-001660,Otros,Atención al cliente,True
+R-001661,Error de facturación,Administración,True
+R-001662,Material dañado,Logística,True
+R-001663,Faltante en la entrega,Logística,True
+R-001664,Entrega demorada,Logística,True
+R-001665,Entrega demorada,Logística,True
+R-001666,Atención en sucursal,Ventas,True
+R-001667,Material dañado,Logística,True
+R-001668,Entrega demorada,Logística,True
+R-001669,Entrega demorada,Logística,True
+R-001670,Material dañado,Logística,True
+R-001671,Otros,Atención al cliente,True
+R-001672,Faltante en la entrega,Logística,True
+R-001673,Material dañado,Logística,False
+R-001674,Material dañado,Logística,True
+R-001675,Material dañado,Logística,True
+R-001676,Error de facturación,Administración,True
+R-001677,Material dañado,Logística,True
+R-001678,Entrega demorada,Logística,True
+R-001679,Error de facturación,Administración,True
+R-001680,Material dañado,Logística,False
+R-001681,Otros,Atención al cliente,False
+R-001682,Otros,Atención al cliente,True
+R-001683,Otros,Atención al cliente,True
+R-001684,Atención en sucursal,Ventas,True
+R-001685,Atención en sucursal,Ventas,True
+R-001686,Atención en sucursal,Ventas,False
+R-001687,Atención en sucursal,Ventas,True
+R-001688,Material dañado,Logística,False
+R-001689,Entrega demorada,Logística,True
+R-001690,Faltante en la entrega,Logística,True
+R-001691,Material dañado,Logística,True
+R-001692,Material dañado,Logística,True
+R-001693,Otros,Atención al cliente,True
+R-001694,Material dañado,Logística,True
+R-001695,Error de facturación,Administración,True
+R-001696,Material dañado,Logística,True
+R-001697,Faltante en la entrega,Logística,True
+R-001698,Atención en sucursal,Ventas,True
+R-001699,Entrega demorada,Logística,True
+R-001700,Entrega demorada,Logística,True
+R-001701,Error de facturación,Administración,True
+R-001702,Faltante en la entrega,Logística,False
+R-001703,Error de facturación,Administración,True
+R-001704,Faltante en la entrega,Logística,True
+R-001705,Material dañado,Logística,True
+R-001706,Material dañado,Logística,True
+R-001707,Entrega demorada,Logística,True
+R-001708,Faltante en la entrega,Logística,True
+R-001709,Entrega demorada,Logística,True
+R-001710,Faltante en la entrega,Logística,True
+R-001711,Entrega demorada,Logística,True
+R-001712,Atención en sucursal,Ventas,True
+R-001713,Error de facturación,Administración,True
+R-001714,Faltante en la entrega,Logística,False
+R-001715,Material dañado,Logística,True
+R-001716,Material dañado,Logística,True
+R-001717,Material dañado,Logística,True
+R-001718,Atención en sucursal,Ventas,True
+R-001719,Faltante en la entrega,Logística,True
+R-001720,Material dañado,Logística,True
+R-001721,Otros,Atención al cliente,False
+R-001722,Material dañado,Logística,False
+R-001723,Error de facturación,Administración,True
+R-001724,Entrega demorada,Logística,True
+R-001725,Error de facturación,Administración,True
+R-001726,Entrega demorada,Logística,True
+R-001727,Material dañado,Logística,False
+R-001728,Entrega demorada,Logística,True
+R-001729,Atención en sucursal,Ventas,True
+R-001730,Error de facturación,Administración,True
+R-001731,Atención en sucursal,Ventas,True
+R-001732,Error de facturación,Administración,True
+R-001733,Material dañado,Logística,True
+R-001734,Material dañado,Logística,True
+R-001735,Material dañado,Logística,True
+R-001736,Error de facturación,Administración,True
+R-001737,Atención en sucursal,Ventas,False
+R-001738,Material dañado,Logística,True
+R-001739,Otros,Atención al cliente,True
+R-001740,Entrega demorada,Logística,True
+R-001741,Faltante en la entrega,Logística,True
+R-001742,Material dañado,Logística,True
+R-001743,Faltante en la entrega,Logística,False
+R-001744,Entrega demorada,Logística,False
+R-001745,Otros,Atención al cliente,True
+R-001746,Otros,Atención al cliente,True
+R-001747,Material dañado,Logística,True
+R-001748,Material dañado,Logística,True
+R-001749,Error de facturación,Administración,True
+R-001750,Material dañado,Logística,True
+R-001751,Atención en sucursal,Ventas,False
+R-001752,Otros,Atención al cliente,True
+R-001753,Atención en sucursal,Ventas,False
+R-001754,Material dañado,Logística,True
+R-001755,Entrega demorada,Logística,True
+R-001756,Atención en sucursal,Ventas,True
+R-001757,Material dañado,Logística,True
+R-001758,Entrega demorada,Logística,True
+R-001759,Error de facturación,Administración,True
+R-001760,Atención en sucursal,Ventas,True
+R-001761,Atención en sucursal,Ventas,True
+R-001762,Entrega demorada,Logística,True
+R-001763,Faltante en la entrega,Logística,True
+R-001764,Entrega demorada,Logística,False
+R-001765,Material dañado,Logística,True
+R-001766,Atención en sucursal,Ventas,True
+R-001767,Material dañado,Logística,True
+R-001768,Error de facturación,Administración,True
+R-001769,Entrega demorada,Logística,True
+R-001770,Error de facturación,Administración,True
+R-001771,Atención en sucursal,Ventas,True
+R-001772,Otros,Atención al cliente,True
+R-001773,Faltante en la entrega,Logística,True
+R-001774,Material dañado,Logística,True
+R-001775,Material dañado,Logística,True
+R-001776,Error de facturación,Administración,True
+R-001777,Material dañado,Logística,True
+R-001778,Material dañado,Logística,True
+R-001779,Entrega demorada,Logística,True
+R-001780,Entrega demorada,Logística,True
+R-001781,Error de facturación,Administración,True
+R-001782,Entrega demorada,Logística,False
+R-001783,Faltante en la entrega,Logística,True
+R-001784,Atención en sucursal,Ventas,True
+R-001785,Entrega demorada,Logística,True
+R-001786,Error de facturación,Administración,True
+R-001787,Otros,Atención al cliente,True
+R-001788,Faltante en la entrega,Logística,False
+R-001789,Faltante en la entrega,Logística,True
+R-001790,Faltante en la entrega,Logística,True
+R-001791,Error de facturación,Administración,True
+R-001792,Entrega demorada,Logística,True
+R-001793,Otros,Atención al cliente,False
+R-001794,Material dañado,Logística,True
+R-001795,Entrega demorada,Logística,True
+R-001796,Faltante en la entrega,Logística,False
+R-001797,Entrega demorada,Logística,True
+R-001798,Material dañado,Logística,True
+R-001799,Material dañado,Logística,True
+R-001800,Entrega demorada,Logística,True
+R-001801,Faltante en la entrega,Logística,True
+R-001802,Error de facturación,Administración,True
+R-001803,Faltante en la entrega,Logística,True
+R-001804,Entrega demorada,Logística,True
+R-001805,Error de facturación,Administración,False
+R-001806,Otros,Atención al cliente,True
+R-001807,Entrega demorada,Logística,True
+R-001808,Material dañado,Logística,True
+R-001809,Error de facturación,Administración,True
+R-001810,Entrega demorada,Logística,True
+R-001811,Entrega demorada,Logística,True
+R-001812,Faltante en la entrega,Logística,True
+R-001813,Entrega demorada,Logística,True
+R-001814,Entrega demorada,Logística,True
+R-001815,Entrega demorada,Logística,False
+R-001816,Material dañado,Logística,False
+R-001817,Error de facturación,Administración,True
+R-001818,Faltante en la entrega,Logística,True
+R-001819,Material dañado,Logística,True
+R-001820,Material dañado,Logística,True
+R-001821,Entrega demorada,Logística,True
+R-001822,Material dañado,Logística,True
+R-001823,Faltante en la entrega,Logística,False
+R-001824,Atención en sucursal,Ventas,True
+R-001825,Faltante en la entrega,Logística,True
+R-001826,Entrega demorada,Logística,True
+R-001827,Entrega demorada,Logística,True
+R-001828,Faltante en la entrega,Logística,True
+R-001829,Atención en sucursal,Ventas,False
+R-001830,Atención en sucursal,Ventas,False
+R-001831,Error de facturación,Administración,True
+R-001832,Material dañado,Logística,True
+R-001833,Error de facturación,Administración,True
+R-001834,Faltante en la entrega,Logística,True
+R-001835,Material dañado,Logística,True
+R-001836,Faltante en la entrega,Logística,True
+R-001837,Faltante en la entrega,Logística,True
+R-001838,Otros,Atención al cliente,True
+R-001839,Faltante en la entrega,Logística,True
+R-001840,Otros,Atención al cliente,True
+R-001841,Material dañado,Logística,False
+R-001842,Entrega demorada,Logística,True
+R-001843,Error de facturación,Administración,True
+R-001844,Faltante en la entrega,Logística,True
+R-001845,Material dañado,Logística,True
+R-001846,Material dañado,Logística,True
+R-001847,Atención en sucursal,Ventas,True
+R-001848,Otros,Atención al cliente,True
+R-001849,Error de facturación,Administración,True
+R-001850,Faltante en la entrega,Logística,True
+R-001851,Entrega demorada,Logística,True
+R-001852,Material dañado,Logística,True
+R-001853,Material dañado,Logística,True
+R-001854,Error de facturación,Administración,True
+R-001855,Entrega demorada,Logística,True
+R-001856,Material dañado,Logística,True
+R-001857,Material dañado,Logística,True
+R-001858,Error de facturación,Administración,True
+R-001859,Material dañado,Logística,True
+R-001860,Material dañado,Logística,True
+R-001861,Entrega demorada,Logística,True
+R-001862,Atención en sucursal,Ventas,True
+R-001863,Entrega demorada,Logística,False
+R-001864,Material dañado,Logística,True
+R-001865,Entrega demorada,Logística,True
+R-001866,Entrega demorada,Logística,True
+R-001867,Material dañado,Logística,True
+R-001868,Faltante en la entrega,Logística,True
+R-001869,Atención en sucursal,Ventas,True
+R-001870,Otros,Atención al cliente,False
+R-001871,Entrega demorada,Logística,True
+R-001872,Entrega demorada,Logística,True
+R-001873,Faltante en la entrega,Logística,True
+R-001874,Faltante en la entrega,Logística,True
+R-001875,Entrega demorada,Logística,True
+R-001876,Atención en sucursal,Ventas,True
+R-001877,Entrega demorada,Logística,True
+R-001878,Entrega demorada,Logística,True
+R-001879,Faltante en la entrega,Logística,True
+R-001880,Atención en sucursal,Ventas,True
+R-001881,Error de facturación,Administración,True
+R-001882,Error de facturación,Administración,True
+R-001883,Error de facturación,Administración,False
+R-001884,Atención en sucursal,Ventas,True
+R-001885,Error de facturación,Administración,True
+R-001886,Material dañado,Logística,False
+R-001887,Atención en sucursal,Ventas,False
+R-001888,Faltante en la entrega,Logística,True
+R-001889,Atención en sucursal,Ventas,False
+R-001890,Error de facturación,Administración,True
+R-001891,Material dañado,Logística,True
+R-001892,Entrega demorada,Logística,True
+R-001893,Error de facturación,Administración,True
+R-001894,Material dañado,Logística,True
+R-001895,Entrega demorada,Logística,True
+R-001896,Faltante en la entrega,Logística,True
+R-001897,Entrega demorada,Logística,True
+R-001898,Error de facturación,Administración,True
+R-001899,Entrega demorada,Logística,True
+R-001900,Error de facturación,Administración,True
+R-001901,Error de facturación,Administración,True
+R-001902,Material dañado,Logística,True
+R-001903,Atención en sucursal,Ventas,True
+R-001904,Error de facturación,Administración,True
+R-001905,Material dañado,Logística,True
+R-001906,Faltante en la entrega,Logística,True
+R-001907,Material dañado,Logística,True
+R-001908,Faltante en la entrega,Logística,True
+R-001909,Otros,Atención al cliente,False
+R-001910,Material dañado,Logística,True
+R-001911,Atención en sucursal,Ventas,True
+R-001912,Otros,Atención al cliente,True
+R-001913,Error de facturación,Administración,True
+R-001914,Material dañado,Logística,True
+R-001915,Atención en sucursal,Ventas,True
+R-001916,Error de facturación,Administración,True
+R-001917,Atención en sucursal,Ventas,True
+R-001918,Material dañado,Logística,True
+R-001919,Faltante en la entrega,Logística,True
+R-001920,Entrega demorada,Logística,True
+R-001921,Otros,Atención al cliente,True
+R-001922,Error de facturación,Administración,True
+R-001923,Entrega demorada,Logística,False
+R-001924,Faltante en la entrega,Logística,True
+R-001925,Otros,Atención al cliente,True
+R-001926,Material dañado,Logística,True
+R-001927,Atención en sucursal,Ventas,True
+R-001928,Error de facturación,Administración,True
+R-001929,Entrega demorada,Logística,True
+R-001930,Error de facturación,Administración,True
+R-001931,Material dañado,Logística,True
+R-001932,Faltante en la entrega,Logística,True
+R-001933,Entrega demorada,Logística,True
+R-001934,Faltante en la entrega,Logística,True
+R-001935,Material dañado,Logística,True
+R-001936,Entrega demorada,Logística,False
+R-001937,Entrega demorada,Logística,True
+R-001938,Entrega demorada,Logística,True
+R-001939,Faltante en la entrega,Logística,True
+R-001940,Entrega demorada,Logística,True
+R-001941,Otros,Atención al cliente,True
+R-001942,Material dañado,Logística,False
+R-001943,Entrega demorada,Logística,True
+R-001944,Error de facturación,Administración,True
+R-001945,Entrega demorada,Logística,False
+R-001946,Entrega demorada,Logística,True
+R-001947,Entrega demorada,Logística,True
+R-001948,Atención en sucursal,Ventas,True
+R-001949,Faltante en la entrega,Logística,True
+R-001950,Faltante en la entrega,Logística,False
+R-001951,Atención en sucursal,Ventas,True
+R-001952,Entrega demorada,Logística,True
+R-001953,Otros,Atención al cliente,True
+R-001954,Error de facturación,Administración,True
+R-001955,Entrega demorada,Logística,True
+R-001956,Otros,Atención al cliente,False
+R-001957,Material dañado,Logística,True
+R-001958,Entrega demorada,Logística,True
+R-001959,Atención en sucursal,Ventas,True
+R-001960,Entrega demorada,Logística,True
+R-001961,Atención en sucursal,Ventas,False
+R-001962,Faltante en la entrega,Logística,True
+R-001963,Material dañado,Logística,True
+R-001964,Otros,Atención al cliente,True
+R-001965,Entrega demorada,Logística,True
+R-001966,Material dañado,Logística,True
+R-001967,Entrega demorada,Logística,True
+R-001968,Entrega demorada,Logística,True
+R-001969,Entrega demorada,Logística,True
+R-001970,Entrega demorada,Logística,True
+R-001971,Entrega demorada,Logística,True
+R-001972,Entrega demorada,Logística,True
+R-001973,Material dañado,Logística,False
+R-001974,Error de facturación,Administración,True
+R-001975,Atención en sucursal,Ventas,True
+R-001976,Error de facturación,Administración,True
+R-001977,Material dañado,Logística,True
+R-001978,Entrega demorada,Logística,True
+R-001979,Atención en sucursal,Ventas,True
+R-001980,Error de facturación,Administración,True
+R-001981,Material dañado,Logística,True
+R-001982,Entrega demorada,Logística,True
+R-001983,Material dañado,Logística,True
+R-001984,Entrega demorada,Logística,False
+R-001985,Atención en sucursal,Ventas,True
+R-001986,Entrega demorada,Logística,True
+R-001987,Entrega demorada,Logística,True
+R-001988,Atención en sucursal,Ventas,True
+R-001989,Entrega demorada,Logística,True
+R-001990,Faltante en la entrega,Logística,True
+R-001991,Faltante en la entrega,Logística,True
+R-001992,Entrega demorada,Logística,True
+R-001993,Entrega demorada,Logística,True
+R-001994,Atención en sucursal,Ventas,True
+R-001995,Faltante en la entrega,Logística,False
+R-001996,Error de facturación,Administración,True
+R-001997,Entrega demorada,Logística,True
+R-001998,Error de facturación,Administración,False
+R-001999,Entrega demorada,Logística,True
+R-002000,Entrega demorada,Logística,True
+R-002001,Material dañado,Logística,True
+R-002002,Otros,Atención al cliente,True
+R-002003,Faltante en la entrega,Logística,True
+R-002004,Otros,Atención al cliente,True
+R-002005,Entrega demorada,Logística,True
+R-002006,Atención en sucursal,Ventas,True
+R-002007,Atención en sucursal,Ventas,True
+R-002008,Entrega demorada,Logística,True
+R-002009,Error de facturación,Administración,True
+R-002010,Error de facturación,Administración,True
+R-002011,Otros,Atención al cliente,True
+R-002012,Faltante en la entrega,Logística,True
+R-002013,Material dañado,Logística,True
+R-002014,Atención en sucursal,Ventas,True
+R-002015,Entrega demorada,Logística,True
+R-002016,Entrega demorada,Logística,True
+R-002017,Entrega demorada,Logística,True
+R-002018,Material dañado,Logística,True
+R-002019,Entrega demorada,Logística,True
+R-002020,Faltante en la entrega,Logística,True
+R-002021,Material dañado,Logística,True
+R-002022,Atención en sucursal,Ventas,True
+R-002023,Entrega demorada,Logística,False
+R-002024,Entrega demorada,Logística,True
+R-002025,Material dañado,Logística,True
+R-002026,Otros,Atención al cliente,True
+R-002027,Entrega demorada,Logística,True
+R-002028,Atención en sucursal,Ventas,True
+R-002029,Material dañado,Logística,True
+R-002030,Otros,Atención al cliente,True
+R-002031,Otros,Atención al cliente,True
+R-002032,Material dañado,Logística,True
+R-002033,Material dañado,Logística,True
+R-002034,Faltante en la entrega,Logística,True
+R-002035,Faltante en la entrega,Logística,False
+R-002036,Faltante en la entrega,Logística,True
+R-002037,Material dañado,Logística,True
+R-002038,Faltante en la entrega,Logística,True
+R-002039,Entrega demorada,Logística,True
+R-002040,Entrega demorada,Logística,True
+R-002041,Entrega demorada,Logística,True
+R-002042,Entrega demorada,Logística,False
+R-002043,Otros,Atención al cliente,True
+R-002044,Entrega demorada,Logística,True
+R-002045,Faltante en la entrega,Logística,True
+R-002046,Error de facturación,Administración,True
+R-002047,Entrega demorada,Logística,True
+R-002048,Entrega demorada,Logística,True
+R-002049,Material dañado,Logística,False
+R-002050,Faltante en la entrega,Logística,False
+R-002051,Faltante en la entrega,Logística,True
+R-002052,Material dañado,Logística,True
+R-002053,Error de facturación,Administración,True
+R-002054,Entrega demorada,Logística,True
+R-002055,Error de facturación,Administración,True
+R-002056,Faltante en la entrega,Logística,True
+R-002057,Entrega demorada,Logística,True
+R-002058,Entrega demorada,Logística,True
+R-002059,Entrega demorada,Logística,True
+R-002060,Otros,Atención al cliente,False
+R-002061,Otros,Atención al cliente,True
+R-002062,Entrega demorada,Logística,False
+R-002063,Entrega demorada,Logística,True
+R-002064,Entrega demorada,Logística,True
+R-002065,Entrega demorada,Logística,True
+R-002066,Entrega demorada,Logística,True
+R-002067,Entrega demorada,Logística,True
+R-002068,Entrega demorada,Logística,True
+R-002069,Entrega demorada,Logística,True
+R-002070,Error de facturación,Administración,True
+R-002071,Faltante en la entrega,Logística,True
+R-002072,Otros,Atención al cliente,True
+R-002073,Material dañado,Logística,True
+R-002074,Entrega demorada,Logística,True
+R-002075,Material dañado,Logística,True
+R-002076,Atención en sucursal,Ventas,True
+R-002077,Material dañado,Logística,True
+R-002078,Material dañado,Logística,True
+R-002079,Entrega demorada,Logística,True
+R-002080,Entrega demorada,Logística,True
+R-002081,Material dañado,Logística,True
+R-002082,Faltante en la entrega,Logística,True
+R-002083,Material dañado,Logística,False
+R-002084,Atención en sucursal,Ventas,True
+R-002085,Otros,Atención al cliente,True
+R-002086,Faltante en la entrega,Logística,True
+R-002087,Atención en sucursal,Ventas,True
+R-002088,Atención en sucursal,Ventas,False
+R-002089,Entrega demorada,Logística,True
+R-002090,Faltante en la entrega,Logística,True
+R-002091,Atención en sucursal,Ventas,True
+R-002092,Error de facturación,Administración,True
+R-002093,Atención en sucursal,Ventas,True
+R-002094,Material dañado,Logística,True
+R-002095,Entrega demorada,Logística,True
+R-002096,Entrega demorada,Logística,True
+R-002097,Entrega demorada,Logística,True
+R-002098,Entrega demorada,Logística,True
+R-002099,Material dañado,Logística,True
+R-002100,Material dañado,Logística,True
+R-002101,Otros,Atención al cliente,True
+R-002102,Atención en sucursal,Ventas,True
+R-002103,Faltante en la entrega,Logística,True
+R-002104,Entrega demorada,Logística,False
+R-002105,Material dañado,Logística,True
+R-002106,Atención en sucursal,Ventas,True
+R-002107,Atención en sucursal,Ventas,True
+R-002108,Entrega demorada,Logística,True
+R-002109,Entrega demorada,Logística,True
+R-002110,Material dañado,Logística,True
+R-002111,Otros,Atención al cliente,True
+R-002112,Entrega demorada,Logística,True
+R-002113,Faltante en la entrega,Logística,True
+R-002114,Entrega demorada,Logística,True
+R-002115,Faltante en la entrega,Logística,True
+R-002116,Entrega demorada,Logística,True
+R-002117,Entrega demorada,Logística,True
+R-002118,Otros,Atención al cliente,False
+R-002119,Entrega demorada,Logística,True
+R-002120,Faltante en la entrega,Logística,True
+R-002121,Material dañado,Logística,True
+R-002122,Otros,Atención al cliente,True
+R-002123,Faltante en la entrega,Logística,True
+R-002124,Entrega demorada,Logística,True
+R-002125,Entrega demorada,Logística,True
+R-002126,Faltante en la entrega,Logística,False
+R-002127,Atención en sucursal,Ventas,True
+R-002128,Error de facturación,Administración,True
+R-002129,Material dañado,Logística,False
+R-002130,Entrega demorada,Logística,True
+R-002131,Otros,Atención al cliente,True
+R-002132,Error de facturación,Administración,True
+R-002133,Error de facturación,Administración,True
+R-002134,Error de facturación,Administración,True
+R-002135,Entrega demorada,Logística,True
+R-002136,Error de facturación,Administración,True
+R-002137,Entrega demorada,Logística,True
+R-002138,Entrega demorada,Logística,True
+R-002139,Atención en sucursal,Ventas,True
+R-002140,Entrega demorada,Logística,True
+R-002141,Entrega demorada,Logística,True
+R-002142,Entrega demorada,Logística,False
+R-002143,Faltante en la entrega,Logística,True
+R-002144,Entrega demorada,Logística,False
+R-002145,Entrega demorada,Logística,True
+R-002146,Faltante en la entrega,Logística,True
+R-002147,Entrega demorada,Logística,False
+R-002148,Otros,Atención al cliente,True
+R-002149,Atención en sucursal,Ventas,True
+R-002150,Material dañado,Logística,True
+R-002151,Otros,Atención al cliente,False
+R-002152,Faltante en la entrega,Logística,True
+R-002153,Material dañado,Logística,True
+R-002154,Entrega demorada,Logística,False
+R-002155,Material dañado,Logística,True
+R-002156,Error de facturación,Administración,True
+R-002157,Atención en sucursal,Ventas,False
+R-002158,Faltante en la entrega,Logística,True
+R-002159,Material dañado,Logística,True
+R-002160,Faltante en la entrega,Logística,True
+R-002161,Faltante en la entrega,Logística,True
+R-002162,Entrega demorada,Logística,True
+R-002163,Atención en sucursal,Ventas,True
+R-002164,Entrega demorada,Logística,True
+R-002165,Otros,Atención al cliente,False
+R-002166,Material dañado,Logística,True
+R-002167,Entrega demorada,Logística,True
+R-002168,Otros,Atención al cliente,True
+R-002169,Entrega demorada,Logística,True
+R-002170,Faltante en la entrega,Logística,True
+R-002171,Entrega demorada,Logística,True
+R-002172,Entrega demorada,Logística,False
+R-002173,Material dañado,Logística,False
+R-002174,Atención en sucursal,Ventas,True
+R-002175,Faltante en la entrega,Logística,False
+R-002176,Error de facturación,Administración,True
+R-002177,Atención en sucursal,Ventas,True
+R-002178,Faltante en la entrega,Logística,True
+R-002179,Faltante en la entrega,Logística,True
+R-002180,Entrega demorada,Logística,True
+R-002181,Entrega demorada,Logística,False
+R-002182,Material dañado,Logística,True
+R-002183,Error de facturación,Administración,True
+R-002184,Atención en sucursal,Ventas,True
+R-002185,Error de facturación,Administración,True
+R-002186,Faltante en la entrega,Logística,True
+R-002187,Entrega demorada,Logística,True
+R-002188,Atención en sucursal,Ventas,True
+R-002189,Entrega demorada,Logística,True
+R-002190,Entrega demorada,Logística,True
+R-002191,Entrega demorada,Logística,True
+R-002192,Atención en sucursal,Ventas,True
+R-002193,Material dañado,Logística,True
+R-002194,Material dañado,Logística,True
+R-002195,Atención en sucursal,Ventas,True
+R-002196,Faltante en la entrega,Logística,True
+R-002197,Error de facturación,Administración,True
+R-002198,Faltante en la entrega,Logística,True
+R-002199,Faltante en la entrega,Logística,False
+R-002200,Faltante en la entrega,Logística,True
+R-002201,Entrega demorada,Logística,False
+R-002202,Error de facturación,Administración,True
+R-002203,Entrega demorada,Logística,True
+R-002204,Entrega demorada,Logística,True
+R-002205,Error de facturación,Administración,True
+R-002206,Entrega demorada,Logística,True
+R-002207,Error de facturación,Administración,True
+R-002208,Error de facturación,Administración,True
+R-002209,Material dañado,Logística,True
+R-002210,Error de facturación,Administración,True
+R-002211,Entrega demorada,Logística,True
+R-002212,Otros,Atención al cliente,False
+R-002213,Entrega demorada,Logística,True
+R-002214,Entrega demorada,Logística,True
+R-002215,Atención en sucursal,Ventas,True
+R-002216,Atención en sucursal,Ventas,True
+R-002217,Entrega demorada,Logística,True
+R-002218,Entrega demorada,Logística,True
+R-002219,Error de facturación,Administración,True
+R-002220,Error de facturación,Administración,False
+R-002221,Entrega demorada,Logística,True
+R-002222,Entrega demorada,Logística,True
+R-002223,Error de facturación,Administración,True
+R-002224,Error de facturación,Administración,True
+R-002225,Error de facturación,Administración,False
+R-002226,Material dañado,Logística,True
+R-002227,Atención en sucursal,Ventas,True
+R-002228,Otros,Atención al cliente,True
+R-002229,Entrega demorada,Logística,True
+R-002230,Otros,Atención al cliente,True
+R-002231,Faltante en la entrega,Logística,True
+R-002232,Entrega demorada,Logística,False
+R-002233,Atención en sucursal,Ventas,True
+R-002234,Error de facturación,Administración,True
+R-002235,Faltante en la entrega,Logística,False
+R-002236,Entrega demorada,Logística,True
+R-002237,Material dañado,Logística,True
+R-002238,Entrega demorada,Logística,False
+R-002239,Material dañado,Logística,True
+R-002240,Error de facturación,Administración,True
+R-002241,Material dañado,Logística,False
+R-002242,Atención en sucursal,Ventas,False
+R-002243,Faltante en la entrega,Logística,True
+R-002244,Entrega demorada,Logística,True
+R-002245,Error de facturación,Administración,True
+R-002246,Otros,Atención al cliente,True
+R-002247,Entrega demorada,Logística,True
+R-002248,Entrega demorada,Logística,True
+R-002249,Faltante en la entrega,Logística,True
+R-002250,Material dañado,Logística,True
+R-002251,Material dañado,Logística,True
+R-002252,Atención en sucursal,Ventas,True
+R-002253,Error de facturación,Administración,True
+R-002254,Material dañado,Logística,True
+R-002255,Entrega demorada,Logística,False
+R-002256,Atención en sucursal,Ventas,True
+R-002257,Entrega demorada,Logística,True
+R-002258,Otros,Atención al cliente,True
+R-002259,Entrega demorada,Logística,True
+R-002260,Error de facturación,Administración,False
+R-002261,Atención en sucursal,Ventas,True
+R-002262,Error de facturación,Administración,True
+R-002263,Entrega demorada,Logística,True
+R-002264,Material dañado,Logística,False
+R-002265,Faltante en la entrega,Logística,False
+R-002266,Atención en sucursal,Ventas,True
+R-002267,Faltante en la entrega,Logística,True
+R-002268,Material dañado,Logística,True
+R-002269,Material dañado,Logística,True
+R-002270,Faltante en la entrega,Logística,True
+R-002271,Entrega demorada,Logística,True
+R-002272,Entrega demorada,Logística,False
+R-002273,Material dañado,Logística,True
+R-002274,Entrega demorada,Logística,True
+R-002275,Material dañado,Logística,True
+R-002276,Atención en sucursal,Ventas,True
+R-002277,Entrega demorada,Logística,True
+R-002278,Atención en sucursal,Ventas,True
+R-002279,Entrega demorada,Logística,False
+R-002280,Faltante en la entrega,Logística,True
+R-002281,Entrega demorada,Logística,True
+R-002282,Atención en sucursal,Ventas,True
+R-002283,Faltante en la entrega,Logística,True
+R-002284,Faltante en la entrega,Logística,True
+R-002285,Atención en sucursal,Ventas,True
+R-002286,Entrega demorada,Logística,True
+R-002287,Faltante en la entrega,Logística,True
+R-002288,Otros,Atención al cliente,False
+R-002289,Atención en sucursal,Ventas,True
+R-002290,Error de facturación,Administración,False
+R-002291,Material dañado,Logística,True
+R-002292,Atención en sucursal,Ventas,True
+R-002293,Atención en sucursal,Ventas,True
+R-002294,Otros,Atención al cliente,True
+R-002295,Material dañado,Logística,True
+R-002296,Error de facturación,Administración,True
+R-002297,Material dañado,Logística,True
+R-002298,Material dañado,Logística,True
+R-002299,Entrega demorada,Logística,True
+R-002300,Entrega demorada,Logística,True
+R-002301,Faltante en la entrega,Logística,True
+R-002302,Atención en sucursal,Ventas,True
+R-002303,Material dañado,Logística,True
+R-002304,Entrega demorada,Logística,True
+R-002305,Material dañado,Logística,True
+R-002306,Atención en sucursal,Ventas,True
+R-002307,Faltante en la entrega,Logística,False
+R-002308,Faltante en la entrega,Logística,True
+R-002309,Entrega demorada,Logística,True
+R-002310,Entrega demorada,Logística,False
+R-002311,Material dañado,Logística,True
+R-002312,Error de facturación,Administración,True
+R-002313,Material dañado,Logística,True
+R-002314,Entrega demorada,Logística,True
+R-002315,Error de facturación,Administración,False
+R-002316,Entrega demorada,Logística,True
+R-002317,Material dañado,Logística,True
+R-002318,Entrega demorada,Logística,True
+R-002319,Material dañado,Logística,True
+R-002320,Entrega demorada,Logística,True
+R-002321,Otros,Atención al cliente,True
+R-002322,Error de facturación,Administración,True
+R-002323,Faltante en la entrega,Logística,True
+R-002324,Otros,Atención al cliente,True
+R-002325,Entrega demorada,Logística,True
+R-002326,Entrega demorada,Logística,False
+R-002327,Error de facturación,Administración,False
+R-002328,Atención en sucursal,Ventas,True
+R-002329,Material dañado,Logística,True
+R-002330,Error de facturación,Administración,True
+R-002331,Entrega demorada,Logística,True
+R-002332,Faltante en la entrega,Logística,False
+R-002333,Entrega demorada,Logística,False
+R-002334,Atención en sucursal,Ventas,True
+R-002335,Error de facturación,Administración,True
+R-002336,Atención en sucursal,Ventas,True
+R-002337,Error de facturación,Administración,True
+R-002338,Faltante en la entrega,Logística,True
+R-002339,Otros,Atención al cliente,False
+R-002340,Entrega demorada,Logística,True
+R-002341,Otros,Atención al cliente,True
+R-002342,Faltante en la entrega,Logística,True
+R-002343,Atención en sucursal,Ventas,True
+R-002344,Material dañado,Logística,True
+R-002345,Otros,Atención al cliente,True
+R-002346,Entrega demorada,Logística,True
+R-002347,Entrega demorada,Logística,True
+R-002348,Atención en sucursal,Ventas,True
+R-002349,Material dañado,Logística,True
+R-002350,Material dañado,Logística,True
+R-002351,Otros,Atención al cliente,True
+R-002352,Entrega demorada,Logística,True
+R-002353,Faltante en la entrega,Logística,True
+R-002354,Faltante en la entrega,Logística,True
+R-002355,Faltante en la entrega,Logística,True
+R-002356,Error de facturación,Administración,True
+R-002357,Atención en sucursal,Ventas,True
+R-002358,Error de facturación,Administración,True
+R-002359,Faltante en la entrega,Logística,True
+R-002360,Faltante en la entrega,Logística,True
+R-002361,Entrega demorada,Logística,True
+R-002362,Faltante en la entrega,Logística,False
+R-002363,Entrega demorada,Logística,True
+R-002364,Material dañado,Logística,True
+R-002365,Atención en sucursal,Ventas,True
+R-002366,Entrega demorada,Logística,True
+R-002367,Atención en sucursal,Ventas,True
+R-002368,Entrega demorada,Logística,True
+R-002369,Entrega demorada,Logística,True
+R-002370,Atención en sucursal,Ventas,True
+R-002371,Atención en sucursal,Ventas,True
+R-002372,Error de facturación,Administración,True
+R-002373,Atención en sucursal,Ventas,True
+R-002374,Entrega demorada,Logística,True
+R-002375,Faltante en la entrega,Logística,True
+R-002376,Entrega demorada,Logística,True
+R-002377,Faltante en la entrega,Logística,False
+R-002378,Atención en sucursal,Ventas,True
+R-002379,Faltante en la entrega,Logística,False
+R-002380,Entrega demorada,Logística,False
+R-002381,Faltante en la entrega,Logística,True
+R-002382,Atención en sucursal,Ventas,True
+R-002383,Material dañado,Logística,True
+R-002384,Error de facturación,Administración,False
+R-002385,Faltante en la entrega,Logística,True
+R-002386,Atención en sucursal,Ventas,True
+R-002387,Atención en sucursal,Ventas,False
+R-002388,Faltante en la entrega,Logística,True
+R-002389,Material dañado,Logística,True
+R-002390,Faltante en la entrega,Logística,True
+R-002391,Entrega demorada,Logística,True
+R-002392,Material dañado,Logística,True
+R-002393,Error de facturación,Administración,True
+R-002394,Entrega demorada,Logística,True
+R-002395,Entrega demorada,Logística,True
+R-002396,Entrega demorada,Logística,False
+R-002397,Material dañado,Logística,True
+R-002398,Entrega demorada,Logística,True
+R-002399,Material dañado,Logística,True
+R-002400,Entrega demorada,Logística,True
+R-002401,Entrega demorada,Logística,True
+R-002402,Atención en sucursal,Ventas,True
+R-002403,Otros,Atención al cliente,True
+R-002404,Entrega demorada,Logística,True
+R-002405,Otros,Atención al cliente,True
+R-002406,Faltante en la entrega,Logística,True
+R-002407,Entrega demorada,Logística,True
+R-002408,Faltante en la entrega,Logística,True
+R-002409,Material dañado,Logística,False
+R-002410,Entrega demorada,Logística,True
+R-002411,Otros,Atención al cliente,True
+R-002412,Error de facturación,Administración,True
+R-002413,Entrega demorada,Logística,True
+R-002414,Error de facturación,Administración,True
+R-002415,Entrega demorada,Logística,True
+R-002416,Otros,Atención al cliente,True
+R-002417,Faltante en la entrega,Logística,True
+R-002418,Faltante en la entrega,Logística,True
+R-002419,Material dañado,Logística,True
+R-002420,Entrega demorada,Logística,True
+R-002421,Otros,Atención al cliente,True
+R-002422,Faltante en la entrega,Logística,True
+R-002423,Error de facturación,Administración,True
+R-002424,Error de facturación,Administración,False
+R-002425,Material dañado,Logística,True
+R-002426,Entrega demorada,Logística,False
+R-002427,Atención en sucursal,Ventas,True
+R-002428,Error de facturación,Administración,False
+R-002429,Entrega demorada,Logística,True
+R-002430,Entrega demorada,Logística,False
+R-002431,Material dañado,Logística,False
+R-002432,Material dañado,Logística,False
+R-002433,Material dañado,Logística,False
+R-002434,Faltante en la entrega,Logística,False
+R-002435,Material dañado,Logística,False
+R-002436,Error de facturación,Administración,True
+R-002437,Material dañado,Logística,True
+R-002438,Error de facturación,Administración,True
+R-002439,Entrega demorada,Logística,True
+R-002440,Atención en sucursal,Ventas,True
+R-002441,Atención en sucursal,Ventas,True
+R-002442,Entrega demorada,Logística,True
+R-002443,Faltante en la entrega,Logística,True
+R-002444,Entrega demorada,Logística,False
+R-002445,Error de facturación,Administración,True
+R-002446,Error de facturación,Administración,False
+R-002447,Material dañado,Logística,True
+R-002448,Material dañado,Logística,False
+R-002449,Entrega demorada,Logística,True
+R-002450,Material dañado,Logística,True
+R-002451,Entrega demorada,Logística,True
+R-002452,Error de facturación,Administración,True
+R-002453,Faltante en la entrega,Logística,True
+R-002454,Entrega demorada,Logística,True
+R-002455,Material dañado,Logística,True
+R-002456,Entrega demorada,Logística,True
+R-002457,Atención en sucursal,Ventas,True
+R-002458,Faltante en la entrega,Logística,True
+R-002459,Atención en sucursal,Ventas,True
+R-002460,Material dañado,Logística,True
+R-002461,Otros,Atención al cliente,True
+R-002462,Otros,Atención al cliente,True
+R-002463,Material dañado,Logística,True
+R-002464,Error de facturación,Administración,True
+R-002465,Material dañado,Logística,True
+R-002466,Faltante en la entrega,Logística,True
+R-002467,Faltante en la entrega,Logística,True
+R-002468,Faltante en la entrega,Logística,False
+R-002469,Entrega demorada,Logística,True
+R-002470,Atención en sucursal,Ventas,True
+R-002471,Entrega demorada,Logística,True
+R-002472,Material dañado,Logística,False
+R-002473,Faltante en la entrega,Logística,True
+R-002474,Entrega demorada,Logística,True
+R-002475,Faltante en la entrega,Logística,True
+R-002476,Entrega demorada,Logística,True
+R-002477,Faltante en la entrega,Logística,True
+R-002478,Entrega demorada,Logística,False
+R-002479,Error de facturación,Administración,True
+R-002480,Faltante en la entrega,Logística,True
+R-002481,Entrega demorada,Logística,True
+R-002482,Faltante en la entrega,Logística,True
+R-002483,Atención en sucursal,Ventas,True
+R-002484,Material dañado,Logística,True
+R-002485,Material dañado,Logística,False
+R-002486,Material dañado,Logística,True
+R-002487,Faltante en la entrega,Logística,True
+R-002488,Faltante en la entrega,Logística,True
+R-002489,Material dañado,Logística,True
+R-002490,Entrega demorada,Logística,True
+R-002491,Entrega demorada,Logística,True
+R-002492,Entrega demorada,Logística,True
+R-002493,Entrega demorada,Logística,False
+R-002494,Error de facturación,Administración,True
+R-002495,Entrega demorada,Logística,True
+R-002496,Error de facturación,Administración,True
+R-002497,Material dañado,Logística,True
+R-002498,Faltante en la entrega,Logística,True
+R-002499,Faltante en la entrega,Logística,True
+R-002500,Material dañado,Logística,True
+R-002501,Entrega demorada,Logística,True
+R-002502,Faltante en la entrega,Logística,False
+R-002503,Error de facturación,Administración,True
+R-002504,Otros,Atención al cliente,True
+R-002505,Entrega demorada,Logística,True
+R-002506,Entrega demorada,Logística,True
+R-002507,Faltante en la entrega,Logística,True
+R-002508,Faltante en la entrega,Logística,True
+R-002509,Entrega demorada,Logística,True
+R-002510,Otros,Atención al cliente,True
+R-002511,Material dañado,Logística,True
+R-002512,Error de facturación,Administración,True
+R-002513,Atención en sucursal,Ventas,True
+R-002514,Error de facturación,Administración,True
+R-002515,Entrega demorada,Logística,False
+R-002516,Entrega demorada,Logística,True
+R-002517,Otros,Atención al cliente,True
+R-002518,Error de facturación,Administración,True
+R-002519,Atención en sucursal,Ventas,True
+R-002520,Error de facturación,Administración,True
+R-002521,Entrega demorada,Logística,True
+R-002522,Material dañado,Logística,True
+R-002523,Faltante en la entrega,Logística,True
+R-002524,Faltante en la entrega,Logística,True
+R-002525,Error de facturación,Administración,False
+R-002526,Entrega demorada,Logística,True
+R-002527,Atención en sucursal,Ventas,True
+R-002528,Otros,Atención al cliente,True
+R-002529,Atención en sucursal,Ventas,True
+R-002530,Entrega demorada,Logística,True
+R-002531,Faltante en la entrega,Logística,True
+R-002532,Entrega demorada,Logística,True
+R-002533,Entrega demorada,Logística,False
+R-002534,Entrega demorada,Logística,False
+R-002535,Material dañado,Logística,True
+R-002536,Entrega demorada,Logística,True
+R-002537,Faltante en la entrega,Logística,True
+R-002538,Error de facturación,Administración,False
+R-002539,Material dañado,Logística,True
+R-002540,Entrega demorada,Logística,True
+R-002541,Atención en sucursal,Ventas,True
+R-002542,Entrega demorada,Logística,True
+R-002543,Error de facturación,Administración,True
+R-002544,Error de facturación,Administración,True
+R-002545,Atención en sucursal,Ventas,True
+R-002546,Material dañado,Logística,False
+R-002547,Otros,Atención al cliente,True
+R-002548,Material dañado,Logística,True
+R-002549,Error de facturación,Administración,True
+R-002550,Faltante en la entrega,Logística,True
+R-002551,Atención en sucursal,Ventas,True
+R-002552,Entrega demorada,Logística,True
+R-002553,Error de facturación,Administración,True
+R-002554,Atención en sucursal,Ventas,True
+R-002555,Error de facturación,Administración,True
+R-002556,Entrega demorada,Logística,True
+R-002557,Atención en sucursal,Ventas,True
+R-002558,Entrega demorada,Logística,True
+R-002559,Otros,Atención al cliente,True
+R-002560,Atención en sucursal,Ventas,False
+R-002561,Material dañado,Logística,True
+R-002562,Atención en sucursal,Ventas,True
+R-002563,Atención en sucursal,Ventas,True
+R-002564,Error de facturación,Administración,True
+R-002565,Otros,Atención al cliente,True
+R-002566,Atención en sucursal,Ventas,False
+R-002567,Material dañado,Logística,True
+R-002568,Atención en sucursal,Ventas,False
+R-002569,Entrega demorada,Logística,True
+R-002570,Atención en sucursal,Ventas,True
+R-002571,Material dañado,Logística,False
+R-002572,Material dañado,Logística,True
+R-002573,Material dañado,Logística,True
+R-002574,Entrega demorada,Logística,False
+R-002575,Entrega demorada,Logística,False
+R-002576,Entrega demorada,Logística,True
+R-002577,Entrega demorada,Logística,True
+R-002578,Otros,Atención al cliente,True
+R-002579,Error de facturación,Administración,True
+R-002580,Entrega demorada,Logística,True
+R-002581,Atención en sucursal,Ventas,True
+R-002582,Entrega demorada,Logística,False
+R-002583,Entrega demorada,Logística,True
+R-002584,Error de facturación,Administración,True
+R-002585,Error de facturación,Administración,True
+R-002586,Faltante en la entrega,Logística,False
+R-002587,Material dañado,Logística,True
+R-002588,Faltante en la entrega,Logística,True
+R-002589,Material dañado,Logística,True
+R-002590,Entrega demorada,Logística,True
+R-002591,Entrega demorada,Logística,True
+R-002592,Material dañado,Logística,True
+R-002593,Otros,Atención al cliente,True
+R-002594,Faltante en la entrega,Logística,True
+R-002595,Otros,Atención al cliente,True
+R-002596,Faltante en la entrega,Logística,True
+R-002597,Atención en sucursal,Ventas,True
+R-002598,Entrega demorada,Logística,True
+R-002599,Entrega demorada,Logística,True
+R-002600,Entrega demorada,Logística,True
+R-002601,Material dañado,Logística,True
+R-002602,Faltante en la entrega,Logística,True
+R-002603,Atención en sucursal,Ventas,True
+R-002604,Entrega demorada,Logística,False
+R-002605,Material dañado,Logística,True
+R-002606,Entrega demorada,Logística,True
+R-002607,Otros,Atención al cliente,True
+R-002608,Entrega demorada,Logística,True
+R-002609,Entrega demorada,Logística,True
+R-002610,Material dañado,Logística,True
+R-002611,Material dañado,Logística,False
+R-002612,Otros,Atención al cliente,True
+R-002613,Otros,Atención al cliente,False
+R-002614,Entrega demorada,Logística,True
+R-002615,Material dañado,Logística,True
+R-002616,Material dañado,Logística,False
+R-002617,Error de facturación,Administración,True
+R-002618,Faltante en la entrega,Logística,True
+R-002619,Atención en sucursal,Ventas,True
+R-002620,Material dañado,Logística,True
+R-002621,Error de facturación,Administración,False
+R-002622,Error de facturación,Administración,True
+R-002623,Error de facturación,Administración,True
+R-002624,Error de facturación,Administración,True
+R-002625,Atención en sucursal,Ventas,True
+R-002626,Material dañado,Logística,True
+R-002627,Entrega demorada,Logística,True
+R-002628,Atención en sucursal,Ventas,True
+R-002629,Entrega demorada,Logística,False
+R-002630,Material dañado,Logística,True
+R-002631,Entrega demorada,Logística,True
+R-002632,Atención en sucursal,Ventas,True
+R-002633,Entrega demorada,Logística,False
+R-002634,Material dañado,Logística,True
+R-002635,Entrega demorada,Logística,True
+R-002636,Faltante en la entrega,Logística,True
+R-002637,Entrega demorada,Logística,True
+R-002638,Entrega demorada,Logística,True
+R-002639,Faltante en la entrega,Logística,True
+R-002640,Atención en sucursal,Ventas,True
+R-002641,Entrega demorada,Logística,True
+R-002642,Entrega demorada,Logística,True
+R-002643,Atención en sucursal,Ventas,True
+R-002644,Faltante en la entrega,Logística,True
+R-002645,Material dañado,Logística,True
+R-002646,Otros,Atención al cliente,True
+R-002647,Otros,Atención al cliente,False
+R-002648,Otros,Atención al cliente,True
+R-002649,Material dañado,Logística,True
+R-002650,Error de facturación,Administración,True
+R-002651,Faltante en la entrega,Logística,False
+R-002652,Material dañado,Logística,True
+R-002653,Entrega demorada,Logística,False
+R-002654,Entrega demorada,Logística,True
+R-002655,Error de facturación,Administración,True
+R-002656,Material dañado,Logística,True
+R-002657,Otros,Atención al cliente,True
+R-002658,Otros,Atención al cliente,False
+R-002659,Material dañado,Logística,True
+R-002660,Material dañado,Logística,True
+R-002661,Error de facturación,Administración,False
+R-002662,Faltante en la entrega,Logística,True
+R-002663,Atención en sucursal,Ventas,True
+R-002664,Error de facturación,Administración,True
+R-002665,Otros,Atención al cliente,True
+R-002666,Faltante en la entrega,Logística,True
+R-002667,Otros,Atención al cliente,False
+R-002668,Faltante en la entrega,Logística,True
+R-002669,Entrega demorada,Logística,False
+R-002670,Faltante en la entrega,Logística,False
+R-002671,Entrega demorada,Logística,True
+R-002672,Entrega demorada,Logística,True
+R-002673,Otros,Atención al cliente,False
+R-002674,Error de facturación,Administración,True
+R-002675,Entrega demorada,Logística,True
+R-002676,Otros,Atención al cliente,False
+R-002677,Faltante en la entrega,Logística,True
+R-002678,Error de facturación,Administración,True
+R-002679,Material dañado,Logística,True
+R-002680,Entrega demorada,Logística,False
+R-002681,Material dañado,Logística,True
+R-002682,Faltante en la entrega,Logística,True
+R-002683,Entrega demorada,Logística,True
+R-002684,Material dañado,Logística,True
+R-002685,Error de facturación,Administración,False
+R-002686,Material dañado,Logística,True
+R-002687,Atención en sucursal,Ventas,True
+R-002688,Entrega demorada,Logística,True
+R-002689,Error de facturación,Administración,True
+R-002690,Faltante en la entrega,Logística,True
+R-002691,Entrega demorada,Logística,True
+R-002692,Material dañado,Logística,True
+R-002693,Faltante en la entrega,Logística,True
+R-002694,Material dañado,Logística,True
+R-002695,Faltante en la entrega,Logística,True
+R-002696,Faltante en la entrega,Logística,True
+R-002697,Faltante en la entrega,Logística,True
+R-002698,Faltante en la entrega,Logística,True
+R-002699,Error de facturación,Administración,True
+R-002700,Atención en sucursal,Ventas,True
+R-002701,Faltante en la entrega,Logística,True
+R-002702,Error de facturación,Administración,True
+R-002703,Entrega demorada,Logística,True
+R-002704,Entrega demorada,Logística,True
+R-002705,Faltante en la entrega,Logística,True
+R-002706,Error de facturación,Administración,True
+R-002707,Entrega demorada,Logística,True
+R-002708,Faltante en la entrega,Logística,True
+R-002709,Error de facturación,Administración,True
+R-002710,Material dañado,Logística,True
+R-002711,Error de facturación,Administración,True
+R-002712,Material dañado,Logística,False
+R-002713,Material dañado,Logística,True
+R-002714,Entrega demorada,Logística,True
+R-002715,Entrega demorada,Logística,True
+R-002716,Error de facturación,Administración,True
+R-002717,Material dañado,Logística,True
+R-002718,Entrega demorada,Logística,True
+R-002719,Error de facturación,Administración,True
+R-002720,Entrega demorada,Logística,True
+R-002721,Material dañado,Logística,True
+R-002722,Atención en sucursal,Ventas,True
+R-002723,Material dañado,Logística,True
+R-002724,Faltante en la entrega,Logística,True
+R-002725,Material dañado,Logística,False
+R-002726,Entrega demorada,Logística,True
+R-002727,Error de facturación,Administración,True
+R-002728,Error de facturación,Administración,True
+R-002729,Faltante en la entrega,Logística,False
+R-002730,Atención en sucursal,Ventas,True
+R-002731,Atención en sucursal,Ventas,True
+R-002732,Atención en sucursal,Ventas,True
+R-002733,Entrega demorada,Logística,True
+R-002734,Material dañado,Logística,False
+R-002735,Otros,Atención al cliente,True
+R-002736,Entrega demorada,Logística,False
+R-002737,Faltante en la entrega,Logística,True
+R-002738,Error de facturación,Administración,True
+R-002739,Faltante en la entrega,Logística,True
+R-002740,Entrega demorada,Logística,True
+R-002741,Material dañado,Logística,True
+R-002742,Entrega demorada,Logística,True
+R-002743,Faltante en la entrega,Logística,False
+R-002744,Entrega demorada,Logística,True
+R-002745,Atención en sucursal,Ventas,True
+R-002746,Material dañado,Logística,True
+R-002747,Entrega demorada,Logística,True
+R-002748,Error de facturación,Administración,True
+R-002749,Entrega demorada,Logística,True
+R-002750,Entrega demorada,Logística,True
+R-002751,Material dañado,Logística,True
+R-002752,Error de facturación,Administración,True
+R-002753,Atención en sucursal,Ventas,True
+R-002754,Error de facturación,Administración,True
+R-002755,Faltante en la entrega,Logística,True
+R-002756,Material dañado,Logística,True
+R-002757,Atención en sucursal,Ventas,True
+R-002758,Entrega demorada,Logística,True
+R-002759,Entrega demorada,Logística,True
+R-002760,Material dañado,Logística,True
+R-002761,Faltante en la entrega,Logística,False
+R-002762,Entrega demorada,Logística,True
+R-002763,Faltante en la entrega,Logística,True
+R-002764,Error de facturación,Administración,True
+R-002765,Error de facturación,Administración,True
+R-002766,Entrega demorada,Logística,True
+R-002767,Error de facturación,Administración,True
+R-002768,Entrega demorada,Logística,True
+R-002769,Material dañado,Logística,True
+R-002770,Error de facturación,Administración,True
+R-002771,Entrega demorada,Logística,True
+R-002772,Entrega demorada,Logística,True
+R-002773,Material dañado,Logística,True
+R-002774,Otros,Atención al cliente,False
+R-002775,Entrega demorada,Logística,True
+R-002776,Faltante en la entrega,Logística,True
+R-002777,Faltante en la entrega,Logística,True
+R-002778,Otros,Atención al cliente,False
+R-002779,Faltante en la entrega,Logística,True
+R-002780,Faltante en la entrega,Logística,True
+R-002781,Material dañado,Logística,True
+R-002782,Error de facturación,Administración,False
+R-002783,Atención en sucursal,Ventas,True
+R-002784,Material dañado,Logística,True
+R-002785,Faltante en la entrega,Logística,True
+R-002786,Error de facturación,Administración,True
+R-002787,Material dañado,Logística,False
+R-002788,Atención en sucursal,Ventas,True
+R-002789,Entrega demorada,Logística,True
+R-002790,Otros,Atención al cliente,True
+R-002791,Atención en sucursal,Ventas,True
+R-002792,Entrega demorada,Logística,True
+R-002793,Entrega demorada,Logística,True
+R-002794,Faltante en la entrega,Logística,True
+R-002795,Error de facturación,Administración,False
+R-002796,Material dañado,Logística,False
+R-002797,Error de facturación,Administración,True
+R-002798,Error de facturación,Administración,True
+R-002799,Atención en sucursal,Ventas,True
+R-002800,Error de facturación,Administración,True
+R-002801,Faltante en la entrega,Logística,True
+R-002802,Entrega demorada,Logística,True
+R-002803,Entrega demorada,Logística,True
+R-002804,Atención en sucursal,Ventas,True
+R-002805,Entrega demorada,Logística,True
+R-002806,Material dañado,Logística,True
+R-002807,Faltante en la entrega,Logística,False
+R-002808,Entrega demorada,Logística,True
+R-002809,Faltante en la entrega,Logística,True
+R-002810,Error de facturación,Administración,True
+R-002811,Error de facturación,Administración,False
+R-002812,Atención en sucursal,Ventas,True
+R-002813,Material dañado,Logística,True
+R-002814,Faltante en la entrega,Logística,True
+R-002815,Entrega demorada,Logística,True
+R-002816,Error de facturación,Administración,True
+R-002817,Entrega demorada,Logística,True
+R-002818,Material dañado,Logística,False
+R-002819,Faltante en la entrega,Logística,True
+R-002820,Entrega demorada,Logística,True
+R-002821,Entrega demorada,Logística,True
+R-002822,Material dañado,Logística,False
+R-002823,Entrega demorada,Logística,True
+R-002824,Material dañado,Logística,True
+R-002825,Faltante en la entrega,Logística,True
+R-002826,Entrega demorada,Logística,True
+R-002827,Entrega demorada,Logística,False
+R-002828,Entrega demorada,Logística,True
+R-002829,Entrega demorada,Logística,False
+R-002830,Material dañado,Logística,False
+R-002831,Otros,Atención al cliente,True
+R-002832,Entrega demorada,Logística,True
+R-002833,Material dañado,Logística,True
+R-002834,Faltante en la entrega,Logística,True
+R-002835,Atención en sucursal,Ventas,True
+R-002836,Atención en sucursal,Ventas,True
+R-002837,Faltante en la entrega,Logística,True
+R-002838,Material dañado,Logística,True
+R-002839,Material dañado,Logística,False
+R-002840,Material dañado,Logística,True
+R-002841,Atención en sucursal,Ventas,True
+R-002842,Error de facturación,Administración,False
+R-002843,Error de facturación,Administración,True
+R-002844,Faltante en la entrega,Logística,True
+R-002845,Otros,Atención al cliente,True
+R-002846,Entrega demorada,Logística,True
+R-002847,Error de facturación,Administración,True
+R-002848,Faltante en la entrega,Logística,False
+R-002849,Error de facturación,Administración,False
+R-002850,Entrega demorada,Logística,False
+R-002851,Otros,Atención al cliente,True
+R-002852,Entrega demorada,Logística,True
+R-002853,Atención en sucursal,Ventas,True
+R-002854,Error de facturación,Administración,True
+R-002855,Faltante en la entrega,Logística,True
+R-002856,Atención en sucursal,Ventas,True
+R-002857,Entrega demorada,Logística,False
+R-002858,Entrega demorada,Logística,False
+R-002859,Atención en sucursal,Ventas,True
+R-002860,Atención en sucursal,Ventas,True
+R-002861,Faltante en la entrega,Logística,True
+R-002862,Entrega demorada,Logística,True
+R-002863,Otros,Atención al cliente,True
+R-002864,Material dañado,Logística,False
+R-002865,Material dañado,Logística,True
+R-002866,Error de facturación,Administración,True
+R-002867,Faltante en la entrega,Logística,True
+R-002868,Otros,Atención al cliente,True
+R-002869,Entrega demorada,Logística,True
+R-002870,Atención en sucursal,Ventas,True
+R-002871,Entrega demorada,Logística,True
+R-002872,Error de facturación,Administración,True
+R-002873,Material dañado,Logística,True
+R-002874,Otros,Atención al cliente,False
+R-002875,Atención en sucursal,Ventas,True
+R-002876,Material dañado,Logística,True
+R-002877,Faltante en la entrega,Logística,True
+R-002878,Atención en sucursal,Ventas,True
+R-002879,Faltante en la entrega,Logística,True
+R-002880,Otros,Atención al cliente,True
+R-002881,Entrega demorada,Logística,True
+R-002882,Faltante en la entrega,Logística,False
+R-002883,Entrega demorada,Logística,True
+R-002884,Error de facturación,Administración,True
+R-002885,Otros,Atención al cliente,True
+R-002886,Atención en sucursal,Ventas,True
+R-002887,Material dañado,Logística,True
+R-002888,Atención en sucursal,Ventas,True
+R-002889,Error de facturación,Administración,True
+R-002890,Material dañado,Logística,True
+R-002891,Material dañado,Logística,True
+R-002892,Atención en sucursal,Ventas,True
+R-002893,Error de facturación,Administración,False
+R-002894,Entrega demorada,Logística,True
+R-002895,Atención en sucursal,Ventas,True
+R-002896,Material dañado,Logística,True
+R-002897,Entrega demorada,Logística,True
+R-002898,Material dañado,Logística,True
+R-002899,Error de facturación,Administración,True
+R-002900,Entrega demorada,Logística,True
+R-002901,Error de facturación,Administración,True
+R-002902,Error de facturación,Administración,True
+R-002903,Faltante en la entrega,Logística,True
+R-002904,Otros,Atención al cliente,True
+R-002905,Entrega demorada,Logística,True
+R-002906,Error de facturación,Administración,True
+R-002907,Otros,Atención al cliente,True
+R-002908,Material dañado,Logística,True
+R-002909,Material dañado,Logística,True
+R-002910,Atención en sucursal,Ventas,True
+R-002911,Atención en sucursal,Ventas,True
+R-002912,Entrega demorada,Logística,True
+R-002913,Material dañado,Logística,True
+R-002914,Otros,Atención al cliente,True
+R-002915,Entrega demorada,Logística,True
+R-002916,Entrega demorada,Logística,True
+R-002917,Material dañado,Logística,True
+R-002918,Error de facturación,Administración,True
+R-002919,Atención en sucursal,Ventas,True
+R-002920,Otros,Atención al cliente,False
+R-002921,Faltante en la entrega,Logística,True
+R-002922,Material dañado,Logística,True
+R-002923,Entrega demorada,Logística,True
+R-002924,Atención en sucursal,Ventas,True
+R-002925,Material dañado,Logística,True
+R-002926,Faltante en la entrega,Logística,True
+R-002927,Entrega demorada,Logística,True
+R-002928,Error de facturación,Administración,True
+R-002929,Error de facturación,Administración,False
+R-002930,Material dañado,Logística,True
+R-002931,Error de facturación,Administración,True
+R-002932,Otros,Atención al cliente,True
+R-002933,Material dañado,Logística,True
+R-002934,Error de facturación,Administración,True
+R-002935,Material dañado,Logística,True
+R-002936,Entrega demorada,Logística,False
+R-002937,Entrega demorada,Logística,True
+R-002938,Entrega demorada,Logística,False
+R-002939,Entrega demorada,Logística,True
+R-002940,Error de facturación,Administración,True
+R-002941,Material dañado,Logística,False
+R-002942,Entrega demorada,Logística,False
+R-002943,Error de facturación,Administración,False
+R-002944,Faltante en la entrega,Logística,True
+R-002945,Material dañado,Logística,True
+R-002946,Material dañado,Logística,True
+R-002947,Atención en sucursal,Ventas,True
+R-002948,Material dañado,Logística,True
+R-002949,Faltante en la entrega,Logística,True
+R-002950,Entrega demorada,Logística,True
+R-002951,Error de facturación,Administración,False
+R-002952,Atención en sucursal,Ventas,True
+R-002953,Atención en sucursal,Ventas,True
+R-002954,Faltante en la entrega,Logística,True
+R-002955,Entrega demorada,Logística,True
+R-002956,Atención en sucursal,Ventas,True
+R-002957,Entrega demorada,Logística,True
+R-002958,Atención en sucursal,Ventas,False
+R-002959,Material dañado,Logística,True
+R-002960,Atención en sucursal,Ventas,True
+R-002961,Material dañado,Logística,True
+R-002962,Entrega demorada,Logística,True
+R-002963,Atención en sucursal,Ventas,True
+R-002964,Entrega demorada,Logística,True
+R-002965,Atención en sucursal,Ventas,True
+R-002966,Error de facturación,Administración,False
+R-002967,Atención en sucursal,Ventas,True
+R-002968,Entrega demorada,Logística,True
+R-002969,Material dañado,Logística,True
+R-002970,Material dañado,Logística,True
+R-002971,Atención en sucursal,Ventas,True
+R-002972,Entrega demorada,Logística,True
+R-002973,Entrega demorada,Logística,False
+R-002974,Entrega demorada,Logística,True
+R-002975,Entrega demorada,Logística,True
+R-002976,Material dañado,Logística,True
+R-002977,Entrega demorada,Logística,True
+R-002978,Faltante en la entrega,Logística,True
+R-002979,Error de facturación,Administración,True
+R-002980,Entrega demorada,Logística,True
+R-002981,Error de facturación,Administración,True
+R-002982,Entrega demorada,Logística,True
+R-002983,Entrega demorada,Logística,True
+R-002984,Atención en sucursal,Ventas,True
+R-002985,Error de facturación,Administración,True
+R-002986,Entrega demorada,Logística,True
+R-002987,Entrega demorada,Logística,True
+R-002988,Atención en sucursal,Ventas,True
+R-002989,Error de facturación,Administración,True
+R-002990,Faltante en la entrega,Logística,True
+R-002991,Atención en sucursal,Ventas,False
+R-002992,Faltante en la entrega,Logística,True
+R-002993,Faltante en la entrega,Logística,True
+R-002994,Entrega demorada,Logística,False
+R-002995,Faltante en la entrega,Logística,False
+R-002996,Entrega demorada,Logística,False
+R-002997,Otros,Atención al cliente,True
+R-002998,Entrega demorada,Logística,True
+R-002999,Entrega demorada,Logística,True
+R-003000,Entrega demorada,Logística,True
+R-003001,Error de facturación,Administración,True
+R-003002,Faltante en la entrega,Logística,True
+R-003003,Atención en sucursal,Ventas,True
+R-003004,Entrega demorada,Logística,True
+R-003005,Material dañado,Logística,True
+R-003006,Faltante en la entrega,Logística,True
+R-003007,Otros,Atención al cliente,True
+R-003008,Material dañado,Logística,True
+R-003009,Error de facturación,Administración,False
+R-003010,Faltante en la entrega,Logística,True
+R-003011,Entrega demorada,Logística,True
+R-003012,Error de facturación,Administración,True
+R-003013,Faltante en la entrega,Logística,False
+R-003014,Faltante en la entrega,Logística,True
+R-003015,Error de facturación,Administración,True
+R-003016,Faltante en la entrega,Logística,True
+R-003017,Atención en sucursal,Ventas,True
+R-003018,Material dañado,Logística,True
+R-003019,Error de facturación,Administración,True
+R-003020,Faltante en la entrega,Logística,True
+R-003021,Material dañado,Logística,True
+R-003022,Atención en sucursal,Ventas,True
+R-003023,Entrega demorada,Logística,True
+R-003024,Entrega demorada,Logística,True
+R-003025,Otros,Atención al cliente,True
+R-003026,Entrega demorada,Logística,True
+R-003027,Entrega demorada,Logística,True
+R-003028,Faltante en la entrega,Logística,True
+R-003029,Entrega demorada,Logística,True
+R-003030,Faltante en la entrega,Logística,False
+R-003031,Entrega demorada,Logística,False
+R-003032,Otros,Atención al cliente,True
+R-003033,Otros,Atención al cliente,False
+R-003034,Faltante en la entrega,Logística,False
+R-003035,Faltante en la entrega,Logística,True
+R-003036,Material dañado,Logística,True
+R-003037,Faltante en la entrega,Logística,True
+R-003038,Faltante en la entrega,Logística,False
+R-003039,Entrega demorada,Logística,False
+R-003040,Faltante en la entrega,Logística,True
+R-003041,Error de facturación,Administración,True
+R-003042,Otros,Atención al cliente,True
+R-003043,Error de facturación,Administración,True
+R-003044,Error de facturación,Administración,True
+R-003045,Atención en sucursal,Ventas,True
+R-003046,Faltante en la entrega,Logística,True
+R-003047,Entrega demorada,Logística,True
+R-003048,Entrega demorada,Logística,True
+R-003049,Faltante en la entrega,Logística,False
+R-003050,Material dañado,Logística,True
+R-003051,Error de facturación,Administración,True
+R-003052,Material dañado,Logística,True
+R-003053,Atención en sucursal,Ventas,True
+R-003054,Entrega demorada,Logística,True
+R-003055,Otros,Atención al cliente,True
+R-003056,Faltante en la entrega,Logística,True
+R-003057,Entrega demorada,Logística,True
+R-003058,Entrega demorada,Logística,False
+R-003059,Material dañado,Logística,True
+R-003060,Error de facturación,Administración,True
+R-003061,Entrega demorada,Logística,True
+R-003062,Entrega demorada,Logística,True
+R-003063,Faltante en la entrega,Logística,True
+R-003064,Otros,Atención al cliente,True
+R-003065,Error de facturación,Administración,True
+R-003066,Material dañado,Logística,True
+R-003067,Otros,Atención al cliente,True
+R-003068,Material dañado,Logística,False
+R-003069,Entrega demorada,Logística,True
+R-003070,Atención en sucursal,Ventas,True
+R-003071,Entrega demorada,Logística,True
+R-003072,Material dañado,Logística,True
+R-003073,Atención en sucursal,Ventas,True
+R-003074,Entrega demorada,Logística,True
+R-003075,Error de facturación,Administración,True
+R-003076,Entrega demorada,Logística,True
+R-003077,Atención en sucursal,Ventas,True
+R-003078,Entrega demorada,Logística,True
+R-003079,Material dañado,Logística,True
+R-003080,Atención en sucursal,Ventas,True
+R-003081,Faltante en la entrega,Logística,False
+R-003082,Faltante en la entrega,Logística,True
+R-003083,Entrega demorada,Logística,True
+R-003084,Material dañado,Logística,True
+R-003085,Otros,Atención al cliente,True
+R-003086,Material dañado,Logística,False
+R-003087,Entrega demorada,Logística,True
+R-003088,Error de facturación,Administración,True
+R-003089,Entrega demorada,Logística,True
+R-003090,Faltante en la entrega,Logística,True
+R-003091,Faltante en la entrega,Logística,True
+R-003092,Faltante en la entrega,Logística,True
+R-003093,Entrega demorada,Logística,True
+R-003094,Entrega demorada,Logística,False
+R-003095,Otros,Atención al cliente,True
+R-003096,Entrega demorada,Logística,True
+R-003097,Entrega demorada,Logística,True
+R-003098,Faltante en la entrega,Logística,False
+R-003099,Error de facturación,Administración,True
+R-003100,Entrega demorada,Logística,False
+R-003101,Entrega demorada,Logística,True
+R-003102,Error de facturación,Administración,True
+R-003103,Entrega demorada,Logística,True
+R-003104,Error de facturación,Administración,True
+R-003105,Faltante en la entrega,Logística,True
+R-003106,Faltante en la entrega,Logística,True
+R-003107,Material dañado,Logística,True
+R-003108,Error de facturación,Administración,True
+R-003109,Entrega demorada,Logística,False
+R-003110,Entrega demorada,Logística,True
+R-003111,Faltante en la entrega,Logística,True
+R-003112,Entrega demorada,Logística,True
+R-003113,Entrega demorada,Logística,False
+R-003114,Entrega demorada,Logística,True
+R-003115,Entrega demorada,Logística,True
+R-003116,Entrega demorada,Logística,True
+R-003117,Atención en sucursal,Ventas,True
+R-003118,Entrega demorada,Logística,True
+R-003119,Entrega demorada,Logística,True
+R-003120,Material dañado,Logística,True
+R-003121,Error de facturación,Administración,True
+R-003122,Atención en sucursal,Ventas,False
+R-003123,Error de facturación,Administración,True
+R-003124,Entrega demorada,Logística,True
+R-003125,Atención en sucursal,Ventas,True
+R-003126,Entrega demorada,Logística,True
+R-003127,Atención en sucursal,Ventas,True
+R-003128,Faltante en la entrega,Logística,True
+R-003129,Faltante en la entrega,Logística,True
+R-003130,Error de facturación,Administración,False
+R-003131,Faltante en la entrega,Logística,True
+R-003132,Entrega demorada,Logística,True
+R-003133,Error de facturación,Administración,True
+R-003134,Material dañado,Logística,True
+R-003135,Error de facturación,Administración,False
+R-003136,Entrega demorada,Logística,True
+R-003137,Faltante en la entrega,Logística,True
+R-003138,Entrega demorada,Logística,True
+R-003139,Faltante en la entrega,Logística,True
+R-003140,Faltante en la entrega,Logística,True
+R-003141,Material dañado,Logística,True
+R-003142,Entrega demorada,Logística,True
+R-003143,Error de facturación,Administración,True
+R-003144,Otros,Atención al cliente,True
+R-003145,Entrega demorada,Logística,True
+R-003146,Entrega demorada,Logística,True
+R-003147,Error de facturación,Administración,True
+R-003148,Error de facturación,Administración,True
+R-003149,Entrega demorada,Logística,True
+R-003150,Entrega demorada,Logística,True
+R-003151,Error de facturación,Administración,True
+R-003152,Error de facturación,Administración,True
+R-003153,Faltante en la entrega,Logística,False
+R-003154,Atención en sucursal,Ventas,False
+R-003155,Error de facturación,Administración,True
+R-003156,Atención en sucursal,Ventas,True
+R-003157,Atención en sucursal,Ventas,False
+R-003158,Material dañado,Logística,True
+R-003159,Entrega demorada,Logística,True
+R-003160,Material dañado,Logística,True
+R-003161,Atención en sucursal,Ventas,False
+R-003162,Error de facturación,Administración,True
+R-003163,Faltante en la entrega,Logística,True
+R-003164,Entrega demorada,Logística,True
+R-003165,Material dañado,Logística,False
+R-003166,Otros,Atención al cliente,False
+R-003167,Material dañado,Logística,False
+R-003168,Material dañado,Logística,True
+R-003169,Otros,Atención al cliente,True
+R-003170,Material dañado,Logística,True
+R-003171,Error de facturación,Administración,True
+R-003172,Entrega demorada,Logística,True
+R-003173,Faltante en la entrega,Logística,True
+R-003174,Entrega demorada,Logística,True
+R-003175,Faltante en la entrega,Logística,True
+R-003176,Error de facturación,Administración,False
+R-003177,Error de facturación,Administración,True
+R-003178,Faltante en la entrega,Logística,True
+R-003179,Otros,Atención al cliente,True
+R-003180,Material dañado,Logística,True
+R-003181,Error de facturación,Administración,True
+R-003182,Entrega demorada,Logística,True
+R-003183,Entrega demorada,Logística,True
+R-003184,Entrega demorada,Logística,True
+R-003185,Entrega demorada,Logística,True
+R-003186,Material dañado,Logística,True
+R-003187,Error de facturación,Administración,True
+R-003188,Entrega demorada,Logística,True
+R-003189,Material dañado,Logística,False
+R-003190,Atención en sucursal,Ventas,True
+R-003191,Entrega demorada,Logística,True
+R-003192,Entrega demorada,Logística,True
+R-003193,Material dañado,Logística,True
+R-003194,Faltante en la entrega,Logística,True
+R-003195,Entrega demorada,Logística,True
+R-003196,Otros,Atención al cliente,True
+R-003197,Faltante en la entrega,Logística,False
+R-003198,Error de facturación,Administración,False
+R-003199,Material dañado,Logística,True
+R-003200,Atención en sucursal,Ventas,True
+R-003201,Atención en sucursal,Ventas,False
+R-003202,Faltante en la entrega,Logística,True
+R-003203,Entrega demorada,Logística,True
+R-003204,Material dañado,Logística,True
+R-003205,Otros,Atención al cliente,False
+R-003206,Entrega demorada,Logística,False
+R-003207,Material dañado,Logística,False
+R-003208,Faltante en la entrega,Logística,True
+R-003209,Error de facturación,Administración,False
+R-003210,Entrega demorada,Logística,True
+R-003211,Entrega demorada,Logística,False
+R-003212,Otros,Atención al cliente,True
+R-003213,Entrega demorada,Logística,True
+R-003214,Atención en sucursal,Ventas,False
+R-003215,Entrega demorada,Logística,True
+R-003216,Faltante en la entrega,Logística,True
+R-003217,Faltante en la entrega,Logística,True
+R-003218,Entrega demorada,Logística,True
+R-003219,Error de facturación,Administración,True
+R-003220,Material dañado,Logística,True
+R-003221,Entrega demorada,Logística,True
+R-003222,Entrega demorada,Logística,True
+R-003223,Faltante en la entrega,Logística,True
+R-003224,Otros,Atención al cliente,True
+R-003225,Atención en sucursal,Ventas,True
+R-003226,Entrega demorada,Logística,True
+R-003227,Material dañado,Logística,True
+R-003228,Error de facturación,Administración,True
+R-003229,Faltante en la entrega,Logística,True
+R-003230,Error de facturación,Administración,False
+R-003231,Material dañado,Logística,True
+R-003232,Error de facturación,Administración,True
+R-003233,Material dañado,Logística,True
+R-003234,Material dañado,Logística,True
+R-003235,Otros,Atención al cliente,True
+R-003236,Otros,Atención al cliente,False
+R-003237,Error de facturación,Administración,True
+R-003238,Entrega demorada,Logística,True
+R-003239,Entrega demorada,Logística,True
+R-003240,Faltante en la entrega,Logística,True
+R-003241,Otros,Atención al cliente,True
+R-003242,Entrega demorada,Logística,True
+R-003243,Entrega demorada,Logística,True
+R-003244,Atención en sucursal,Ventas,False
+R-003245,Atención en sucursal,Ventas,True
+R-003246,Faltante en la entrega,Logística,True
+R-003247,Error de facturación,Administración,True
+R-003248,Material dañado,Logística,True
+R-003249,Material dañado,Logística,False
+R-003250,Otros,Atención al cliente,True
+R-003251,Entrega demorada,Logística,False
+R-003252,Error de facturación,Administración,True
+R-003253,Otros,Atención al cliente,True
+R-003254,Atención en sucursal,Ventas,False
+R-003255,Entrega demorada,Logística,True
+R-003256,Material dañado,Logística,True
+R-003257,Material dañado,Logística,True
+R-003258,Faltante en la entrega,Logística,False
+R-003259,Material dañado,Logística,True
+R-003260,Faltante en la entrega,Logística,True
+R-003261,Entrega demorada,Logística,True
+R-003262,Atención en sucursal,Ventas,True
+R-003263,Entrega demorada,Logística,True
+R-003264,Entrega demorada,Logística,True
+R-003265,Entrega demorada,Logística,True
+R-003266,Entrega demorada,Logística,False
+R-003267,Material dañado,Logística,True
+R-003268,Error de facturación,Administración,True
+R-003269,Error de facturación,Administración,True
+R-003270,Material dañado,Logística,True
+R-003271,Material dañado,Logística,False
+R-003272,Faltante en la entrega,Logística,True
+R-003273,Entrega demorada,Logística,True
+R-003274,Atención en sucursal,Ventas,True
+R-003275,Otros,Atención al cliente,True
+R-003276,Material dañado,Logística,False
+R-003277,Error de facturación,Administración,True
+R-003278,Material dañado,Logística,True
+R-003279,Error de facturación,Administración,True
+R-003280,Entrega demorada,Logística,True
+R-003281,Error de facturación,Administración,True
+R-003282,Entrega demorada,Logística,True
+R-003283,Faltante en la entrega,Logística,True
+R-003284,Otros,Atención al cliente,True
+R-003285,Faltante en la entrega,Logística,True
+R-003286,Atención en sucursal,Ventas,True
+R-003287,Entrega demorada,Logística,True
+R-003288,Faltante en la entrega,Logística,True
+R-003289,Error de facturación,Administración,False
+R-003290,Entrega demorada,Logística,False
+R-003291,Otros,Atención al cliente,True
+R-003292,Atención en sucursal,Ventas,True
+R-003293,Otros,Atención al cliente,False
+R-003294,Entrega demorada,Logística,True
+R-003295,Error de facturación,Administración,True
+R-003296,Entrega demorada,Logística,True
+R-003297,Entrega demorada,Logística,True
+R-003298,Error de facturación,Administración,True
+R-003299,Entrega demorada,Logística,True
+R-003300,Otros,Atención al cliente,True
+R-003301,Entrega demorada,Logística,True
+R-003302,Material dañado,Logística,True
+R-003303,Material dañado,Logística,True
+R-003304,Error de facturación,Administración,True
+R-003305,Faltante en la entrega,Logística,False
+R-003306,Material dañado,Logística,True
+R-003307,Faltante en la entrega,Logística,True
+R-003308,Material dañado,Logística,True
+R-003309,Error de facturación,Administración,True
+R-003310,Entrega demorada,Logística,True
+R-003311,Error de facturación,Administración,True
+R-003312,Otros,Atención al cliente,True
+R-003313,Entrega demorada,Logística,True
+R-003314,Error de facturación,Administración,True
+R-003315,Entrega demorada,Logística,True
+R-003316,Entrega demorada,Logística,False
+R-003317,Entrega demorada,Logística,True
+R-003318,Material dañado,Logística,True
+R-003319,Entrega demorada,Logística,False
+R-003320,Entrega demorada,Logística,False
+R-003321,Entrega demorada,Logística,True
+R-003322,Error de facturación,Administración,True
+R-003323,Material dañado,Logística,True
+R-003324,Error de facturación,Administración,True
+R-003325,Entrega demorada,Logística,True
+R-003326,Error de facturación,Administración,True
+R-003327,Material dañado,Logística,False
+R-003328,Entrega demorada,Logística,True
+R-003329,Faltante en la entrega,Logística,True
+R-003330,Entrega demorada,Logística,True
+R-003331,Faltante en la entrega,Logística,True
+R-003332,Material dañado,Logística,True
+R-003333,Faltante en la entrega,Logística,True
+R-003334,Error de facturación,Administración,False
+R-003335,Material dañado,Logística,False
+R-003336,Otros,Atención al cliente,True
+R-003337,Faltante en la entrega,Logística,False
+R-003338,Atención en sucursal,Ventas,True
+R-003339,Entrega demorada,Logística,True
+R-003340,Atención en sucursal,Ventas,True
+R-003341,Entrega demorada,Logística,False
+R-003342,Otros,Atención al cliente,True
+R-003343,Entrega demorada,Logística,True
+R-003344,Error de facturación,Administración,True
+R-003345,Material dañado,Logística,True
+R-003346,Atención en sucursal,Ventas,True
+R-003347,Error de facturación,Administración,True
+R-003348,Faltante en la entrega,Logística,True
+R-003349,Error de facturación,Administración,True
+R-003350,Material dañado,Logística,True
+R-003351,Material dañado,Logística,True
+R-003352,Faltante en la entrega,Logística,True
+R-003353,Material dañado,Logística,False
+R-003354,Faltante en la entrega,Logística,True
+R-003355,Entrega demorada,Logística,True
+R-003356,Otros,Atención al cliente,True
+R-003357,Entrega demorada,Logística,True
+R-003358,Error de facturación,Administración,True
+R-003359,Error de facturación,Administración,True
+R-003360,Entrega demorada,Logística,False
+R-003361,Faltante en la entrega,Logística,True
+R-003362,Atención en sucursal,Ventas,True
+R-003363,Error de facturación,Administración,True
+R-003364,Entrega demorada,Logística,True
+R-003365,Otros,Atención al cliente,True
+R-003366,Atención en sucursal,Ventas,True
+R-003367,Material dañado,Logística,True
+R-003368,Material dañado,Logística,False
+R-003369,Faltante en la entrega,Logística,True
+R-003370,Material dañado,Logística,True
+R-003371,Entrega demorada,Logística,False
+R-003372,Entrega demorada,Logística,True
+R-003373,Material dañado,Logística,True
+R-003374,Material dañado,Logística,True
+R-003375,Otros,Atención al cliente,True
+R-003376,Error de facturación,Administración,True
+R-003377,Entrega demorada,Logística,True
+R-003378,Otros,Atención al cliente,True
+R-003379,Faltante en la entrega,Logística,True
+R-003380,Entrega demorada,Logística,True
+R-003381,Material dañado,Logística,True
+R-003382,Error de facturación,Administración,True
+R-003383,Faltante en la entrega,Logística,True
+R-003384,Entrega demorada,Logística,True
+R-003385,Material dañado,Logística,False
+R-003386,Entrega demorada,Logística,True
+R-003387,Atención en sucursal,Ventas,True
+R-003388,Faltante en la entrega,Logística,True
+R-003389,Material dañado,Logística,True
+R-003390,Material dañado,Logística,True
+R-003391,Entrega demorada,Logística,True
+R-003392,Error de facturación,Administración,True
+R-003393,Entrega demorada,Logística,True
+R-003394,Material dañado,Logística,True
+R-003395,Atención en sucursal,Ventas,True
+R-003396,Entrega demorada,Logística,False
+R-003397,Otros,Atención al cliente,True
+R-003398,Faltante en la entrega,Logística,False
+R-003399,Material dañado,Logística,True
+R-003400,Entrega demorada,Logística,True
+R-003401,Entrega demorada,Logística,True
+R-003402,Faltante en la entrega,Logística,True
+R-003403,Entrega demorada,Logística,True
+R-003404,Faltante en la entrega,Logística,True
+R-003405,Atención en sucursal,Ventas,True
+R-003406,Error de facturación,Administración,True
+R-003407,Entrega demorada,Logística,True
+R-003408,Faltante en la entrega,Logística,True
+R-003409,Otros,Atención al cliente,True
+R-003410,Material dañado,Logística,True
+R-003411,Entrega demorada,Logística,True
+R-003412,Entrega demorada,Logística,True
+R-003413,Material dañado,Logística,True
+R-003414,Otros,Atención al cliente,True
+R-003415,Faltante en la entrega,Logística,True
+R-003416,Otros,Atención al cliente,True
+R-003417,Error de facturación,Administración,True
+R-003418,Otros,Atención al cliente,True
+R-003419,Atención en sucursal,Ventas,True
+R-003420,Faltante en la entrega,Logística,True
+R-003421,Faltante en la entrega,Logística,True
+R-003422,Otros,Atención al cliente,True
+R-003423,Otros,Atención al cliente,True
+R-003424,Faltante en la entrega,Logística,True
+R-003425,Faltante en la entrega,Logística,True
+R-003426,Error de facturación,Administración,True
+R-003427,Atención en sucursal,Ventas,True
+R-003428,Error de facturación,Administración,True
+R-003429,Entrega demorada,Logística,True
+R-003430,Entrega demorada,Logística,True
+R-003431,Entrega demorada,Logística,True
+R-003432,Atención en sucursal,Ventas,True
+R-003433,Atención en sucursal,Ventas,True
+R-003434,Entrega demorada,Logística,True
+R-003435,Entrega demorada,Logística,True
+R-003436,Entrega demorada,Logística,True
+R-003437,Material dañado,Logística,True
+R-003438,Faltante en la entrega,Logística,True
+R-003439,Faltante en la entrega,Logística,True
+R-003440,Error de facturación,Administración,True
+R-003441,Error de facturación,Administración,True
+R-003442,Error de facturación,Administración,False
+R-003443,Material dañado,Logística,True
+R-003444,Entrega demorada,Logística,True
+R-003445,Faltante en la entrega,Logística,True
+R-003446,Entrega demorada,Logística,True
+R-003447,Otros,Atención al cliente,True
+R-003448,Error de facturación,Administración,True
+R-003449,Faltante en la entrega,Logística,True
+R-003450,Faltante en la entrega,Logística,True
+R-003451,Entrega demorada,Logística,True
+R-003452,Entrega demorada,Logística,True
+R-003453,Entrega demorada,Logística,True
+R-003454,Faltante en la entrega,Logística,True
+R-003455,Faltante en la entrega,Logística,True
+R-003456,Faltante en la entrega,Logística,True
+R-003457,Atención en sucursal,Ventas,True
+R-003458,Faltante en la entrega,Logística,True
+R-003459,Faltante en la entrega,Logística,True
+R-003460,Entrega demorada,Logística,True
+R-003461,Entrega demorada,Logística,True
+R-003462,Material dañado,Logística,True
+R-003463,Entrega demorada,Logística,True
+R-003464,Material dañado,Logística,False
+R-003465,Entrega demorada,Logística,True
+R-003466,Faltante en la entrega,Logística,True
+R-003467,Atención en sucursal,Ventas,True
+R-003468,Material dañado,Logística,False
+R-003469,Error de facturación,Administración,True
+R-003470,Otros,Atención al cliente,True
+R-003471,Entrega demorada,Logística,True
+R-003472,Entrega demorada,Logística,True
+R-003473,Faltante en la entrega,Logística,True
+R-003474,Atención en sucursal,Ventas,True
+R-003475,Error de facturación,Administración,True
+R-003476,Faltante en la entrega,Logística,False
+R-003477,Material dañado,Logística,True
+R-003478,Entrega demorada,Logística,True
+R-003479,Entrega demorada,Logística,False
+R-003480,Entrega demorada,Logística,False
+R-003481,Faltante en la entrega,Logística,True
+R-003482,Atención en sucursal,Ventas,True
+R-003483,Entrega demorada,Logística,True
+R-003484,Entrega demorada,Logística,True
+R-003485,Faltante en la entrega,Logística,True
+R-003486,Otros,Atención al cliente,True
+R-003487,Faltante en la entrega,Logística,True
+R-003488,Faltante en la entrega,Logística,False
+R-003489,Faltante en la entrega,Logística,False
+R-003490,Atención en sucursal,Ventas,True
+R-003491,Material dañado,Logística,True
+R-003492,Faltante en la entrega,Logística,True
+R-003493,Faltante en la entrega,Logística,True
+R-003494,Entrega demorada,Logística,True
+R-003495,Faltante en la entrega,Logística,True
+R-003496,Error de facturación,Administración,True
+R-003497,Entrega demorada,Logística,True
+R-003498,Faltante en la entrega,Logística,False
+R-003499,Atención en sucursal,Ventas,True
+R-003500,Material dañado,Logística,True
+R-003501,Entrega demorada,Logística,True
+R-003502,Entrega demorada,Logística,True
+R-003503,Entrega demorada,Logística,True
+R-003504,Faltante en la entrega,Logística,True
+R-003505,Entrega demorada,Logística,True
+R-003506,Atención en sucursal,Ventas,True
+R-003507,Entrega demorada,Logística,False
+R-003508,Error de facturación,Administración,True
+R-003509,Material dañado,Logística,True
+R-003510,Material dañado,Logística,True
+R-003511,Error de facturación,Administración,True
+R-003512,Faltante en la entrega,Logística,True
+R-003513,Material dañado,Logística,False
+R-003514,Faltante en la entrega,Logística,False
+R-003515,Error de facturación,Administración,True
+R-003516,Faltante en la entrega,Logística,True
+R-003517,Entrega demorada,Logística,True
+R-003518,Faltante en la entrega,Logística,True
+R-003519,Error de facturación,Administración,True
+R-003520,Material dañado,Logística,True
+R-003521,Material dañado,Logística,True
+R-003522,Atención en sucursal,Ventas,True
+R-003523,Faltante en la entrega,Logística,False
+R-003524,Atención en sucursal,Ventas,True
+R-003525,Faltante en la entrega,Logística,True
+R-003526,Atención en sucursal,Ventas,False
+R-003527,Material dañado,Logística,True
+R-003528,Material dañado,Logística,True
+R-003529,Atención en sucursal,Ventas,True
+R-003530,Error de facturación,Administración,True
+R-003531,Error de facturación,Administración,True
+R-003532,Faltante en la entrega,Logística,True
+R-003533,Entrega demorada,Logística,False
+R-003534,Error de facturación,Administración,True
+R-003535,Atención en sucursal,Ventas,True
+R-003536,Material dañado,Logística,True
+R-003537,Entrega demorada,Logística,True
+R-003538,Entrega demorada,Logística,True
+R-003539,Material dañado,Logística,True
+R-003540,Material dañado,Logística,True
+R-003541,Entrega demorada,Logística,True
+R-003542,Error de facturación,Administración,True
+R-003543,Error de facturación,Administración,True
+R-003544,Faltante en la entrega,Logística,True
+R-003545,Error de facturación,Administración,True
+R-003546,Faltante en la entrega,Logística,True
+R-003547,Entrega demorada,Logística,False
+R-003548,Faltante en la entrega,Logística,False
+R-003549,Faltante en la entrega,Logística,False
+R-003550,Faltante en la entrega,Logística,True
+R-003551,Faltante en la entrega,Logística,True
+R-003552,Error de facturación,Administración,True
+R-003553,Atención en sucursal,Ventas,True
+R-003554,Material dañado,Logística,True
+R-003555,Entrega demorada,Logística,True
+R-003556,Entrega demorada,Logística,True
+R-003557,Entrega demorada,Logística,True
+R-003558,Otros,Atención al cliente,True
+R-003559,Otros,Atención al cliente,True
+R-003560,Faltante en la entrega,Logística,True
+R-003561,Entrega demorada,Logística,True
+R-003562,Atención en sucursal,Ventas,True
+R-003563,Entrega demorada,Logística,True
+R-003564,Error de facturación,Administración,False
+R-003565,Material dañado,Logística,True
+R-003566,Material dañado,Logística,True
+R-003567,Error de facturación,Administración,True
+R-003568,Error de facturación,Administración,False
+R-003569,Entrega demorada,Logística,True
+R-003570,Faltante en la entrega,Logística,False
+R-003571,Otros,Atención al cliente,True
+R-003572,Error de facturación,Administración,True
+R-003573,Faltante en la entrega,Logística,True
+R-003574,Error de facturación,Administración,True
+R-003575,Faltante en la entrega,Logística,True
+R-003576,Error de facturación,Administración,True
+R-003577,Faltante en la entrega,Logística,True
+R-003578,Entrega demorada,Logística,True
+R-003579,Faltante en la entrega,Logística,True
+R-003580,Material dañado,Logística,True
+R-003581,Atención en sucursal,Ventas,True
+R-003582,Otros,Atención al cliente,True
+R-003583,Otros,Atención al cliente,True
+R-003584,Otros,Atención al cliente,True
+R-003585,Faltante en la entrega,Logística,True
+R-003586,Entrega demorada,Logística,True
+R-003587,Error de facturación,Administración,True
+R-003588,Faltante en la entrega,Logística,True
+R-003589,Error de facturación,Administración,True
+R-003590,Otros,Atención al cliente,False
+R-003591,Material dañado,Logística,True
+R-003592,Faltante en la entrega,Logística,True
+R-003593,Entrega demorada,Logística,False
+R-003594,Entrega demorada,Logística,True
+R-003595,Otros,Atención al cliente,True
+R-003596,Atención en sucursal,Ventas,False
+R-003597,Otros,Atención al cliente,True
+R-003598,Entrega demorada,Logística,True
+R-003599,Material dañado,Logística,True
+R-003600,Faltante en la entrega,Logística,False
+R-003601,Entrega demorada,Logística,True
+R-003602,Entrega demorada,Logística,True
+R-003603,Material dañado,Logística,True
+R-003604,Faltante en la entrega,Logística,True
+R-003605,Material dañado,Logística,False
+R-003606,Entrega demorada,Logística,True
+R-003607,Otros,Atención al cliente,True
+R-003608,Material dañado,Logística,True
+R-003609,Atención en sucursal,Ventas,True
+R-003610,Faltante en la entrega,Logística,True
+R-003611,Entrega demorada,Logística,True
+R-003612,Entrega demorada,Logística,True
+R-003613,Atención en sucursal,Ventas,True
+R-003614,Faltante en la entrega,Logística,True
+R-003615,Entrega demorada,Logística,True
+R-003616,Material dañado,Logística,True
+R-003617,Faltante en la entrega,Logística,True
+R-003618,Faltante en la entrega,Logística,True
+R-003619,Entrega demorada,Logística,False
+R-003620,Atención en sucursal,Ventas,True
+R-003621,Entrega demorada,Logística,True
+R-003622,Error de facturación,Administración,True
+R-003623,Faltante en la entrega,Logística,True
+R-003624,Error de facturación,Administración,True
+R-003625,Entrega demorada,Logística,False
+R-003626,Material dañado,Logística,True
+R-003627,Material dañado,Logística,True
+R-003628,Faltante en la entrega,Logística,False
+R-003629,Material dañado,Logística,True
+R-003630,Entrega demorada,Logística,False
+R-003631,Atención en sucursal,Ventas,True
+R-003632,Material dañado,Logística,False
+R-003633,Faltante en la entrega,Logística,False
+R-003634,Error de facturación,Administración,True
+R-003635,Material dañado,Logística,True
+R-003636,Faltante en la entrega,Logística,True
+R-003637,Atención en sucursal,Ventas,True
+R-003638,Atención en sucursal,Ventas,True
+R-003639,Atención en sucursal,Ventas,True
+R-003640,Entrega demorada,Logística,False
+R-003641,Faltante en la entrega,Logística,True
+R-003642,Entrega demorada,Logística,True
+R-003643,Material dañado,Logística,True
+R-003644,Error de facturación,Administración,True
+R-003645,Error de facturación,Administración,True
+R-003646,Atención en sucursal,Ventas,True
+R-003647,Material dañado,Logística,True
+R-003648,Entrega demorada,Logística,True
+R-003649,Entrega demorada,Logística,True
+R-003650,Material dañado,Logística,True
+R-003651,Atención en sucursal,Ventas,True
+R-003652,Entrega demorada,Logística,True
+R-003653,Entrega demorada,Logística,True
+R-003654,Atención en sucursal,Ventas,True
+R-003655,Atención en sucursal,Ventas,True
+R-003656,Atención en sucursal,Ventas,True
+R-003657,Material dañado,Logística,True
+R-003658,Error de facturación,Administración,True
+R-003659,Error de facturación,Administración,True
+R-003660,Faltante en la entrega,Logística,True
+R-003661,Atención en sucursal,Ventas,True
+R-003662,Atención en sucursal,Ventas,True
+R-003663,Entrega demorada,Logística,True
+R-003664,Entrega demorada,Logística,True
+R-003665,Error de facturación,Administración,True
+R-003666,Error de facturación,Administración,True
+R-003667,Material dañado,Logística,True
+R-003668,Entrega demorada,Logística,True
+R-003669,Otros,Atención al cliente,True
+R-003670,Material dañado,Logística,True
+R-003671,Entrega demorada,Logística,True
+R-003672,Faltante en la entrega,Logística,True
+R-003673,Otros,Atención al cliente,True
+R-003674,Error de facturación,Administración,True
+R-003675,Error de facturación,Administración,True
+R-003676,Material dañado,Logística,True
+R-003677,Atención en sucursal,Ventas,True
+R-003678,Atención en sucursal,Ventas,True
+R-003679,Atención en sucursal,Ventas,True
+R-003680,Entrega demorada,Logística,True
+R-003681,Material dañado,Logística,True
+R-003682,Error de facturación,Administración,True
+R-003683,Atención en sucursal,Ventas,True
+R-003684,Material dañado,Logística,True
+R-003685,Entrega demorada,Logística,True
+R-003686,Material dañado,Logística,True
+R-003687,Error de facturación,Administración,True
+R-003688,Atención en sucursal,Ventas,True
+R-003689,Entrega demorada,Logística,False
+R-003690,Entrega demorada,Logística,True
+R-003691,Otros,Atención al cliente,True
+R-003692,Entrega demorada,Logística,True
+R-003693,Entrega demorada,Logística,True
+R-003694,Error de facturación,Administración,True
+R-003695,Material dañado,Logística,True
+R-003696,Faltante en la entrega,Logística,True
+R-003697,Material dañado,Logística,True
+R-003698,Material dañado,Logística,True
+R-003699,Error de facturación,Administración,True
+R-003700,Material dañado,Logística,True
+R-003701,Entrega demorada,Logística,False
+R-003702,Material dañado,Logística,True
+R-003703,Entrega demorada,Logística,True
+R-003704,Faltante en la entrega,Logística,True
+R-003705,Error de facturación,Administración,False
+R-003706,Material dañado,Logística,True
+R-003707,Material dañado,Logística,False
+R-003708,Entrega demorada,Logística,True
+R-003709,Entrega demorada,Logística,True
+R-003710,Material dañado,Logística,True
+R-003711,Faltante en la entrega,Logística,True
+R-003712,Material dañado,Logística,True
+R-003713,Error de facturación,Administración,True
+R-003714,Atención en sucursal,Ventas,True
+R-003715,Entrega demorada,Logística,True
+R-003716,Material dañado,Logística,True
+R-003717,Entrega demorada,Logística,True
+R-003718,Error de facturación,Administración,False
+R-003719,Entrega demorada,Logística,True
+R-003720,Material dañado,Logística,True
+R-003721,Entrega demorada,Logística,True
+R-003722,Material dañado,Logística,True
+R-003723,Faltante en la entrega,Logística,True
+R-003724,Entrega demorada,Logística,False
+R-003725,Faltante en la entrega,Logística,True
+R-003726,Entrega demorada,Logística,False
+R-003727,Faltante en la entrega,Logística,True
+R-003728,Material dañado,Logística,False
+R-003729,Atención en sucursal,Ventas,False
+R-003730,Faltante en la entrega,Logística,True
+R-003731,Atención en sucursal,Ventas,True
+R-003732,Atención en sucursal,Ventas,True
+R-003733,Error de facturación,Administración,True
+R-003734,Error de facturación,Administración,True
+R-003735,Faltante en la entrega,Logística,True
+R-003736,Entrega demorada,Logística,True
+R-003737,Error de facturación,Administración,True
+R-003738,Faltante en la entrega,Logística,True
+R-003739,Entrega demorada,Logística,True
+R-003740,Entrega demorada,Logística,True
+R-003741,Faltante en la entrega,Logística,True
+R-003742,Error de facturación,Administración,False
+R-003743,Material dañado,Logística,True
+R-003744,Entrega demorada,Logística,True
+R-003745,Otros,Atención al cliente,True
+R-003746,Error de facturación,Administración,True
+R-003747,Faltante en la entrega,Logística,True
+R-003748,Faltante en la entrega,Logística,False
+R-003749,Error de facturación,Administración,True
+R-003750,Faltante en la entrega,Logística,True
+R-003751,Entrega demorada,Logística,True
+R-003752,Material dañado,Logística,False
+R-003753,Faltante en la entrega,Logística,True
+R-003754,Entrega demorada,Logística,True
+R-003755,Faltante en la entrega,Logística,True
+R-003756,Faltante en la entrega,Logística,True
+R-003757,Material dañado,Logística,False
+R-003758,Atención en sucursal,Ventas,True
+R-003759,Otros,Atención al cliente,False
+R-003760,Error de facturación,Administración,True
+R-003761,Material dañado,Logística,True
+R-003762,Otros,Atención al cliente,True
+R-003763,Faltante en la entrega,Logística,True
+R-003764,Material dañado,Logística,True
+R-003765,Faltante en la entrega,Logística,True
+R-003766,Entrega demorada,Logística,True
+R-003767,Material dañado,Logística,True
+R-003768,Material dañado,Logística,True
+R-003769,Faltante en la entrega,Logística,True
+R-003770,Entrega demorada,Logística,True
+R-003771,Entrega demorada,Logística,True
+R-003772,Entrega demorada,Logística,True
+R-003773,Entrega demorada,Logística,True
+R-003774,Entrega demorada,Logística,True
+R-003775,Atención en sucursal,Ventas,True
+R-003776,Error de facturación,Administración,True
+R-003777,Error de facturación,Administración,True
+R-003778,Atención en sucursal,Ventas,True
+R-003779,Atención en sucursal,Ventas,False
+R-003780,Entrega demorada,Logística,True
+R-003781,Faltante en la entrega,Logística,True
+R-003782,Entrega demorada,Logística,True
+R-003783,Atención en sucursal,Ventas,True
+R-003784,Error de facturación,Administración,False
+R-003785,Faltante en la entrega,Logística,True
+R-003786,Otros,Atención al cliente,True
+R-003787,Material dañado,Logística,True
+R-003788,Entrega demorada,Logística,True
+R-003789,Atención en sucursal,Ventas,True
+R-003790,Entrega demorada,Logística,True
+R-003791,Error de facturación,Administración,True
+R-003792,Faltante en la entrega,Logística,False
+R-003793,Faltante en la entrega,Logística,True
+R-003794,Otros,Atención al cliente,True
+R-003795,Atención en sucursal,Ventas,True
+R-003796,Material dañado,Logística,True
+R-003797,Entrega demorada,Logística,True
+R-003798,Atención en sucursal,Ventas,True
+R-003799,Error de facturación,Administración,True
+R-003800,Faltante en la entrega,Logística,True
+R-003801,Material dañado,Logística,True
+R-003802,Atención en sucursal,Ventas,False
+R-003803,Faltante en la entrega,Logística,True
+R-003804,Material dañado,Logística,True
+R-003805,Faltante en la entrega,Logística,True
+R-003806,Atención en sucursal,Ventas,True
+R-003807,Entrega demorada,Logística,True
+R-003808,Entrega demorada,Logística,True
+R-003809,Entrega demorada,Logística,True
+R-003810,Atención en sucursal,Ventas,True
+R-003811,Faltante en la entrega,Logística,True
+R-003812,Faltante en la entrega,Logística,True
+R-003813,Entrega demorada,Logística,True
+R-003814,Atención en sucursal,Ventas,True
+R-003815,Atención en sucursal,Ventas,True
+R-003816,Entrega demorada,Logística,True
+R-003817,Error de facturación,Administración,True
+R-003818,Faltante en la entrega,Logística,True
+R-003819,Entrega demorada,Logística,True
+R-003820,Faltante en la entrega,Logística,True
+R-003821,Material dañado,Logística,True
+R-003822,Faltante en la entrega,Logística,True
+R-003823,Error de facturación,Administración,True
+R-003824,Error de facturación,Administración,True
+R-003825,Otros,Atención al cliente,True
+R-003826,Faltante en la entrega,Logística,True
+R-003827,Otros,Atención al cliente,True
+R-003828,Entrega demorada,Logística,True
+R-003829,Material dañado,Logística,True
+R-003830,Atención en sucursal,Ventas,True
+R-003831,Entrega demorada,Logística,False
+R-003832,Material dañado,Logística,True
+R-003833,Atención en sucursal,Ventas,True
+R-003834,Entrega demorada,Logística,True
+R-003835,Material dañado,Logística,True
+R-003836,Atención en sucursal,Ventas,True
+R-003837,Error de facturación,Administración,True
+R-003838,Entrega demorada,Logística,True
+R-003839,Faltante en la entrega,Logística,True
+R-003840,Material dañado,Logística,True
+R-003841,Material dañado,Logística,True
+R-003842,Entrega demorada,Logística,True
+R-003843,Atención en sucursal,Ventas,True
+R-003844,Entrega demorada,Logística,True
+R-003845,Entrega demorada,Logística,True
+R-003846,Entrega demorada,Logística,True
+R-003847,Error de facturación,Administración,True
+R-003848,Material dañado,Logística,True
+R-003849,Entrega demorada,Logística,True
+R-003850,Material dañado,Logística,True
+R-003851,Entrega demorada,Logística,False
+R-003852,Entrega demorada,Logística,True
+R-003853,Entrega demorada,Logística,True
+R-003854,Error de facturación,Administración,False
+R-003855,Error de facturación,Administración,True
+R-003856,Atención en sucursal,Ventas,True
+R-003857,Entrega demorada,Logística,False
+R-003858,Faltante en la entrega,Logística,True
+R-003859,Entrega demorada,Logística,True
+R-003860,Entrega demorada,Logística,True
+R-003861,Error de facturación,Administración,True
+R-003862,Error de facturación,Administración,True
+R-003863,Faltante en la entrega,Logística,True
+R-003864,Error de facturación,Administración,True
+R-003865,Entrega demorada,Logística,False
+R-003866,Faltante en la entrega,Logística,False
+R-003867,Material dañado,Logística,True
+R-003868,Faltante en la entrega,Logística,True
+R-003869,Entrega demorada,Logística,False
+R-003870,Entrega demorada,Logística,True
+R-003871,Material dañado,Logística,False
+R-003872,Entrega demorada,Logística,True
+R-003873,Faltante en la entrega,Logística,True
+R-003874,Material dañado,Logística,False
+R-003875,Faltante en la entrega,Logística,True
+R-003876,Otros,Atención al cliente,True
+R-003877,Entrega demorada,Logística,True
+R-003878,Error de facturación,Administración,True
+R-003879,Atención en sucursal,Ventas,True
+R-003880,Atención en sucursal,Ventas,True
+R-003881,Entrega demorada,Logística,True
+R-003882,Faltante en la entrega,Logística,True
+R-003883,Otros,Atención al cliente,True
+R-003884,Entrega demorada,Logística,True
+R-003885,Material dañado,Logística,True
+R-003886,Entrega demorada,Logística,True
+R-003887,Entrega demorada,Logística,True
+R-003888,Entrega demorada,Logística,True
+R-003889,Entrega demorada,Logística,True
+R-003890,Material dañado,Logística,True
+R-003891,Material dañado,Logística,True
+R-003892,Atención en sucursal,Ventas,False
+R-003893,Entrega demorada,Logística,True
+R-003894,Entrega demorada,Logística,True
+R-003895,Error de facturación,Administración,True
+R-003896,Entrega demorada,Logística,True
+R-003897,Material dañado,Logística,True
+R-003898,Material dañado,Logística,True
+R-003899,Error de facturación,Administración,True
+R-003900,Entrega demorada,Logística,True
+R-003901,Faltante en la entrega,Logística,True
+R-003902,Material dañado,Logística,True
+R-003903,Faltante en la entrega,Logística,True
+R-003904,Entrega demorada,Logística,True
+R-003905,Error de facturación,Administración,True
+R-003906,Material dañado,Logística,True
+R-003907,Faltante en la entrega,Logística,False
+R-003908,Entrega demorada,Logística,True
+R-003909,Material dañado,Logística,True
+R-003910,Material dañado,Logística,True
+R-003911,Atención en sucursal,Ventas,True
+R-003912,Error de facturación,Administración,True
+R-003913,Atención en sucursal,Ventas,True
+R-003914,Faltante en la entrega,Logística,False
+R-003915,Faltante en la entrega,Logística,True
+R-003916,Error de facturación,Administración,True
+R-003917,Error de facturación,Administración,True
+R-003918,Entrega demorada,Logística,True
+R-003919,Otros,Atención al cliente,True
+R-003920,Entrega demorada,Logística,True
+R-003921,Material dañado,Logística,True
+R-003922,Entrega demorada,Logística,False
+R-003923,Entrega demorada,Logística,True
+R-003924,Error de facturación,Administración,True
+R-003925,Entrega demorada,Logística,True
+R-003926,Entrega demorada,Logística,False
+R-003927,Faltante en la entrega,Logística,True
+R-003928,Faltante en la entrega,Logística,True
+R-003929,Error de facturación,Administración,True
+R-003930,Error de facturación,Administración,True
+R-003931,Faltante en la entrega,Logística,True
+R-003932,Error de facturación,Administración,True
+R-003933,Entrega demorada,Logística,False
+R-003934,Material dañado,Logística,True
+R-003935,Material dañado,Logística,True
+R-003936,Entrega demorada,Logística,True
+R-003937,Entrega demorada,Logística,True
+R-003938,Faltante en la entrega,Logística,True
+R-003939,Material dañado,Logística,True
+R-003940,Entrega demorada,Logística,True
+R-003941,Entrega demorada,Logística,True
+R-003942,Faltante en la entrega,Logística,True
+R-003943,Faltante en la entrega,Logística,False
+R-003944,Entrega demorada,Logística,True
+R-003945,Faltante en la entrega,Logística,True
+R-003946,Faltante en la entrega,Logística,True
+R-003947,Entrega demorada,Logística,True
+R-003948,Error de facturación,Administración,True
+R-003949,Entrega demorada,Logística,True
+R-003950,Entrega demorada,Logística,True
+R-003951,Error de facturación,Administración,True
+R-003952,Otros,Atención al cliente,False
+R-003953,Entrega demorada,Logística,False
+R-003954,Error de facturación,Administración,True
+R-003955,Atención en sucursal,Ventas,True
+R-003956,Material dañado,Logística,True
+R-003957,Atención en sucursal,Ventas,True
+R-003958,Atención en sucursal,Ventas,True
+R-003959,Entrega demorada,Logística,True
+R-003960,Entrega demorada,Logística,True
+R-003961,Material dañado,Logística,True
+R-003962,Entrega demorada,Logística,True
+R-003963,Faltante en la entrega,Logística,False
+R-003964,Atención en sucursal,Ventas,True
+R-003965,Faltante en la entrega,Logística,True
+R-003966,Material dañado,Logística,True
+R-003967,Material dañado,Logística,True
+R-003968,Otros,Atención al cliente,True
+R-003969,Otros,Atención al cliente,True
+R-003970,Atención en sucursal,Ventas,True
+R-003971,Error de facturación,Administración,True
+R-003972,Entrega demorada,Logística,True
+R-003973,Material dañado,Logística,True
+R-003974,Entrega demorada,Logística,True
+R-003975,Material dañado,Logística,True
+R-003976,Otros,Atención al cliente,True
+R-003977,Faltante en la entrega,Logística,True
+R-003978,Entrega demorada,Logística,True
+R-003979,Entrega demorada,Logística,True
+R-003980,Entrega demorada,Logística,True
+R-003981,Entrega demorada,Logística,True
+R-003982,Material dañado,Logística,False
+R-003983,Error de facturación,Administración,True
+R-003984,Entrega demorada,Logística,True
+R-003985,Error de facturación,Administración,False
+R-003986,Entrega demorada,Logística,False
+R-003987,Entrega demorada,Logística,True
+R-003988,Entrega demorada,Logística,True
+R-003989,Material dañado,Logística,True
+R-003990,Entrega demorada,Logística,True
+R-003991,Error de facturación,Administración,True
+R-003992,Entrega demorada,Logística,True
+R-003993,Error de facturación,Administración,True
+R-003994,Entrega demorada,Logística,True
+R-003995,Atención en sucursal,Ventas,True
+R-003996,Material dañado,Logística,True
+R-003997,Material dañado,Logística,True
+R-003998,Faltante en la entrega,Logística,False
+R-003999,Material dañado,Logística,True
+R-004000,Material dañado,Logística,True
+R-004001,Entrega demorada,Logística,True
+R-004002,Material dañado,Logística,False
+R-004003,Entrega demorada,Logística,True
+R-004004,Entrega demorada,Logística,True
+R-004005,Error de facturación,Administración,True
+R-004006,Material dañado,Logística,True
+R-004007,Otros,Atención al cliente,True
+R-004008,Faltante en la entrega,Logística,True
+R-004009,Atención en sucursal,Ventas,True
+R-004010,Atención en sucursal,Ventas,True
+R-004011,Entrega demorada,Logística,False
+R-004012,Entrega demorada,Logística,True
+R-004013,Material dañado,Logística,True
+R-004014,Atención en sucursal,Ventas,True
+R-004015,Atención en sucursal,Ventas,True
+R-004016,Faltante en la entrega,Logística,False
+R-004017,Entrega demorada,Logística,True
+R-004018,Entrega demorada,Logística,True
+R-004019,Entrega demorada,Logística,False
+R-004020,Otros,Atención al cliente,True
+R-004021,Material dañado,Logística,True
+R-004022,Entrega demorada,Logística,True
+R-004023,Atención en sucursal,Ventas,False
+R-004024,Entrega demorada,Logística,True
+R-004025,Entrega demorada,Logística,True
+R-004026,Faltante en la entrega,Logística,True
+R-004027,Otros,Atención al cliente,False
+R-004028,Atención en sucursal,Ventas,True
+R-004029,Otros,Atención al cliente,True
+R-004030,Entrega demorada,Logística,True
+R-004031,Entrega demorada,Logística,True
+R-004032,Material dañado,Logística,True
+R-004033,Atención en sucursal,Ventas,True
+R-004034,Error de facturación,Administración,True
+R-004035,Material dañado,Logística,True
+R-004036,Faltante en la entrega,Logística,True
+R-004037,Material dañado,Logística,True
+R-004038,Error de facturación,Administración,True
+R-004039,Entrega demorada,Logística,True
+R-004040,Error de facturación,Administración,True
+R-004041,Entrega demorada,Logística,True
+R-004042,Atención en sucursal,Ventas,True
+R-004043,Error de facturación,Administración,True
+R-004044,Atención en sucursal,Ventas,True
+R-004045,Entrega demorada,Logística,True
+R-004046,Error de facturación,Administración,True
+R-004047,Otros,Atención al cliente,True
+R-004048,Faltante en la entrega,Logística,True
+R-004049,Faltante en la entrega,Logística,True
+R-004050,Otros,Atención al cliente,True
+R-004051,Material dañado,Logística,True
+R-004052,Material dañado,Logística,True
+R-004053,Error de facturación,Administración,True
+R-004054,Material dañado,Logística,True
+R-004055,Error de facturación,Administración,True
+R-004056,Atención en sucursal,Ventas,True
+R-004057,Otros,Atención al cliente,True
+R-004058,Material dañado,Logística,True
+R-004059,Error de facturación,Administración,True
+R-004060,Faltante en la entrega,Logística,True
+R-004061,Entrega demorada,Logística,True
+R-004062,Error de facturación,Administración,True
+R-004063,Entrega demorada,Logística,True
+R-004064,Material dañado,Logística,True
+R-004065,Atención en sucursal,Ventas,True
+R-004066,Atención en sucursal,Ventas,False
+R-004067,Entrega demorada,Logística,True
+R-004068,Material dañado,Logística,True
+R-004069,Error de facturación,Administración,True
+R-004070,Entrega demorada,Logística,True
+R-004071,Error de facturación,Administración,True
+R-004072,Atención en sucursal,Ventas,False
+R-004073,Faltante en la entrega,Logística,True
+R-004074,Material dañado,Logística,True
+R-004075,Faltante en la entrega,Logística,True
+R-004076,Entrega demorada,Logística,True
+R-004077,Error de facturación,Administración,True
+R-004078,Material dañado,Logística,True
+R-004079,Entrega demorada,Logística,True
+R-004080,Faltante en la entrega,Logística,True
+R-004081,Entrega demorada,Logística,True
+R-004082,Error de facturación,Administración,True
+R-004083,Otros,Atención al cliente,True
+R-004084,Faltante en la entrega,Logística,True
+R-004085,Atención en sucursal,Ventas,True
+R-004086,Entrega demorada,Logística,True
+R-004087,Entrega demorada,Logística,True
+R-004088,Entrega demorada,Logística,True
+R-004089,Entrega demorada,Logística,True
+R-004090,Entrega demorada,Logística,True
+R-004091,Entrega demorada,Logística,False
+R-004092,Otros,Atención al cliente,True
+R-004093,Atención en sucursal,Ventas,True
+R-004094,Material dañado,Logística,True
+R-004095,Entrega demorada,Logística,True
+R-004096,Material dañado,Logística,True
+R-004097,Entrega demorada,Logística,False
+R-004098,Faltante en la entrega,Logística,True
+R-004099,Otros,Atención al cliente,True
+R-004100,Faltante en la entrega,Logística,False
+R-004101,Entrega demorada,Logística,True
+R-004102,Material dañado,Logística,True
+R-004103,Faltante en la entrega,Logística,False
+R-004104,Atención en sucursal,Ventas,False
+R-004105,Atención en sucursal,Ventas,True
+R-004106,Faltante en la entrega,Logística,True
+R-004107,Entrega demorada,Logística,True
+R-004108,Error de facturación,Administración,True
+R-004109,Entrega demorada,Logística,True
+R-004110,Faltante en la entrega,Logística,True
+R-004111,Entrega demorada,Logística,True
+R-004112,Error de facturación,Administración,True
+R-004113,Entrega demorada,Logística,True
+R-004114,Material dañado,Logística,False
+R-004115,Entrega demorada,Logística,True
+R-004116,Entrega demorada,Logística,True
+R-004117,Atención en sucursal,Ventas,True
+R-004118,Entrega demorada,Logística,True
+R-004119,Otros,Atención al cliente,True
+R-004120,Entrega demorada,Logística,True
+R-004121,Entrega demorada,Logística,True
+R-004122,Error de facturación,Administración,True
+R-004123,Entrega demorada,Logística,False
+R-004124,Material dañado,Logística,True
+R-004125,Entrega demorada,Logística,True
+R-004126,Material dañado,Logística,True
+R-004127,Material dañado,Logística,True
+R-004128,Entrega demorada,Logística,True
+R-004129,Otros,Atención al cliente,True
+R-004130,Entrega demorada,Logística,True
+R-004131,Error de facturación,Administración,True
+R-004132,Faltante en la entrega,Logística,True
+R-004133,Entrega demorada,Logística,False
+R-004134,Entrega demorada,Logística,True
+R-004135,Faltante en la entrega,Logística,True
+R-004136,Faltante en la entrega,Logística,True
+R-004137,Faltante en la entrega,Logística,True
+R-004138,Material dañado,Logística,True
+R-004139,Faltante en la entrega,Logística,True
+R-004140,Entrega demorada,Logística,True
+R-004141,Entrega demorada,Logística,False
+R-004142,Entrega demorada,Logística,True
+R-004143,Entrega demorada,Logística,True
+R-004144,Entrega demorada,Logística,True
+R-004145,Faltante en la entrega,Logística,True
+R-004146,Material dañado,Logística,True
+R-004147,Faltante en la entrega,Logística,True
+R-004148,Faltante en la entrega,Logística,True
+R-004149,Atención en sucursal,Ventas,True
+R-004150,Faltante en la entrega,Logística,False
+R-004151,Atención en sucursal,Ventas,True
+R-004152,Material dañado,Logística,False
+R-004153,Error de facturación,Administración,True
+R-004154,Faltante en la entrega,Logística,True
+R-004155,Entrega demorada,Logística,True
+R-004156,Otros,Atención al cliente,True
+R-004157,Otros,Atención al cliente,True
+R-004158,Material dañado,Logística,True
+R-004159,Entrega demorada,Logística,True
+R-004160,Material dañado,Logística,True
+R-004161,Material dañado,Logística,True
+R-004162,Entrega demorada,Logística,False
+R-004163,Atención en sucursal,Ventas,True
+R-004164,Atención en sucursal,Ventas,True
+R-004165,Entrega demorada,Logística,True
+R-004166,Entrega demorada,Logística,True
+R-004167,Error de facturación,Administración,False
+R-004168,Entrega demorada,Logística,True
+R-004169,Entrega demorada,Logística,True
+R-004170,Entrega demorada,Logística,False
+R-004171,Material dañado,Logística,True
+R-004172,Entrega demorada,Logística,False
+R-004173,Faltante en la entrega,Logística,True
+R-004174,Entrega demorada,Logística,True
+R-004175,Material dañado,Logística,True
+R-004176,Otros,Atención al cliente,True
+R-004177,Entrega demorada,Logística,True
+R-004178,Atención en sucursal,Ventas,True
+R-004179,Entrega demorada,Logística,False
+R-004180,Entrega demorada,Logística,True
+R-004181,Entrega demorada,Logística,True
+R-004182,Entrega demorada,Logística,True
+R-004183,Material dañado,Logística,False
+R-004184,Otros,Atención al cliente,True
+R-004185,Material dañado,Logística,True
+R-004186,Atención en sucursal,Ventas,True
+R-004187,Faltante en la entrega,Logística,True
+R-004188,Entrega demorada,Logística,True
+R-004189,Atención en sucursal,Ventas,True
+R-004190,Entrega demorada,Logística,True
+R-004191,Atención en sucursal,Ventas,True
+R-004192,Atención en sucursal,Ventas,True
+R-004193,Entrega demorada,Logística,False
+R-004194,Faltante en la entrega,Logística,True
+R-004195,Error de facturación,Administración,True
+R-004196,Entrega demorada,Logística,True
+R-004197,Material dañado,Logística,False
+R-004198,Entrega demorada,Logística,True
+R-004199,Material dañado,Logística,False
+R-004200,Error de facturación,Administración,True

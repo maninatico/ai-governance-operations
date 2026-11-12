@@ -1,0 +1,303 @@
+{
+  "name": "CA_9_PRUEBA_Lote_con_falla",
+  "nodes": [
+    {
+      "id": "l1",
+      "name": "CA9L_Ejecutar_prueba",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "l2",
+      "name": "CA9L_Lote",
+      "notes": "Lote de 3 elementos de prueba. El del medio va a romper a proposito.",
+      "parameters": {
+        "jsCode": "return [\n  { json: { doc: 'PRUEBA-LOTE-1', romper: false } },\n  { json: { doc: 'PRUEBA-LOTE-2', romper: true } },\n  { json: { doc: 'PRUEBA-LOTE-3', romper: false } },\n];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "l3",
+      "name": "CA9L_Por_elemento",
+      "parameters": {
+        "options": {}
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3
+    },
+    {
+      "id": "l4",
+      "name": "CA9L_Debe_romper",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "l4c",
+              "leftValue": "={{ $json.romper === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        660,
+        400
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "l5",
+      "name": "CA9L_Llamar_falla",
+      "notes": "Mismo patron que el orquestador 8.4: si el subflujo falla, el lote sigue.",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "fLShK0LhrjMEoItL"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "l6",
+      "name": "CA9L_Elemento_normal",
+      "parameters": {
+        "jsCode": "return [{ json: { ok: true } }];"
+      },
+      "position": [
+        880,
+        500
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "l7",
+      "name": "CA9L_Fin_elemento",
+      "parameters": {
+        "jsCode": "const c = $('CA9L_Por_elemento').first().json;\nconst r = $input.first().json;\nconst err = r.error ? (r.error.message || String(r.error)) : null;\nreturn [{ json: { doc: c.doc, estado: err ? 'error' : 'ok', error: err } }];"
+      },
+      "position": [
+        1100,
+        400
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "l8",
+      "name": "CA9L_Esperar",
+      "notes": "El flujo de errores corre aparte, despues de la falla: se le da unos segundos.",
+      "parameters": {
+        "amount": 8,
+        "unit": "seconds"
+      },
+      "position": [
+        660,
+        160
+      ],
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "webhookId": "9c1b7c0e-2a43-4d58-9a11-5c0b88a1c902"
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "l9",
+      "name": "CA9L_Ver_filas",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "SELECT count(*)::int AS filas, min(estado) AS estado, min(detalle_error) AS detalle_error FROM control.ejecuciones WHERE documento_id LIKE 'PRUEBA-ERR-%' AND inicio > now() - interval '3 minutes';"
+      },
+      "position": [
+        880,
+        160
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "executeOnce": true
+    },
+    {
+      "id": "l10",
+      "name": "CA9L_Resultado",
+      "parameters": {
+        "jsCode": "const el = $('CA9L_Esperar').all().map(i => i.json);\nconst f = $input.first().json;\nconst pf = ok => (ok ? 'PASA' : 'FALLA');\nconst porDoc = Object.fromEntries(el.map(e => [e.doc, e.estado]));\nconst pruebas = [\n  { caso: '1 El lote termino los 3 elementos aunque uno fallo', resultado: pf(el.length === 3), detalle: el.length + ' elementos' },\n  { caso: '2 Los elementos 1 y 3 salieron bien', resultado: pf(porDoc['PRUEBA-LOTE-1'] === 'ok' && porDoc['PRUEBA-LOTE-3'] === 'ok'), detalle: JSON.stringify(porDoc) },\n  { caso: '3 El elemento 2 quedo marcado como error en el resumen del lote', resultado: pf(porDoc['PRUEBA-LOTE-2'] === 'error'), detalle: String((el.find(e => e.doc === 'PRUEBA-LOTE-2') || {}).error || 'sin error').slice(0, 120) },\n  { caso: '4 El registro central dejo exactamente una fila de error nueva', resultado: pf(f.filas === 1 && f.estado === 'error'), detalle: JSON.stringify(f) },\n  { caso: '5 La fila guarda solo el mensaje de la falla', resultado: pf(String(f.detalle_error || '').includes('Falla forzada de la Fase 9')), detalle: f.detalle_error || 'sin detalle' },\n];\nconst pasan = pruebas.filter(x => x.resultado === 'PASA').length;\nreturn [{ json: { resumen: pasan + ' de ' + pruebas.length + ' PASA', pruebas } }];"
+      },
+      "position": [
+        1100,
+        160
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA9L_Debe_romper": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9L_Llamar_falla",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA9L_Elemento_normal",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA9L_Ejecutar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9L_Lote",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA9L_Elemento_normal": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9L_Fin_elemento",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA9L_Esperar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9L_Ver_filas",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA9L_Fin_elemento": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9L_Por_elemento",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA9L_Llamar_falla": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9L_Fin_elemento",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA9L_Lote": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9L_Por_elemento",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA9L_Por_elemento": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9L_Esperar",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA9L_Debe_romper",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA9L_Ver_filas": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9L_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true
+  }
+}

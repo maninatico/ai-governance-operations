@@ -1,0 +1,37 @@
+﻿sucursal,categoria_asignada,reclamos
+Acceso Oeste,Atención en sucursal,104
+Acceso Oeste,Entrega demorada,219
+Acceso Oeste,Error de facturación,127
+Acceso Oeste,Faltante en la entrega,102
+Acceso Oeste,Material dañado,124
+Acceso Oeste,Otros,57
+Camino de Cintura,Atención en sucursal,95
+Camino de Cintura,Entrega demorada,185
+Camino de Cintura,Error de facturación,98
+Camino de Cintura,Faltante en la entrega,136
+Camino de Cintura,Material dañado,126
+Camino de Cintura,Otros,58
+Norte,Atención en sucursal,91
+Norte,Entrega demorada,210
+Norte,Error de facturación,100
+Norte,Faltante en la entrega,111
+Norte,Material dañado,128
+Norte,Otros,74
+Oeste,Atención en sucursal,81
+Oeste,Entrega demorada,188
+Oeste,Error de facturación,111
+Oeste,Faltante en la entrega,99
+Oeste,Material dañado,136
+Oeste,Otros,47
+Ruta 7,Atención en sucursal,73
+Ruta 7,Entrega demorada,206
+Ruta 7,Error de facturación,103
+Ruta 7,Faltante en la entrega,108
+Ruta 7,Material dañado,135
+Ruta 7,Otros,53
+Sur,Atención en sucursal,95
+Sur,Entrega demorada,210
+Sur,Error de facturación,120
+Sur,Faltante en la entrega,113
+Sur,Material dañado,123
+Sur,Otros,54

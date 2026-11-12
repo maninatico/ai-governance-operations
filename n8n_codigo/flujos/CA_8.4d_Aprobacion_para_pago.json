@@ -1,0 +1,618 @@
+{
+  "name": "CA_8.4d_Aprobacion_para_pago",
+  "nodes": [
+    {
+      "id": "ca84d-trigger",
+      "name": "CA84d_Disparador",
+      "notes": "A07 Aprobación para pago (L3). Sin IA. Modo 'pedir': entrada = salida del 8.4c; registra la factura (L2) y pide la aprobación al 8.3. Modo 'actualizar' (prefijo opcional): pasa a la factura lo decidido en el formulario. El silencio nunca aprueba.",
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "position": [
+        0,
+        400
+      ],
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1
+    },
+    {
+      "id": "ca84d-modo",
+      "name": "CA84d_Modo",
+      "parameters": {
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "modo_invalido"
+        },
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "r-pedir",
+                    "leftValue": "={{ $json.modo }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "pedir"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              },
+              "outputKey": "pedir",
+              "renameOutput": true
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "r-actualizar",
+                    "leftValue": "={{ $json.modo }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "actualizar"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              },
+              "outputKey": "actualizar",
+              "renameOutput": true
+            }
+          ]
+        }
+      },
+      "position": [
+        220,
+        400
+      ],
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2
+    },
+    {
+      "id": "ca84d-inv",
+      "name": "CA84d_Modo_invalido",
+      "parameters": {
+        "errorMessage": "=CA_8.4d: modo inválido '{{ $json.modo }}'. Usar 'pedir' o 'actualizar'."
+      },
+      "position": [
+        460,
+        700
+      ],
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1
+    },
+    {
+      "id": "ca84d-corr",
+      "name": "CA84d_Corresponde",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "ca84d-corrc",
+              "leftValue": "={{ $json.sigue_a_aprobacion === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        460,
+        240
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "ca84d-dpol",
+      "name": "CA84d_Datos_politica",
+      "parameters": {
+        "jsCode": "return [{ json: { modo: 'evaluar', accion: 'registrar_comprobante' } }];"
+      },
+      "position": [
+        680,
+        160
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca84d-pol",
+      "name": "CA84d_Politica_registro",
+      "notes": "Motor de políticas: registrar_comprobante (L2, permitir con revisión).",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "NHCxpMVGzqr0HxGv"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        900,
+        160
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca84d-perm",
+      "name": "CA84d_Puede_registrar",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "ca84d-permc",
+              "leftValue": "={{ $json.permitido === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        1120,
+        160
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "ca84d-reg",
+      "name": "CA84d_Registrar",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ $('CA84d_Disparador').first().json.comprobante_id ] }}"
+        },
+        "query": "-- Registra la factura que pasó todos los controles (L2: permitir con revisión posterior).\nUPDATE negocio.comprobantes SET estado = 'Registrada', fecha_registro = greatest(current_date, fecha_recepcion)\nWHERE comprobante_id = $1 AND estado = 'Recibida'\nRETURNING comprobante_id, total, estado;\n"
+      },
+      "position": [
+        1340,
+        80
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca84d-isreg",
+      "name": "CA84d_Quedo_registrada",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "ca84d-isregc",
+              "leftValue": "={{ $json.estado === 'Registrada' }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        1560,
+        80
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "ca84d-dap",
+      "name": "CA84d_Datos_aprobacion",
+      "parameters": {
+        "jsCode": "const e = $('CA84d_Disparador').first().json;\nconst r = $input.first().json;   // fila registrada: el monto sale de la base, no del documento\nconst d = e.datos || {};\nreturn [{ json: { modo: 'pedir', automatizacion_id: 'A07', objeto: r.comprobante_id, accion: 'aprobar_pago', monto: r.total,\n  motivo: `${d.tipo || 'Comprobante'} ${d.punto_venta || ''}-${d.numero || ''} del proveedor ${e.proveedor_id}: pasó lectura, validación y CBU` } }];"
+      },
+      "position": [
+        1780,
+        0
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca84d-ped",
+      "name": "CA84d_Pedir_aprobacion",
+      "notes": "Motor de políticas: aprobar_pago (L3). Más de $ 5.000.000: doble control. Devuelve el link al formulario.",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "NHCxpMVGzqr0HxGv"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        2000,
+        0
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca84d-rped",
+      "name": "CA84d_Resultado_pedir",
+      "parameters": {
+        "jsCode": "const e = $('CA84d_Disparador').first().json;\nlet estado, aprobacion = null, motivo = null;\nif (!$('CA84d_Politica_registro').isExecuted) { estado = 'No corresponde'; motivo = 'La factura no pasó todos los controles (8.4b o 8.4c)'; }\nelse if (!$('CA84d_Politica_registro').first().json.permitido) { estado = e.estado; motivo = 'El Motor de políticas no permite registrar'; }\nelse if (!$('CA84d_Pedir_aprobacion').isExecuted) { estado = e.estado; motivo = 'No se registró: el comprobante no estaba en estado Recibida'; }\nelse { estado = 'Registrada'; aprobacion = $('CA84d_Pedir_aprobacion').first().json; }\nreturn [{ json: { modo: 'pedir', comprobante_id: e.comprobante_id, proveedor_id: e.proveedor_id, estado, motivo,\n  aprobacion_id: aprobacion && aprobacion.aprobacion_id, nivel: aprobacion && aprobacion.nivel,\n  aprobador: aprobacion && aprobacion.aprobador, segundo_aprobador: aprobacion && aprobacion.segundo_aprobador,\n  vence: aprobacion && aprobacion.vence, link_formulario: aprobacion && aprobacion.link_formulario } }];"
+      },
+      "position": [
+        2220,
+        240
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "ca84d-act",
+      "name": "CA84d_Actualizar",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($json.prefijo || '') ] }}"
+        },
+        "query": "-- Pasa a la factura lo que decidieron las personas en el formulario. Solo mira aprobaciones de pago ya decididas.\nWITH ult AS (   -- la última aprobación de pago de cada factura registrada\n  SELECT DISTINCT ON (a.objeto) a.objeto, a.aprobacion_id, a.decision, a.motivo\n  FROM control.aprobaciones a JOIN negocio.comprobantes c ON c.comprobante_id = a.objeto\n  WHERE a.accion = 'aprobar_pago' AND c.estado = 'Registrada'\n    AND ($1 = '' OR a.objeto LIKE $1 || '%')\n  ORDER BY a.objeto, a.aprobacion_id DESC),\nupd AS (\n  UPDATE negocio.comprobantes c\n  SET estado = CASE ult.decision WHEN 'aprobado' THEN 'Aprobada para pago' ELSE 'En espera' END\n  FROM ult WHERE c.comprobante_id = ult.objeto AND ult.decision IS NOT NULL\n  RETURNING c.comprobante_id, c.estado, ult.aprobacion_id, ult.motivo),\ncola AS (\n  INSERT INTO control.cola_revision (origen, automatizacion_id, documento_id, motivo, prioridad)\n  SELECT 'facturas', 'A07', comprobante_id, 'Pago rechazado en la aprobación ' || aprobacion_id || ': ' || coalesce(motivo, 'sin motivo'), 'media'\n  FROM upd WHERE estado = 'En espera')\nSELECT comprobante_id, estado, aprobacion_id FROM upd\nUNION ALL\nSELECT objeto, 'Registrada (esperando decisión)', aprobacion_id FROM ult WHERE decision IS NULL\nORDER BY 1;\n"
+      },
+      "position": [
+        460,
+        520
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca84d-ract",
+      "name": "CA84d_Resultado_actualizar",
+      "parameters": {
+        "jsCode": "const filas = $input.all().map((i) => i.json).filter((r) => r.comprobante_id);\nreturn [{ json: { modo: 'actualizar', cambios: filas.filter((r) => !r.estado.startsWith('Registrada')),\n  pendientes: filas.filter((r) => r.estado.startsWith('Registrada')).map((r) => r.comprobante_id) } }];"
+      },
+      "position": [
+        680,
+        520
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca84d-d81",
+      "name": "CA84d_Datos_para_8.1",
+      "parameters": {
+        "jsCode": "const r = $input.first().json;\nconst doc = r.modo === 'pedir' ? r.comprobante_id : 'actualizar aprobaciones';\nconst motivo = r.modo === 'pedir' ? (r.aprobacion_id ? `Aprobación ${r.aprobacion_id} pedida (${r.nivel}) a ${r.aprobador}` : (r.motivo || ''))\n  : `${r.cambios.length} facturas actualizadas, ${r.pendientes.length} esperando decisión`;\nreturn [{ json: { modo: 'fin', automatizacion_id: 'A07', documento_id: doc, estado: 'ok', intervencion_humana: false,\n  modelo_ia: '', auditar: false, actor: 'A07', accion: 'aprobación para pago', motivo, respuesta: r } }];"
+      },
+      "position": [
+        2440,
+        400
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca84d-81",
+      "name": "CA84d_Registrar_en_8.1",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HRAb0YG1KsqhYDbf"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        2660,
+        400
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca84d-fin",
+      "name": "CA84d_Devolver",
+      "parameters": {
+        "jsCode": "return [{ json: $('CA84d_Datos_para_8.1').first().json.respuesta }];"
+      },
+      "position": [
+        2880,
+        400
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA84d_Actualizar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Resultado_actualizar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84d_Corresponde": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Datos_politica",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Resultado_pedir",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84d_Datos_aprobacion": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Pedir_aprobacion",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84d_Datos_para_8.1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Registrar_en_8.1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84d_Datos_politica": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Politica_registro",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84d_Disparador": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Modo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84d_Modo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Corresponde",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Actualizar",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Modo_invalido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84d_Pedir_aprobacion": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Resultado_pedir",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84d_Politica_registro": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Puede_registrar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84d_Puede_registrar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Registrar",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Resultado_pedir",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84d_Quedo_registrada": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Datos_aprobacion",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Resultado_pedir",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84d_Registrar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Quedo_registrada",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84d_Registrar_en_8.1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Devolver",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84d_Resultado_actualizar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Datos_para_8.1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84d_Resultado_pedir": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84d_Datos_para_8.1",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

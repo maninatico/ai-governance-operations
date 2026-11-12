@@ -1,0 +1,313 @@
+{
+  "name": "CA_9_PRUEBA_IA_caida",
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "CA9_Ejecutar",
+      "parameters": {},
+      "position": [
+        -440,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "t2",
+      "name": "CA9_Entrada",
+      "notes": "Un reclamo sintetico con prefijo PRUEBA-9IA-. Sin datos personales.",
+      "parameters": {
+        "jsCode": "const n = new Date(), z = (x) => String(x).padStart(2, '0');\nconst prefijo = `PRUEBA-9IA-${n.getFullYear()}${z(n.getMonth() + 1)}${z(n.getDate())}${z(n.getHours())}${z(n.getMinutes())}${z(n.getSeconds())}-`;\nreturn [{ json: { reclamo_id: 'IA-001', canal: 'WhatsApp', sucursal: 'Ruta 7', fecha_hora_ingreso: '2026-10-20 10:00', texto: 'El pedido de cemento llego incompleto, faltaron diez bolsas.', prefijo_id: prefijo } }];"
+      },
+      "position": [
+        -220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca85a-prep",
+      "name": "CA85a_Preparar",
+      "parameters": {
+        "jsCode": "const r = $input.first().json;\nconst t = String(r.texto || '');\nconst id = (r.prefijo_id || '') + r.reclamo_id;\nreturn [{ json: { reclamo_id: id, canal: r.canal, sucursal: r.sucursal, fecha_hora_ingreso: r.fecha_hora_ingreso, texto: t, dni: '', telefono: '', sospechoso: false, motivo_seguridad: null, pedido_datos_personales: false } }];"
+      },
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca85a-d82c",
+      "name": "CA85a_Datos_cliente",
+      "parameters": {
+        "jsCode": "const r = $input.first().json;\nreturn [{ json: { modo: 'cliente', dni: r.dni, telefono: r.telefono, documento_id: r.reclamo_id, origen: 'reclamos' } }];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca85a-cli",
+      "name": "CA85a_Buscar_cliente",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "2hcDYOeWMoCVjmvk"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca85a-d82t",
+      "name": "CA85a_Datos_texto",
+      "parameters": {
+        "jsCode": "const r = $('CA85a_Preparar').first().json;\nconst c = $input.first().json;\nreturn [{ json: { modo: 'texto', texto: r.texto, cliente_id: c.cliente_id || null, documento_id: r.reclamo_id, origen: 'reclamos' } }];"
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca85a-enm",
+      "name": "CA85a_Enmascarar",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "2hcDYOeWMoCVjmvk"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca85a-ia",
+      "name": "CA85a_Clasificar_IA",
+      "notes": "COPIA DE PRUEBA: la direccion apunta a un puerto sin servicio (simula el servidor de IA caido).",
+      "parameters": {
+        "jsonBody": "={{ JSON.stringify({ model: 'qwen3.5:9b', stream: false, prompt: ($json.texto_enmascarado || '') }) }}",
+        "method": "POST",
+        "options": {
+          "timeout": 20000
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "url": "http://cumbre_archivos:9/api/generate"
+      },
+      "position": [
+        1100,
+        300
+      ],
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "ca85a-val",
+      "name": "CA85a_Validar_IA",
+      "parameters": {
+        "jsCode": "const CATS = [\"Entrega demorada\", \"Material dañado\", \"Faltante en la entrega\", \"Error de facturación\", \"Atención en sucursal\", \"Otros\"];\nconst URG = ['baja', 'media', 'alta'];\nlet categoria = null, urgencia = null, motivo = null;\ntry {\n  const resp = JSON.parse($input.first().json.response || '{}');\n  if (CATS.includes(resp.categoria)) categoria = resp.categoria; else motivo = 'Categoría no reconocida (la IA respondió: ' + (resp.categoria || 'nada') + ')';\n  urgencia = URG.includes(resp.urgencia) ? resp.urgencia : 'media';\n} catch (e) { motivo = 'Respuesta de la IA inválida'; }\nreturn [{ json: { categoria, urgencia, motivo_ia: motivo } }];"
+      },
+      "position": [
+        1320,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca85a-pg",
+      "name": "CA85a_Preparar_guardado",
+      "parameters": {
+        "jsCode": "const r = $('CA85a_Preparar').first().json;\nconst c = $('CA85a_Buscar_cliente').first().json;\nconst m = $('CA85a_Enmascarar').first().json;\nconst ia = $('CA85a_Validar_IA').first().json;\nconst cola = [];\nif (!ia.categoria) cola.push({ origen: 'reclamos', motivo: ia.motivo_ia, prioridad: 'media' });\nreturn [{ json: { reclamo_json: JSON.stringify({ reclamo_id: r.reclamo_id, cliente_id: c.cliente_id || null, sucursal: r.sucursal, canal: r.canal,\n  fecha_hora_ingreso: r.fecha_hora_ingreso, texto_enmascarado: m.texto_enmascarado, categoria: ia.categoria, urgencia: ia.urgencia,\n  es_pedido_datos_personales: r.pedido_datos_personales }), cola_json: JSON.stringify(cola) } }];"
+      },
+      "position": [
+        1540,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca85a-save",
+      "name": "CA85a_Guardar",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ $json.reclamo_json, $json.cola_json ] }}"
+        },
+        "query": "WITH e AS (SELECT $1::jsonb AS j, $2::jsonb AS c),\nins AS (\n  INSERT INTO negocio.reclamos (reclamo_id, cliente_id, sucursal, canal, fecha_hora_ingreso, texto_enmascarado,\n                                categoria, urgencia, es_pedido_datos_personales, origen)\n  SELECT j->>'reclamo_id', nullif(j->>'cliente_id', ''), j->>'sucursal', j->>'canal', (j->>'fecha_hora_ingreso')::timestamp,\n         j->>'texto_enmascarado', j->>'categoria', j->>'urgencia', (j->>'es_pedido_datos_personales')::boolean, 'lote_prueba'\n  FROM e\n  ON CONFLICT (reclamo_id) DO NOTHING\n  RETURNING reclamo_id),\ncola AS (\n  INSERT INTO control.cola_revision (origen, automatizacion_id, documento_id, motivo, prioridad)\n  SELECT x->>'origen', 'A08', ins.reclamo_id, x->>'motivo', x->>'prioridad'\n  FROM ins, e, jsonb_array_elements(e.c) AS x)\nSELECT (SELECT reclamo_id FROM ins) IS NOT NULL AS registrado;"
+      },
+      "position": [
+        1760,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    }
+  ],
+  "connections": {
+    "CA85a_Buscar_cliente": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85a_Datos_texto",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85a_Clasificar_IA": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85a_Validar_IA",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85a_Datos_cliente": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85a_Buscar_cliente",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85a_Datos_texto": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85a_Enmascarar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85a_Enmascarar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85a_Clasificar_IA",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85a_Preparar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85a_Datos_cliente",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85a_Preparar_guardado": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85a_Guardar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85a_Validar_IA": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85a_Preparar_guardado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA9_Ejecutar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9_Entrada",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA9_Entrada": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85a_Preparar",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true
+  }
+}

@@ -1,0 +1,24 @@
+variable,valor,beneficio_neto_anual,roi_A_pct,roi_B_pct,recupero_A_meses,recupero_B_meses
+Costo por hora (factor),1.0,92809419,72337.6,1710.9,0.02,0.66
+Costo por hora (factor),1.5,98814129,51316.2,1185.4,0.02,0.93
+Costo por hora (factor),2.0,104818839,40805.5,922.6,0.03,1.17
+Minutos por caso,5,100095361,51982.9,1202.1,0.02,0.92
+Minutos por caso,10,98814129,51316.2,1185.4,0.02,0.93
+Minutos por caso,15,97532896,50649.5,1168.7,0.02,0.95
+Minutos por caso,30,93689199,48649.5,1118.7,0.02,0.98
+Casos a una persona,0.1111,98814129,51316.2,1185.4,0.02,0.93
+Casos a una persona,0.2,96764157,50249.5,1158.7,0.02,0.95
+Casos a una persona,0.3,94457938,49049.5,1128.7,0.02,0.98
+Duplicadas frenadas,1.0,98814129,51316.2,1185.4,0.02,0.93
+Duplicadas frenadas,0.9,84190813,43707.2,995.2,0.03,1.1
+Duplicadas frenadas,0.7,54944182,28489.2,614.7,0.04,1.68
+Duplicadas frenadas,0.42,14414129,7400.1,87.5,0.16,6.4
+Parte recuperable,0.0,183214129,95232.2,2283.3,0.01,0.5
+Parte recuperable,0.5,98814129,51316.2,1185.4,0.02,0.93
+Parte recuperable,0.9,31294129,16183.3,307.1,0.07,2.95
+Servidor por mes,150000,100614129,52252.8,1208.8,0.02,0.92
+Servidor por mes,300000,98814129,51316.2,1185.4,0.02,0.93
+Servidor por mes,600000,95214129,49443.0,1138.6,0.02,0.97
+Horas de construccion,15,98814129,51316.2,1185.4,0.02,0.93
+Horas de construccion,40,98814129,19181.1,1185.4,0.06,0.93
+Horas de construccion,80,98814129,9540.5,1185.4,0.12,0.93

@@ -1,0 +1,336 @@
+{
+  "name": "CA_8.8a_PRUEBA",
+  "nodes": [
+    {
+      "id": "p1",
+      "name": "CA88P_Ejecutar_prueba",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "p2",
+      "name": "CA88P_Parametros",
+      "parameters": {
+        "jsCode": "const d = new Date(Date.now() - 3 * 3600 * 1000);\nconst pad = n => String(n).padStart(2, '0');\nconst ts = d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + pad(d.getUTCSeconds());\nreturn [{ json: { prefijo: 'PRUEBA-' + ts + '-' } }];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "p3",
+      "name": "CA88P_Crear_casos",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ $('CA88P_Parametros').first().json.prefijo ] }}"
+        },
+        "query": "INSERT INTO control.cola_revision (origen, automatizacion_id, documento_id, motivo, prioridad) VALUES\n ('seguridad', 'A04', $1 || 'LOTE-X.pdf', '185 caracteres invisibles', 'alta'),\n ('facturas', 'A06', $1 || 'F-CBU', 'Posible fraude o cambio de cuenta (L4, bloquear): CBU', 'alta'),\n ('reclamos', 'A08', $1 || 'R-PD', 'Pedido sobre datos personales', 'alta'),\n ('reclamos', 'A02', $1 || 'R-SC', 'Sin coincidencia en la base para el DNI o teléfono', 'media');"
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "p4",
+      "name": "CA88P_Siguiente_1",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ $('CA88P_Parametros').first().json.prefijo ] }}"
+        },
+        "query": "SELECT * FROM control.siguiente_caso($1);"
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "p5",
+      "name": "CA88P_Resolver_ok",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($('CA88P_Siguiente_1').first().json.o_caso_id), 'PRUEBA automática', 'Ataque confirmado', 'Verificado a mano, confirmado y cerrado' ] }}"
+        },
+        "query": "SELECT control.resolver_caso($1::bigint, $3, $2, $4, NULL) AS mensaje;"
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "p6",
+      "name": "CA88P_Siguiente_2",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ $('CA88P_Parametros').first().json.prefijo ] }}"
+        },
+        "query": "SELECT * FROM control.siguiente_caso($1);"
+      },
+      "position": [
+        1100,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "p7",
+      "name": "CA88P_Resolver_mal",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($('CA88P_Siguiente_2').first().json.o_caso_id), 'PRUEBA automática', 'Es duplicada', 'decisión que no corresponde' ] }}"
+        },
+        "query": "SELECT control.resolver_caso($1::bigint, $3, $2, $4, NULL) AS mensaje;"
+      },
+      "position": [
+        1320,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "p8",
+      "name": "CA88P_Buscar_CBU",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ $('CA88P_Parametros').first().json.prefijo ] }}"
+        },
+        "query": "SELECT caso_id FROM control.cola_revision WHERE documento_id = $1 || 'F-CBU';"
+      },
+      "position": [
+        1540,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "p9",
+      "name": "CA88P_Resolver_CBU",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($json.caso_id), 'PRUEBA automática', 'No es duplicada', 'intento de desbloqueo' ] }}"
+        },
+        "query": "SELECT control.resolver_caso($1::bigint, $3, $2, $4, NULL) AS mensaje;"
+      },
+      "position": [
+        1760,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "p10",
+      "name": "CA88P_Permiso_directo",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "UPDATE negocio.comprobantes SET estado = 'Pagada' WHERE false;"
+      },
+      "position": [
+        1980,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "p11",
+      "name": "CA88P_Verificar",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ $('CA88P_Parametros').first().json.prefijo ] }}"
+        },
+        "query": "SELECT documento_id, estado, decision, resuelto_por FROM control.cola_revision WHERE documento_id LIKE $1 || '%' ORDER BY caso_id;"
+      },
+      "position": [
+        2200,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "p12",
+      "name": "CA88P_Resultado",
+      "parameters": {
+        "jsCode": "const g = n => $(n).first().json;\nconst filas = $('CA88P_Verificar').all().map(i => i.json);\nconst txt = n => JSON.stringify(g(n));\nconst s1 = g('CA88P_Siguiente_1'), s2 = g('CA88P_Siguiente_2');\nconst seg = filas.find(f => f.documento_id.endsWith('LOTE-X.pdf')) || {};\nconst cbu = filas.find(f => f.documento_id.endsWith('F-CBU')) || {};\nconst pd = filas.find(f => f.documento_id.endsWith('R-PD')) || {};\nconst r = [];\nconst t = (nombre, ok, detalle) => r.push({ prueba: nombre, resultado: ok ? 'PASA' : 'FALLA', detalle });\nt('1 Siguiente caso: seguridad, sin contar el CBU (3 resolubles)', s1.o_clase === 'seguridad' && Number(s1.o_pendientes) === 3, 'clase ' + s1.o_clase + ', pendientes ' + s1.o_pendientes);\nt('2 Ataque confirmado: mensaje honesto (sin factura que bloquear)', String(g('CA88P_Resolver_ok').mensaje || '').includes('no hay factura que bloquear'), String(g('CA88P_Resolver_ok').mensaje || txt('CA88P_Resolver_ok')));\nt('3 El caso quedó resuelto con quién y motivo con comas', seg.estado === 'resuelto' && seg.resuelto_por === 'PRUEBA automática' && String(seg.decision || '').includes('Verificado a mano, confirmado y cerrado'), JSON.stringify(seg));\nt('4 Siguiente caso: el pedido de datos personales (2 resolubles)', s2.o_clase === 'datos_personales' && Number(s2.o_pendientes) === 2, 'clase ' + s2.o_clase + ', pendientes ' + s2.o_pendientes);\nt('5 Decisión que no corresponde: frena', txt('CA88P_Resolver_mal').includes('no corresponde'), txt('CA88P_Resolver_mal'));\nt('6 CBU: frena y sigue pendiente', txt('CA88P_Resolver_CBU').includes('Gerente') && cbu.estado === 'pendiente', 'CBU estado ' + cbu.estado);\nt('7 El caso del intento fallido sigue pendiente', pd.estado === 'pendiente', 'estado ' + pd.estado);\nt('8 Permiso directo sobre facturas: denegado', txt('CA88P_Permiso_directo').toLowerCase().includes('permission denied'), txt('CA88P_Permiso_directo'));\nconst pasan = r.filter(x => x.resultado === 'PASA').length;\nreturn [{ json: { resumen: pasan + ' de ' + r.length + ' PASA', prefijo: g('CA88P_Parametros').prefijo, pruebas: r } }];"
+      },
+      "position": [
+        2420,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA88P_Buscar_CBU": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88P_Resolver_CBU",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88P_Crear_casos": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88P_Siguiente_1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88P_Ejecutar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88P_Parametros",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88P_Parametros": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88P_Crear_casos",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88P_Permiso_directo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88P_Verificar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88P_Resolver_CBU": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88P_Permiso_directo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88P_Resolver_mal": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88P_Buscar_CBU",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88P_Resolver_ok": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88P_Siguiente_2",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88P_Siguiente_1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88P_Resolver_ok",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88P_Siguiente_2": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88P_Resolver_mal",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88P_Verificar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88P_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true
+  }
+}

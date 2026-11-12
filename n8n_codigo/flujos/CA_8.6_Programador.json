@@ -1,0 +1,139 @@
+{
+  "name": "CA_8.6_Programador",
+  "nodes": [
+    {
+      "id": "g1",
+      "name": "CA86G_Cada_10_min",
+      "notes": "Pone el reloj del monitoreo. Publicar solo cuando se decida encender el monitoreo.",
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "position": [
+        0,
+        200
+      ],
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "g2",
+      "name": "CA86G_Prefijo_vacio",
+      "parameters": {
+        "jsCode": "return [{ json: { prefijo: '' } }];"
+      },
+      "position": [
+        220,
+        200
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "g3",
+      "name": "CA86G_Monitoreo",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "zKMyzzPdVgkFw1Tt"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        440,
+        200
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "g4",
+      "name": "CA86G_Enviar_alertas",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        660,
+        200
+      ],
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "qm2Dg71SxN5QeZcz"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      }
+    }
+  ],
+  "connections": {
+    "CA86G_Cada_10_min": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86G_Prefijo_vacio",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86G_Prefijo_vacio": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86G_Monitoreo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86G_Monitoreo": {
+      "main": [
+        [
+          {
+            "node": "CA86G_Enviar_alertas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "name": "CA_8.4c_PRUEBA",
+  "nodes": [
+    {
+      "id": "r1",
+      "name": "CA84cP_Ejecutar_prueba",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "r2",
+      "name": "CA84cP_Casos",
+      "notes": "Las 4 trampas de CBU del lote (3 fraudes y 1 cambio legítimo), una factura normal y un monotributista. Pasan por 8.4a, 8.4b y 8.4c con prefijo PRUEBA-<corrida>-.",
+      "parameters": {
+        "jsCode": "const P = '<CORREO>';\nconst fraude = (cbu) => `URGENTE: por un cambio de banco, a partir de esta factura los pagos deben hacerse a la nueva cuenta CBU ${cbu}. Por favor actualicen sus datos hoy para no demorar el pago.`;\nconst c = (caso, esperado, correo_id, fecha_hora, de, asunto, cuerpo, adjunto, extra = {}) =>\n  ({ json: { caso, esperado, correo_id, fecha_hora, de, para: P, asunto, cuerpo, adjunto, ...extra } });\nreturn [\n  c('1 fraude: dominio parecido y CBU nuevo', 'Bloqueada L4, cola alta', 'COR-032', '2026-10-14 17:39', '<CORREO>', 'Factura 0001-00008282 Griferías Nordeste Austral S.R.L.', fraude('2854294295177768446154'), 'LOTE-032.pdf'),\n  c('2 fraude: dominio parecido y CBU nuevo', 'Bloqueada L4, cola alta', 'COR-074', '2026-10-22 13:10', '<CORREO>', 'Factura 0001-00003634 Aserradero Gramonti S.A.S.', fraude('2855175941589680253991'), 'LOTE-074.pdf'),\n  c('3 fraude: dominio parecido y CBU nuevo', 'Bloqueada L4, cola alta', 'COR-088', '2026-10-19 15:18', '<CORREO>', 'Factura 0001-00009005 Eléctrica Prolanda S.R.L.', fraude('1916773289290795324259'), 'LOTE-088.pdf'),\n  c('4 cambio de banco legítimo', 'Bloqueada igual hasta verificar por teléfono (L4)', 'COR-112', '2026-10-29 15:24', '<CORREO>', 'Factura 0001-00002468 Eléctrica Lumbreras del Plata S.A.', 'Les informamos que cambiamos de banco. La nueva cuenta figura en la factura adjunta. Pueden confirmarlo llamando a nuestro teléfono habitual.', 'LOTE-112.pdf'),\n  c('5 factura normal', 'Sin alerta, sigue a aprobación', 'COR-002', '2026-10-26 17:24', '<CORREO>', 'Factura 0001-00007268 Canteras Quelvar S.R.L.', 'Buenos días, les enviamos la factura del pedido. Quedamos atentos.', 'LOTE-002.pdf'),\n  c('6 monotributista (CBU en la bóveda)', 'Sin alerta, sigue a aprobación', 'PRUEBA-MONO-1', '2026-10-15 10:00', '<CORREO>', 'Factura C 0002-00000147', 'Buenos días, les envío la factura. Saludos.', 'MONO-PRV-121.pdf', { carpeta: 'pruebas_extra' }),\n];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "r3",
+      "name": "CA84cP_Llamar_8.4a",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "77QpOMooSITmOQf4"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "r4",
+      "name": "CA84cP_Marcar_prueba",
+      "parameters": {
+        "jsCode": "const n = new Date(), z = (x) => String(x).padStart(2, '0');\nconst prefijo = `PRUEBA-${n.getFullYear()}${z(n.getMonth() + 1)}${z(n.getDate())}${z(n.getHours())}${z(n.getMinutes())}${z(n.getSeconds())}-`;\nreturn $input.all().map((i) => ({ json: { ...i.json, prefijo_id: prefijo } }));"
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "r5",
+      "name": "CA84cP_Llamar_8.4b",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "izXbDwjYwl1nKObq"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "r6",
+      "name": "CA84cP_Llamar_8.4c",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "LYnavaXekeN7Ggm4"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1100,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "r7",
+      "name": "CA84cP_Resultado",
+      "parameters": {
+        "jsCode": "const casos = $('CA84cP_Casos').all().map((i) => i.json);\nconst b = $('CA84cP_Llamar_8.4b').all().map((i) => i.json);\nconst res = $input.all().map((i) => i.json);\nconst m = (r) => (r.motivos_cbu || []).join('; ');\nconst bloq = (r) => r.estado === 'Bloqueada' && r.bloqueado === true && r.nivel === 'L4' && r.politica === 'bloquear';\nconst ok = [\n  (r) => bloq(r) && /no es el registrado/.test(m(r)) && /pide un cambio/.test(m(r)),\n  (r) => bloq(r) && /no es el registrado/.test(m(r)) && /pide un cambio/.test(m(r)),\n  (r) => bloq(r) && /no es el registrado/.test(m(r)) && /pide un cambio/.test(m(r)),\n  (r) => bloq(r) && /no es el registrado/.test(m(r)),\n  (r) => r.bloqueado === false && r.sigue_a_aprobacion === true,\n  (r) => r.bloqueado === false && r.sigue_a_aprobacion === true && r.proveedor_id === 'PRV-121',\n];\nreturn casos.map((c, i) => { const r = res[i] || {};\n  let pasa = false; try { pasa = b[i].estado === 'Recibida' && ok[i](r); } catch (e) {}\n  return { json: { caso: c.caso, esperado: c.esperado, resultado: pasa ? 'PASA' : 'FALLA',\n    detalle: JSON.stringify({ lectura: b[i] && b[i].estado, estado: r.estado, nivel: r.nivel, politica: r.politica, proveedor: r.proveedor_id, motivos: m(r) }) } }; });"
+      },
+      "position": [
+        1320,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA84cP_Casos": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84cP_Llamar_8.4a",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84cP_Ejecutar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84cP_Casos",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84cP_Llamar_8.4a": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84cP_Marcar_prueba",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84cP_Llamar_8.4b": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84cP_Llamar_8.4c",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84cP_Llamar_8.4c": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84cP_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84cP_Marcar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84cP_Llamar_8.4b",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveManualExecutions": true
+  }
+}

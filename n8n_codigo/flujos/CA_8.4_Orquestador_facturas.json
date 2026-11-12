@@ -1,0 +1,732 @@
+{
+  "name": "CA_8.4_Orquestador_facturas",
+  "nodes": [
+    {
+      "id": "o1",
+      "name": "CA84_Ejecutar",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "o2",
+      "name": "CA84_Parametros",
+      "notes": "Orquestador del proceso de facturas (P1). Recorre el buzón en orden de llegada: 8.4a recepción, 8.4b lectura y validación, 8.4c CBU, 8.4d aprobación. Cada etapa decide si el correo sigue; lo que no sigue ya quedó en la cola.",
+      "parameters": {
+        "jsCode": "// limite: cuántos correos procesar (0 = todo el buzón). Para una primera vuelta, 10.\nreturn [{ json: { limite: 0, buzon: 'http://cumbre_archivos/correos_proveedores.csv' } }];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "o3",
+      "name": "CA84_Datos_inicio",
+      "parameters": {
+        "jsCode": "return [{ json: { modo: 'inicio', flujo: '8.4 Facturas' } }];"
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "o4",
+      "name": "CA84_Verificar_interruptor",
+      "notes": "8.1: falla segura. Sin el interruptor GENERAL y el de 8.4 encendidos, no se procesa nada.",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HRAb0YG1KsqhYDbf"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "o5",
+      "name": "CA84_Permitido",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "o5c",
+              "leftValue": "={{ $json.permitido === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "o6",
+      "name": "CA84_Detenido",
+      "parameters": {
+        "jsCode": "const r = $input.first().json;\nreturn [{ json: { procesado: false, motivo: 'No se procesó nada: ' + (r.motivo || 'interruptor apagado') } }];"
+      },
+      "position": [
+        1100,
+        480
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "o7",
+      "name": "CA84_Datos_actualizar",
+      "parameters": {
+        "jsCode": "return [{ json: { modo: 'actualizar' } }];"
+      },
+      "position": [
+        1100,
+        200
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "o8",
+      "name": "CA84_Actualizar_aprobaciones",
+      "notes": "Primero pasa a las facturas las decisiones tomadas en el formulario desde la vuelta anterior.",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "GMxaHrI8Dtzy3qDv"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1320,
+        200
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "o9",
+      "name": "CA84_Leer_buzon",
+      "parameters": {
+        "method": "GET",
+        "options": {
+          "response": {
+            "response": {
+              "outputPropertyName": "data",
+              "responseFormat": "text"
+            }
+          }
+        },
+        "url": "={{ $('CA84_Parametros').first().json.buzon }}"
+      },
+      "position": [
+        1540,
+        200
+      ],
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2
+    },
+    {
+      "id": "o10",
+      "name": "CA84_Ordenar",
+      "parameters": {
+        "jsCode": "// Buzón simulado: CSV con comillas y comas dentro del cuerpo. Se quita el BOM y se ordena por llegada.\nconst p = $('CA84_Parametros').first().json;\nlet txt = String($input.first().json.data || '').replace(/^﻿/, '');\nconst filas = []; let fila = [], campo = '', comillas = false;\nfor (let i = 0; i < txt.length; i++) {\n  const ch = txt[i];\n  if (comillas) {\n    if (ch === '\"' && txt[i + 1] === '\"') { campo += '\"'; i++; }\n    else if (ch === '\"') comillas = false;\n    else campo += ch;\n  } else if (ch === '\"') comillas = true;\n  else if (ch === ',') { fila.push(campo); campo = ''; }\n  else if (ch === '\\n' || ch === '\\r') { if (ch === '\\r' && txt[i + 1] === '\\n') i++; fila.push(campo); filas.push(fila); fila = []; campo = ''; }\n  else campo += ch;\n}\nif (campo !== '' || fila.length) { fila.push(campo); filas.push(fila); }\nconst cab = filas.shift().map((c) => c.trim());\nlet correos = filas.filter((f) => f.length === cab.length).map((f) => Object.fromEntries(cab.map((c, k) => [c, f[k]])));\ncorreos.sort((a, b) => a.fecha_hora.localeCompare(b.fecha_hora) || a.correo_id.localeCompare(b.correo_id));\nif (p.limite > 0) correos = correos.slice(0, p.limite);\nreturn correos.map((c) => ({ json: c }));\n"
+      },
+      "position": [
+        1760,
+        200
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "o11",
+      "name": "CA84_Por_correo",
+      "parameters": {
+        "options": {}
+      },
+      "position": [
+        1980,
+        200
+      ],
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3
+    },
+    {
+      "id": "o12",
+      "name": "CA84_8.4a_Recepcion",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "77QpOMooSITmOQf4"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        2200,
+        360
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "o13",
+      "name": "CA84_Recibido",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "o13c",
+              "leftValue": "={{ $json.estado === 'recibido' }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        2420,
+        360
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "o14",
+      "name": "CA84_8.4b_Lectura",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "izXbDwjYwl1nKObq"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        2640,
+        280
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "o15",
+      "name": "CA84_Registrable",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "o15c",
+              "leftValue": "={{ $json.estado === 'Recibida' }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        2860,
+        280
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "o16",
+      "name": "CA84_8.4c_CBU",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "LYnavaXekeN7Ggm4"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        3080,
+        200
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "o17",
+      "name": "CA84_Sigue",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "o17c",
+              "leftValue": "={{ $json.sigue_a_aprobacion === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        3300,
+        200
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "o18",
+      "name": "CA84_Modo_pedir",
+      "parameters": {
+        "jsCode": "return [{ json: { ...$input.first().json, modo: 'pedir' } }];"
+      },
+      "position": [
+        3520,
+        120
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "o19",
+      "name": "CA84_8.4d_Aprobacion",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "GMxaHrI8Dtzy3qDv"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        3740,
+        120
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "o20",
+      "name": "CA84_Fin_correo",
+      "parameters": {
+        "jsCode": "// Una fila por correo: hasta dónde llegó y en qué estado quedó.\nconst c = $('CA84_Por_correo').first().json;\nconst r = $input.first().json;\nconst err = r.error ? (r.error.message || String(r.error)) : null;\nreturn [{ json: { correo_id: c.correo_id, adjunto: c.adjunto, fecha_hora: c.fecha_hora,\n  estado: err ? 'error' : (r.estado || 'sin estado'), comprobante_id: r.comprobante_id || null,\n  aprobacion_id: r.aprobacion_id || null, nivel: r.nivel || null, error: err } }];"
+      },
+      "position": [
+        3960,
+        400
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "o21",
+      "name": "CA84_Resumen",
+      "parameters": {
+        "jsCode": "const filas = $input.all().map((i) => i.json);\nconst por = {}; for (const f of filas) por[f.estado] = (por[f.estado] || 0) + 1;\nreturn [{ json: { correos: filas.length, por_estado: por, errores: filas.filter((f) => f.estado === 'error') } },\n  ...filas.map((f) => ({ json: f }))];"
+      },
+      "position": [
+        2200,
+        40
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA84_8.4a_Recepcion": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Recibido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_8.4b_Lectura": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Registrable",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_8.4c_CBU": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Sigue",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_8.4d_Aprobacion": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Fin_correo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Actualizar_aprobaciones": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Leer_buzon",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Datos_actualizar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Actualizar_aprobaciones",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Datos_inicio": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Verificar_interruptor",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Ejecutar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Parametros",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Fin_correo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Por_correo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Leer_buzon": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Ordenar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Modo_pedir": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_8.4d_Aprobacion",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Ordenar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Por_correo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Parametros": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Datos_inicio",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Permitido": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Datos_actualizar",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA84_Detenido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Por_correo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Resumen",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA84_8.4a_Recepcion",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Recibido": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_8.4b_Lectura",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA84_Fin_correo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Registrable": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_8.4c_CBU",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA84_Fin_correo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Sigue": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Modo_pedir",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA84_Fin_correo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84_Verificar_interruptor": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84_Permitido",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

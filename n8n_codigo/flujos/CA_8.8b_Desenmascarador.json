@@ -1,0 +1,350 @@
+{
+  "name": "CA_8.8b_Desenmascarador",
+  "nodes": [
+    {
+      "id": "d1",
+      "name": "CA88B_Desde_otro_flujo",
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1
+    },
+    {
+      "id": "d2",
+      "name": "CA88B_Parametros",
+      "notes": "prefijo vacío = operación real (ignora PRUEBA). Con prefijo PRUEBA-... solo mira los reclamos de esa corrida y no consulta el interruptor.",
+      "parameters": {
+        "jsCode": "const j = ($input.first() && $input.first().json) || {};\nreturn [{ json: { prefijo: String(j.prefijo ?? '') } }];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "d3",
+      "name": "CA88B_Interruptores",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "SELECT (count(*) = 2 AND bool_and(activo)) AS encendido FROM control.interruptores WHERE flujo IN ('GENERAL', '8.8 Desenmascarador y cola');"
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "d4",
+      "name": "CA88B_Si_encendido",
+      "notes": "Falla segura: apagado, inexistente o con error en la consulta = no desenmascara nada. En prueba (con prefijo) pasa igual.",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "k1",
+              "leftValue": "={{ $('CA88B_Parametros').first().json.prefijo !== '' || $json.encendido === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "d5",
+      "name": "CA88B_Pendientes",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ $('CA88B_Parametros').first().json.prefijo ] }}"
+        },
+        "query": "SELECT o_reclamo FROM boveda.pendientes_desenmascarar($1);"
+      },
+      "position": [
+        880,
+        200
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "d6",
+      "name": "CA88B_Hay_pendientes",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "k2",
+              "leftValue": "={{ !!$json.o_reclamo }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        1100,
+        200
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "d7",
+      "name": "CA88B_Desenmascarar",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($json.o_reclamo) ] }}",
+          "queryBatching": "independently"
+        },
+        "query": "SELECT * FROM boveda.desenmascarar_respuesta($1);"
+      },
+      "position": [
+        1320,
+        100
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "d8",
+      "name": "CA88B_Resultado",
+      "parameters": {
+        "jsCode": "const pend = $('CA88B_Pendientes').all().map(i => i.json.o_reclamo);\nconst res = $('CA88B_Desenmascarar').all().map(i => i.json);\nlet generadas = 0, derivadas = 0, ya = 0, errores = 0; const detalle = [];\nres.forEach((r, i) => {\n  if (r.o_resultado === 'generada') generadas++;\n  else if (r.o_resultado === 'derivada') derivadas++;\n  else if (r.o_resultado === 'ya_generada') ya++;\n  else errores++;\n  detalle.push({ reclamo: pend[i], resultado: r.o_resultado || 'error', detalle: r.o_detalle || String(r.message || (r.error && r.error.message) || 'error desconocido') });\n});\nconst estado_ejecucion = errores > 0 ? 'error' : (derivadas > 0 && generadas === 0 ? 'derivado_a_cola' : 'ok');\nreturn [{ json: { estado: 'procesado', estado_ejecucion, generadas, derivadas, ya_generadas: ya, con_error: errores, primero: pend[0], detalle } }];"
+      },
+      "position": [
+        1540,
+        100
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "d9",
+      "name": "CA88B_Registrar",
+      "notes": "Deja una fila de A13 en control.ejecuciones por pasada con trabajo, para que el monitoreo (8.6) pueda cortar el flujo si falla seguido. Una pasada sin pendientes no registra nada.",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($json.primero), $json.estado_ejecucion, $json.con_error > 0 ? JSON.stringify($json.detalle.filter(d => d.resultado === 'error')).slice(0, 500) : '' ] }}"
+        },
+        "query": "INSERT INTO control.ejecuciones (automatizacion_id, documento_id, inicio, fin, estado, detalle_error) VALUES ('A13', $1, now(), now(), $2, NULLIF($3, ''));"
+      },
+      "position": [
+        1760,
+        100
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "d10",
+      "name": "CA88B_Salida",
+      "parameters": {
+        "jsCode": "return [{ json: $('CA88B_Resultado').first().json }];"
+      },
+      "position": [
+        1980,
+        100
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "d11",
+      "name": "CA88B_Apagado",
+      "parameters": {
+        "jsCode": "return [{ json: { estado: 'apagado', generadas: 0, derivadas: 0, ya_generadas: 0, con_error: 0, detalle: [] } }];"
+      },
+      "position": [
+        880,
+        440
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "d12",
+      "name": "CA88B_Sin_pendientes",
+      "parameters": {
+        "jsCode": "return [{ json: { estado: 'sin pendientes', generadas: 0, derivadas: 0, ya_generadas: 0, con_error: 0, detalle: [] } }];"
+      },
+      "position": [
+        1320,
+        320
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA88B_Desde_otro_flujo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88B_Parametros",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88B_Desenmascarar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88B_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88B_Hay_pendientes": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88B_Desenmascarar",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA88B_Sin_pendientes",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88B_Interruptores": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88B_Si_encendido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88B_Parametros": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88B_Interruptores",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88B_Pendientes": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88B_Hay_pendientes",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88B_Registrar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88B_Salida",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88B_Resultado": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88B_Registrar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88B_Si_encendido": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88B_Pendientes",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA88B_Apagado",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

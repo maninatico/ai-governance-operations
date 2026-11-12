@@ -1,0 +1,245 @@
+{
+  "name": "CA_8.8c_Ver_dato_aprobado",
+  "nodes": [
+    {
+      "id": "v1",
+      "name": "CA88CV_Formulario",
+      "notes": "Entrega el dato real de una consulta manual YA aprobada por el Gerente, una sola vez y dentro de las 24 horas. Este flujo NO guarda sus ejecuciones en n8n (ver ajustes) para que el dato real no quede en la base de n8n. Quién pidió se elige de un desplegable; en una empresa real sería el inicio de sesión.",
+      "parameters": {
+        "formDescription": "Mostrá el dato real de una solicitud que el Gerente ya aprobó. Se muestra UNA sola vez, solo a quien lo pidió y dentro de las 24 horas de la aprobación. Si cerrás la pantalla sin copiarlo, hay que pedir otra aprobación.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Quién pidió",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Analista CxP"
+                  },
+                  {
+                    "option": "Agente de atención"
+                  },
+                  {
+                    "option": "Jefe de Atención"
+                  },
+                  {
+                    "option": "Responsable de Sistemas"
+                  },
+                  {
+                    "option": "Analista de Procesos"
+                  }
+                ]
+              },
+              "fieldType": "dropdown",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Número de solicitud",
+              "fieldType": "number",
+              "requiredField": true
+            }
+          ]
+        },
+        "formTitle": "Materiales Cumbre Andina · Ver dato aprobado",
+        "options": {
+          "buttonLabel": "Mostrar el dato (una sola vez)",
+          "path": "ca-reident-ver"
+        }
+      },
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "webhookId": "8c1b7c0e-2a43-4d58-9a11-5c0b88a1c201"
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "v2",
+      "name": "CA88CV_Interruptores",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "SELECT (count(*) = 2 AND bool_and(activo)) AS encendido FROM control.interruptores WHERE flujo IN ('GENERAL', '8.8 Desenmascarador y cola');"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "v3",
+      "name": "CA88CV_Encendido",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.encendido === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "v4",
+      "name": "CA88CV_Ver",
+      "onError": "continueErrorOutput",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String(Math.trunc(Number($('CA88CV_Formulario').first().json['Número de solicitud']))), String($('CA88CV_Formulario').first().json['Quién pidió']) ] }}"
+        },
+        "query": "SELECT * FROM boveda.ver_dato_aprobado($1::bigint, $2);"
+      },
+      "position": [
+        660,
+        200
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "v5",
+      "name": "CA88CV_Fin_entregado",
+      "parameters": {
+        "completionMessage": "={{ (() => { const e = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); return 'Documento: ' + e($json.o_documento) + '<br>Marcador: ' + e($json.o_marcador) + ' (' + e($json.o_tipo) + ')<br><br><b>Dato real: ' + e($json.o_valor) + '</b><br><br>Copialo ahora: no se vuelve a mostrar. Quedó registrado quién lo vio, cuándo y con qué aprobación. El valor no se guarda en la auditoría.'; })() }}",
+        "completionTitle": "Dato aprobado",
+        "operation": "completion",
+        "respondWith": "text"
+      },
+      "position": [
+        880,
+        100
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "8c1b7c0e-2a43-4d58-9a11-5c0b88a1c202"
+    },
+    {
+      "id": "v6",
+      "name": "CA88CV_Fin_rechazada",
+      "parameters": {
+        "completionMessage": "={{ String($json.message || $json.error?.message || $json.error?.description || 'Error desconocido').replace(/^.*ERROR:\\s*/, '').replace(/&/g,'&amp;').replace(/</g,'&lt;') }}<br>No se mostró ningún dato.",
+        "completionTitle": "No se puede mostrar el dato",
+        "operation": "completion",
+        "respondWith": "text"
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "8c1b7c0e-2a43-4d58-9a11-5c0b88a1c203"
+    },
+    {
+      "id": "v7",
+      "name": "CA88CV_Fin_apagado",
+      "parameters": {
+        "completionMessage": "El interruptor del desenmascarador y la cola está apagado (o el interruptor general). No se muestra ningún dato mientras esté así.",
+        "completionTitle": "Consultas apagadas",
+        "operation": "completion",
+        "respondWith": "text"
+      },
+      "position": [
+        660,
+        420
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "8c1b7c0e-2a43-4d58-9a11-5c0b88a1c204"
+    }
+  ],
+  "connections": {
+    "CA88CV_Encendido": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88CV_Ver",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA88CV_Fin_apagado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88CV_Formulario": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88CV_Interruptores",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88CV_Interruptores": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88CV_Encendido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88CV_Ver": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88CV_Fin_entregado",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA88CV_Fin_rechazada",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "none",
+    "saveDataSuccessExecution": "none",
+    "saveManualExecutions": false,
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

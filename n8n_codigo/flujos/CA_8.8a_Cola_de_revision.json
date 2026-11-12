@@ -1,0 +1,421 @@
+{
+  "name": "CA_8.8a_Cola_de_revision",
+  "nodes": [
+    {
+      "id": "ca88a-trigger",
+      "name": "CA88A_Formulario",
+      "notes": "Cola de revisión humana (A14). Quien decide se elige en el formulario; en una empresa real se identificaría con el inicio de sesión de la empresa.",
+      "parameters": {
+        "formDescription": "Muestra el próximo caso que espera una persona (el más urgente y más antiguo). Toda decisión queda registrada con quién, cuándo y por qué.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Quién decide",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Analista CxP"
+                  },
+                  {
+                    "option": "Agente de atención"
+                  },
+                  {
+                    "option": "Jefe de Atención"
+                  },
+                  {
+                    "option": "Responsable de Sistemas"
+                  },
+                  {
+                    "option": "Analista de Procesos"
+                  }
+                ]
+              },
+              "fieldType": "dropdown",
+              "requiredField": true
+            }
+          ]
+        },
+        "formTitle": "Materiales Cumbre Andina · Cola de revisión",
+        "options": {
+          "buttonLabel": "Ver próximo caso",
+          "path": "ca-cola"
+        }
+      },
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "webhookId": "6f1b7c0e-2a43-4d58-9a11-5c0b88a1c001"
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "ca88a-int",
+      "name": "CA88A_Interruptores",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "SELECT (count(*) = 2 AND bool_and(activo)) AS encendido FROM control.interruptores WHERE flujo IN ('GENERAL', '8.8 Desenmascarador y cola');"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca88a-if1",
+      "name": "CA88A_Encendido",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.encendido === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "ca88a-sig",
+      "name": "CA88A_Siguiente",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "SELECT * FROM control.siguiente_caso();"
+      },
+      "position": [
+        660,
+        200
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca88a-if2",
+      "name": "CA88A_Hay_caso",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c2",
+              "leftValue": "={{ !!$json.o_caso_id }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        880,
+        200
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "ca88a-pag2",
+      "name": "CA88A_Detalle_y_decision",
+      "parameters": {
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Decisión",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Es duplicada"
+                  },
+                  {
+                    "option": "No es duplicada"
+                  },
+                  {
+                    "option": "Registrar con dato verificado"
+                  },
+                  {
+                    "option": "Dejar en espera"
+                  },
+                  {
+                    "option": "Asignar cliente"
+                  },
+                  {
+                    "option": "Seguir sin identificar"
+                  },
+                  {
+                    "option": "Pasar a redacción manual"
+                  },
+                  {
+                    "option": "Confirmar derivación al Responsable"
+                  },
+                  {
+                    "option": "Ataque confirmado"
+                  },
+                  {
+                    "option": "Falsa alarma"
+                  }
+                ]
+              },
+              "fieldType": "dropdown",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Motivo",
+              "fieldType": "textarea",
+              "placeholder": "Qué verificaste y contra qué. Para Registrar con dato verificado, mínimo 15 caracteres.",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Cliente a asignar",
+              "fieldType": "text",
+              "placeholder": "Solo para Asignar cliente: el cliente_id",
+              "requiredField": false
+            }
+          ]
+        },
+        "operation": "page",
+        "options": {
+          "buttonLabel": "Registrar decisión",
+          "formDescription": "={{ (() => { const e = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); return '<b>' + e($json.o_origen) + ' · ' + e($json.o_automatizacion) + '</b><br>Documento: ' + e($json.o_documento) + '<br>Motivo: ' + e($json.o_motivo) + '<br><br>' + e($json.o_contexto) + '<br><br>Decisiones válidas para este caso: <b>' + e($json.o_decisiones) + '</b><br>Casos esperando: ' + e($json.o_pendientes) + '<br>Decide: <b>' + e($('CA88A_Formulario').first().json['Quién decide']) + '</b>'; })() }}",
+          "formTitle": "=Caso N.º {{ $json.o_caso_id }} ({{ $json.o_prioridad }})"
+        }
+      },
+      "position": [
+        1100,
+        100
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "6f1b7c0e-2a43-4d58-9a11-5c0b88a1c002"
+    },
+    {
+      "id": "ca88a-reg",
+      "name": "CA88A_Registrar_decision",
+      "onError": "continueErrorOutput",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($('CA88A_Siguiente').first().json.o_caso_id), String($('CA88A_Formulario').first().json['Quién decide']), String($json['Decisión']), String($json['Motivo'] ?? ''), String($json['Cliente a asignar'] ?? '') ] }}"
+        },
+        "query": "SELECT control.resolver_caso($1::bigint, $3, $2, $4, NULLIF($5, '')) AS mensaje;"
+      },
+      "position": [
+        1320,
+        100
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca88a-ok",
+      "name": "CA88A_Fin_registrada",
+      "parameters": {
+        "completionMessage": "={{ $json.mensaje }}<br>Quedó en la auditoría con quién, cuándo y por qué.<br>Casos que quedan esperando: {{ Math.max(0, Number($('CA88A_Siguiente').first().json.o_pendientes) - 1) }}. Volvé a abrir el formulario para ver el próximo.",
+        "completionTitle": "Decisión registrada",
+        "operation": "completion",
+        "respondWith": "text"
+      },
+      "position": [
+        1540,
+        20
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "6f1b7c0e-2a43-4d58-9a11-5c0b88a1c003"
+    },
+    {
+      "id": "ca88a-err",
+      "name": "CA88A_Fin_rechazada",
+      "parameters": {
+        "completionMessage": "={{ String($json.message || $json.error?.message || $json.error?.description || 'Error desconocido').replace(/^.*ERROR:\\s*/, '') }}<br>El caso sigue pendiente. Volvé a abrir el formulario.",
+        "completionTitle": "No se pudo registrar la decisión",
+        "operation": "completion",
+        "respondWith": "text"
+      },
+      "position": [
+        1540,
+        200
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "6f1b7c0e-2a43-4d58-9a11-5c0b88a1c004"
+    },
+    {
+      "id": "ca88a-sin",
+      "name": "CA88A_Fin_sin_casos",
+      "parameters": {
+        "completionMessage": "La cola está al día. Los casos de CBU los resuelve solo el Gerente de Administración.",
+        "completionTitle": "No hay casos esperando",
+        "operation": "completion",
+        "respondWith": "text"
+      },
+      "position": [
+        1100,
+        300
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "6f1b7c0e-2a43-4d58-9a11-5c0b88a1c005"
+    },
+    {
+      "id": "ca88a-off",
+      "name": "CA88A_Fin_apagado",
+      "parameters": {
+        "completionMessage": "El interruptor de la cola de revisión está apagado (o el interruptor general). No se registra ninguna decisión mientras esté así.",
+        "completionTitle": "Cola apagada",
+        "operation": "completion",
+        "respondWith": "text"
+      },
+      "position": [
+        660,
+        420
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "6f1b7c0e-2a43-4d58-9a11-5c0b88a1c006"
+    }
+  ],
+  "connections": {
+    "CA88A_Detalle_y_decision": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88A_Registrar_decision",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88A_Encendido": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88A_Siguiente",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA88A_Fin_apagado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88A_Formulario": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88A_Interruptores",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88A_Hay_caso": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88A_Detalle_y_decision",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA88A_Fin_sin_casos",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88A_Interruptores": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88A_Encendido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88A_Registrar_decision": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88A_Fin_registrada",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA88A_Fin_rechazada",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88A_Siguiente": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88A_Hay_caso",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

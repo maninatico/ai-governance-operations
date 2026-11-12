@@ -1,0 +1,309 @@
+{
+  "name": "CA_8.1_Registro_de_eventos",
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "m-inicio",
+                    "leftValue": "={{ $json.modo }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "inicio"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              },
+              "renameOutput": true,
+              "outputKey": "inicio"
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "m-fin",
+                    "leftValue": "={{ $json.modo }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "fin"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              },
+              "renameOutput": true,
+              "outputKey": "fin"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "modo_invalido"
+        }
+      },
+      "id": "ca81-switch",
+      "name": "CA81_Modo",
+      "position": [
+        240,
+        304
+      ],
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "errorMessage": "=CA_8.1: modo inválido '{{ $json.modo }}'. Usar 'inicio' o 'fin'."
+      },
+      "id": "ca81-error-modo",
+      "name": "CA81_Modo_invalido",
+      "position": [
+        480,
+        560
+      ],
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  coalesce((SELECT activo FROM control.interruptores WHERE flujo = 'GENERAL'), false) AS general_activo,\n  coalesce((SELECT activo FROM control.interruptores WHERE flujo = $1), false)        AS flujo_activo,\n  to_char(now(), 'YYYY-MM-DD HH24:MI:SS.US')                                       AS inicio;",
+        "options": {
+          "queryReplacement": "={{ [ String($json.flujo ?? '') ] }}"
+        }
+      },
+      "id": "ca81-interruptores",
+      "name": "CA81_Consultar_interruptores",
+      "position": [
+        480,
+        80
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "parameters": {
+        "jsCode": "// Falla segura: si el flujo no existe o algún interruptor está apagado, no se permite.\nconst r = $input.first().json;\nconst permitido = r.general_activo === true && r.flujo_activo === true;\nlet motivo = null;\nif (!r.general_activo) motivo = 'Interruptor GENERAL apagado';\nelse if (!r.flujo_activo) motivo = 'Interruptor del flujo apagado o inexistente';\nreturn [{ json: { permitido, motivo, inicio: r.inicio } }];"
+      },
+      "id": "ca81-permiso",
+      "name": "CA81_Respuesta_inicio",
+      "position": [
+        720,
+        80
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO control.ejecuciones\n  (automatizacion_id, documento_id, inicio, fin, estado, intervencion_humana,\n   modelo_ia, tokens_entrada, tokens_salida, costo_usd, detalle_error)\nVALUES\n  ($1, NULLIF($2, ''), coalesce(NULLIF($3, '')::timestamp, now()), now(), $4,\n   coalesce(NULLIF($5, '')::boolean, false), NULLIF($6, ''), NULLIF($7, '')::int,\n   NULLIF($8, '')::int, coalesce(NULLIF($9, '')::numeric, 0), NULLIF($10, ''))\nRETURNING ejecucion_id;",
+        "options": {
+          "queryReplacement": "={{ [ String($json.automatizacion_id ?? ''), String($json.documento_id ?? ''), String($json.inicio ?? ''), String($json.estado ?? ''), String($json.intervencion_humana ?? ''), String($json.modelo_ia ?? ''), String($json.tokens_entrada ?? ''), String($json.tokens_salida ?? ''), String($json.costo_usd ?? ''), String($json.detalle_error ?? '') ] }}"
+        }
+      },
+      "id": "ca81-registrar",
+      "name": "CA81_Registrar_ejecucion",
+      "position": [
+        480,
+        320
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c-auditar",
+              "leftValue": "={{ $('CA81_Disparador').item.json.auditar }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "id": "ca81-if-auditar",
+      "name": "CA81_Auditar",
+      "position": [
+        720,
+        320
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO control.auditoria (actor, accion, objeto, detalle, motivo)\nVALUES ($1, $2, $3, $4::jsonb, NULLIF($5, ''));",
+        "options": {
+          "queryReplacement": "={{ (() => { const d = $('CA81_Disparador').item.json; return [ String(d.actor || d.automatizacion_id || 'desconocido'), String(d.accion || d.estado || ''), String(d.documento_id || d.automatizacion_id || ''), JSON.stringify({ ejecucion_id: $('CA81_Registrar_ejecucion').item.json.ejecucion_id, automatizacion_id: d.automatizacion_id, estado: d.estado }), String(d.motivo ?? '') ]; })() }}"
+        }
+      },
+      "id": "ca81-auditoria",
+      "name": "CA81_Registrar_auditoria",
+      "position": [
+        960,
+        224
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "parameters": {
+        "jsCode": "const id = $('CA81_Registrar_ejecucion').first().json.ejecucion_id;\nconst auditado = $('CA81_Disparador').first().json.auditar === true;\nreturn [{ json: { registrado: true, ejecucion_id: id, auditado } }];"
+      },
+      "id": "ca81-resp-fin",
+      "name": "CA81_Respuesta_fin",
+      "position": [
+        1200,
+        336
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca81-trigger-v11",
+      "name": "CA81_Disparador",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        300
+      ],
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "notes": "Subflujo A01. Contrato de entrada: modo ('inicio'|'fin'), flujo, automatizacion_id (A01-A14), documento_id, inicio, estado (ok|error|derivado_a_cola|bloqueado|reintento), intervencion_humana, modelo_ia, tokens_entrada, tokens_salida, costo_usd, detalle_error, auditar, actor, accion, motivo."
+    }
+  ],
+  "connections": {
+    "CA81_Auditar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA81_Registrar_auditoria",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA81_Respuesta_fin",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA81_Consultar_interruptores": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA81_Respuesta_inicio",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA81_Modo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA81_Consultar_interruptores",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA81_Registrar_ejecucion",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA81_Modo_invalido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA81_Registrar_auditoria": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA81_Respuesta_fin",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA81_Registrar_ejecucion": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA81_Auditar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA81_Disparador": {
+      "main": [
+        [
+          {
+            "node": "CA81_Modo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "binaryMode": "separate",
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

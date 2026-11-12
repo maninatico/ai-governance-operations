@@ -1,0 +1,211 @@
+{
+  "name": "CA_8.1_PRUEBA",
+  "nodes": [
+    {
+      "id": "ca81p-manual",
+      "name": "CA81P_Ejecutar_prueba",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "ca81p-casos",
+      "name": "CA81P_Casos_validos",
+      "notes": "Casos 1 a 3. Los documentos PRUEBA-* quedan en el registro (la auditoría no se borra).",
+      "parameters": {
+        "jsCode": "return [\n  { json: { caso: '1 inicio con interruptores apagados', esperado: 'permitido = false',\n            modo: 'inicio', flujo: '8.1 Registro de eventos' } },\n  { json: { caso: '2 fin ok', esperado: 'registrado, sin auditoría',\n            modo: 'fin', automatizacion_id: 'A01', documento_id: 'PRUEBA-001', estado: 'ok', costo_usd: 0 } },\n  { json: { caso: '3 fin bloqueado con auditoría', esperado: 'registrado y auditado',\n            modo: 'fin', automatizacion_id: 'A06', documento_id: 'PRUEBA-002', estado: 'bloqueado',\n            auditar: true, actor: 'CA_8.1_PRUEBA', accion: 'bloqueo de prueba', motivo: 'Prueba del registro de auditoría' } },\n];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca81p-llamar",
+      "name": "CA81P_Llamar_8.1",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HRAb0YG1KsqhYDbf"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca81p-evaluar",
+      "name": "CA81P_Evaluar_validos",
+      "parameters": {
+        "jsCode": "const casos = $('CA81P_Casos_validos').all().map(i => i.json);\nconst res = $input.all().map(i => i.json);\nconst ok = [\n  r => r.permitido === false,\n  r => r.registrado === true && !!r.ejecucion_id && r.auditado === false,\n  r => r.registrado === true && !!r.ejecucion_id && r.auditado === true,\n];\nreturn casos.map((c, i) => {\n  const r = res[i] || {};\n  return { json: { caso: c.caso, esperado: c.esperado, resultado: ok[i](r) ? 'PASA' : 'FALLA', detalle: JSON.stringify(r).slice(0, 300) } };\n});"
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca81p-invalido",
+      "name": "CA81P_Caso_invalido",
+      "parameters": {
+        "jsCode": "return [{ json: { caso: '4 modo inválido', esperado: 'error controlado', modo: 'otro' } }];"
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca81p-llamar-inv",
+      "name": "CA81P_Llamar_8.1_invalido",
+      "onError": "continueErrorOutput",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HRAb0YG1KsqhYDbf"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1100,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca81p-resultado",
+      "name": "CA81P_Resultado",
+      "notes": "Resumen final de los 4 casos. El caso 4 PASA si el subflujo frenó con error.",
+      "parameters": {
+        "jsCode": "const filas = $('CA81P_Evaluar_validos').all().map(i => i.json);\nconst r = $input.first().json;\nfilas.push({ caso: '4 modo inválido', esperado: 'error controlado',\n  resultado: r.error ? 'PASA' : 'FALLA', detalle: JSON.stringify(r.error ?? r).slice(0, 300) });\nreturn filas.map(f => ({ json: f }));"
+      },
+      "position": [
+        1340,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA81P_Caso_invalido": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA81P_Llamar_8.1_invalido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA81P_Casos_validos": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA81P_Llamar_8.1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA81P_Ejecutar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA81P_Casos_validos",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA81P_Evaluar_validos": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA81P_Caso_invalido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA81P_Llamar_8.1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA81P_Evaluar_validos",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA81P_Llamar_8.1_invalido": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA81P_Resultado",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA81P_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveManualExecutions": true
+  }
+}

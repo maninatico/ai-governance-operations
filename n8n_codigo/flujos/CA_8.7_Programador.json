@@ -1,0 +1,103 @@
+{
+  "name": "CA_8.7_Programador",
+  "nodes": [
+    {
+      "id": "h1",
+      "name": "CA87G_Lunes_8hs",
+      "notes": "Reloj del reporte semanal: lunes 8:00 (hora de Buenos Aires). Publicar solo cuando se decida encender el 8.7.",
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 8,
+              "triggerAtMinute": 0,
+              "weeksInterval": 1
+            }
+          ]
+        }
+      },
+      "position": [
+        0,
+        200
+      ],
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "h2",
+      "name": "CA87G_Real",
+      "parameters": {
+        "jsCode": "return [{ json: { prueba: false } }];"
+      },
+      "position": [
+        220,
+        200
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "h3",
+      "name": "CA87G_Reporte",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "2lKKxNzYSCmX7umX"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        440,
+        200
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    }
+  ],
+  "connections": {
+    "CA87G_Lunes_8hs": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87G_Real",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA87G_Real": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87G_Reporte",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

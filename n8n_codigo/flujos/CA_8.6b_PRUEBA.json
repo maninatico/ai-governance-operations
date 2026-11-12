@@ -1,0 +1,254 @@
+{
+  "name": "CA_8.6b_PRUEBA",
+  "nodes": [
+    {
+      "id": "q1",
+      "name": "CA86bP_Ejecutar_prueba",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "q2",
+      "name": "CA86bP_Parametros",
+      "notes": "Prefijo PRUEBA-<corrida>-. Manda UN correo real marcado [PRUEBA] al buzón de pruebas.",
+      "parameters": {
+        "jsCode": "const n = new Date(), z = (x) => String(x).padStart(2, '0');\nconst prefijo = `PRUEBA-${n.getFullYear()}${z(n.getMonth() + 1)}${z(n.getDate())}${z(n.getHours())}${z(n.getMinutes())}${z(n.getSeconds())}-`;\nreturn [{ json: { prefijo } }];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "q3",
+      "name": "CA86bP_Sembrar",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "=INSERT INTO control.alertas (tipo, severidad, destinatario, objeto, detalle) VALUES ('prueba_envio', 'S3', 'Gerente de Administración', '{{ $('CA86bP_Parametros').first().json.prefijo }}1', '[PRUEBA] Alerta de prueba 1 del envío de correos'), ('prueba_envio', 'S2', 'Responsable de Sistemas', '{{ $('CA86bP_Parametros').first().json.prefijo }}2', '[PRUEBA] Alerta de prueba 2 del envío de correos') RETURNING alerta_id"
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "q4",
+      "name": "CA86bP_C1",
+      "parameters": {
+        "jsCode": "return [{ json: { prefijo: $('CA86bP_Parametros').first().json.prefijo } }];"
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "q5",
+      "name": "CA86bP_Enviar_1",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "qm2Dg71SxN5QeZcz"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "q6",
+      "name": "CA86bP_Verificar",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "=SELECT count(*) FILTER (WHERE enviada AND enviada_momento IS NOT NULL) AS enviadas, count(*) AS total FROM control.alertas WHERE objeto LIKE '{{ $('CA86bP_Parametros').first().json.prefijo }}%'"
+      },
+      "position": [
+        1100,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "q7",
+      "name": "CA86bP_C2",
+      "parameters": {
+        "jsCode": "return [{ json: { prefijo: $('CA86bP_Parametros').first().json.prefijo } }];"
+      },
+      "position": [
+        1320,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "q8",
+      "name": "CA86bP_Enviar_2",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "qm2Dg71SxN5QeZcz"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1540,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "q9",
+      "name": "CA86bP_Resultado",
+      "parameters": {
+        "jsCode": "const j = (n) => $(n).first().json;\nconst r1 = j('CA86bP_Enviar_1'), v = j('CA86bP_Verificar'), r2 = j('CA86bP_Enviar_2');\nconst pf = (ok) => (ok ? 'PASA' : 'FALLA');\nconst casos = [\n  { caso: 'C1 envia las 2 alertas pendientes en un solo correo', esperado: 'enviado, 2 alertas, asunto con [PRUEBA]', resultado: pf(r1.estado === 'enviado' && r1.alertas_enviadas === 2 && String(r1.asunto).includes('[PRUEBA]') && String(r1.asunto).includes('2 alertas nuevas')), detalle: JSON.stringify({ estado: r1.estado, alertas_enviadas: r1.alertas_enviadas, asunto: r1.asunto }) },\n  { caso: 'C2 las 2 quedan marcadas como enviadas, con fecha', esperado: '2 de 2', resultado: pf(Number(v.enviadas) === 2 && Number(v.total) === 2), detalle: JSON.stringify(v) },\n  { caso: 'C3 repetir no reenvia nada', esperado: 'sin alertas pendientes', resultado: pf(r2.estado === 'sin alertas pendientes' && r2.alertas_enviadas === 0), detalle: JSON.stringify({ estado: r2.estado, alertas_enviadas: r2.alertas_enviadas }) },\n  { caso: 'C4 el correo llego al buzon de pruebas', esperado: 'Revisar a mano: asunto ' + r1.asunto, resultado: 'MANUAL', detalle: 'Buscar en <CORREO> un correo con ese asunto' },\n];\nreturn casos.map((c) => ({ json: c }));"
+      },
+      "position": [
+        1760,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA86bP_C1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86bP_Enviar_1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86bP_C2": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86bP_Enviar_2",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86bP_Ejecutar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86bP_Parametros",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86bP_Enviar_1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86bP_Verificar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86bP_Enviar_2": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86bP_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86bP_Parametros": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86bP_Sembrar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86bP_Sembrar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86bP_C1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86bP_Verificar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86bP_C2",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveManualExecutions": true
+  }
+}

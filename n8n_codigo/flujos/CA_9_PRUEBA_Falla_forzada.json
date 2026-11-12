@@ -1,0 +1,53 @@
+{
+  "name": "CA_9_PRUEBA_Falla_forzada",
+  "nodes": [
+    {
+      "id": "f1",
+      "name": "CA9F_Disparador",
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1
+    },
+    {
+      "id": "f2",
+      "name": "CA9F_Romper",
+      "notes": "Falla a proposito para probar el registro central de errores de la Fase 9.",
+      "parameters": {
+        "jsCode": "throw new Error('Falla forzada de la Fase 9 (prueba)');"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA9F_Disparador": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9F_Romper",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

@@ -1,0 +1,341 @@
+{
+  "name": "CA_8.4c_Verificacion_de_CBU",
+  "nodes": [
+    {
+      "id": "ca84c-trigger",
+      "name": "CA84c_Disparador",
+      "notes": "A06 Verificación de CBU (L4). Sin IA. Entrada: la salida del 8.4b. Nunca cambia un CBU: si algo no coincide, bloquea el pago, manda a la cola con prioridad alta y deja la alerta en la auditoría.",
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1
+    },
+    {
+      "id": "ca84c-ver",
+      "name": "CA84c_Verificar_CBU",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($json.proveedor_id ?? ''), String(($json.datos && $json.datos.cbu) ?? '') ] }}"
+        },
+        "query": "-- La bóveda responde solo sí o no: el flujo nunca ve el CBU registrado.\nSELECT ($2 ~ '^\\d{22}$') AS cbu_leido,\n       CASE WHEN $2 ~ '^\\d{22}$' THEN boveda.cbu_coincide($1, $2) ELSE false END AS coincide;"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca84c-eval",
+      "name": "CA84c_Evaluar_senales",
+      "parameters": {
+        "jsCode": "// Señales de A06. Cualquiera de ellas frena el pago; ninguna cambia un CBU.\nconst e = $('CA84c_Disparador').first().json;\nconst b = $input.first().json;\nconst fin4 = (c) => c ? '...' + String(c).slice(-4) : '';\nconst motivos = [];\nif (!b.cbu_leido) motivos.push('No se pudo leer el CBU de la factura');\nelse if (!b.coincide) motivos.push(`El CBU de la factura (${fin4(e.datos.cbu)}) no es el registrado para el proveedor`);\nif (e.pide_cambio_cbu) motivos.push('El correo pide un cambio de cuenta bancaria' + (e.cbu_en_correo ? ` (CBU ${fin4(e.cbu_en_correo)})` : ''));\nreturn [{ json: { alerta: motivos.length > 0, motivos } }];"
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca84c-if",
+      "name": "CA84c_Hay_alerta",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "ca84c-ifc",
+              "leftValue": "={{ $json.alerta }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "ca84c-d83",
+      "name": "CA84c_Datos_para_8.3",
+      "parameters": {
+        "jsCode": "return [{ json: { modo: 'evaluar', accion: 'cambiar_cbu' } }];"
+      },
+      "position": [
+        880,
+        160
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca84c-83",
+      "name": "CA84c_Consultar_politica",
+      "notes": "Motor de políticas (8.3): la regla cambiar_cbu vive en la base (L4, bloquear).",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "NHCxpMVGzqr0HxGv"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1100,
+        160
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "ca84c-bloq",
+      "name": "CA84c_Bloquear_pago",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ $('CA84c_Disparador').first().json.comprobante_id, 'Posible fraude o cambio de cuenta (' + ($json.nivel || 'L4') + ', ' + ($json.decision || 'bloquear') + '): ' + $('CA84c_Evaluar_senales').first().json.motivos.join('; ') + '. Verificar por otro canal con el teléfono del legajo.' ] }}"
+        },
+        "query": "-- Bloquea la factura y la manda a la cola con prioridad alta. No toca la bóveda.\nWITH upd AS (\n  UPDATE negocio.comprobantes SET estado = 'Bloqueada'\n  WHERE comprobante_id = $1 AND estado IN ('Recibida', 'En cola de revisión')\n  RETURNING comprobante_id)\nINSERT INTO control.cola_revision (origen, automatizacion_id, documento_id, motivo, prioridad)\nSELECT 'facturas', 'A06', $1, $2, 'alta' FROM upd\nRETURNING 'Bloqueada' AS estado;"
+      },
+      "position": [
+        1320,
+        160
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca84c-res",
+      "name": "CA84c_Resultado",
+      "parameters": {
+        "jsCode": "const e = $('CA84c_Disparador').first().json;\nconst a = $('CA84c_Evaluar_senales').first().json;\nlet estado = e.estado, nivel = null, politica = null;\nif (a.alerta) {\n  const p = $('CA84c_Consultar_politica').first().json;\n  nivel = p.nivel || null; politica = p.decision || null;\n  // Falla segura: con alerta la factura queda bloqueada aunque el motor responda otra cosa o no responda.\n  estado = $('CA84c_Bloquear_pago').first().json.estado === 'Bloqueada' ? 'Bloqueada' : 'Sin cambios: el comprobante no estaba en un estado que se pueda bloquear';\n}\nreturn [{ json: { correo_id: e.correo_id, adjunto: e.adjunto, comprobante_id: e.comprobante_id, proveedor_id: e.proveedor_id,\n  estado, bloqueado: a.alerta, motivos_cbu: a.motivos, nivel, politica,\n  sigue_a_aprobacion: !a.alerta && e.estado === 'Recibida', datos: e.datos } }];"
+      },
+      "position": [
+        1540,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca84c-d81",
+      "name": "CA84c_Datos_para_8.1",
+      "parameters": {
+        "jsCode": "const r = $input.first().json;\nreturn [{ json: { modo: 'fin', automatizacion_id: 'A06', documento_id: r.comprobante_id,\n  estado: r.bloqueado ? 'bloqueado' : 'ok', intervencion_humana: false, modelo_ia: '',\n  auditar: r.bloqueado, actor: 'A06', accion: 'pago bloqueado por CBU', motivo: (r.motivos_cbu || []).join('; ') } }];"
+      },
+      "position": [
+        1760,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca84c-81",
+      "name": "CA84c_Registrar_en_8.1",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HRAb0YG1KsqhYDbf"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1980,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca84c-fin",
+      "name": "CA84c_Devolver",
+      "parameters": {
+        "jsCode": "return [{ json: $('CA84c_Resultado').first().json }];"
+      },
+      "position": [
+        2200,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA84c_Bloquear_pago": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84c_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84c_Consultar_politica": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84c_Bloquear_pago",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84c_Datos_para_8.1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84c_Registrar_en_8.1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84c_Datos_para_8.3": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84c_Consultar_politica",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84c_Disparador": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84c_Verificar_CBU",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84c_Evaluar_senales": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84c_Hay_alerta",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84c_Hay_alerta": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84c_Datos_para_8.3",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA84c_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84c_Registrar_en_8.1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84c_Devolver",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84c_Resultado": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84c_Datos_para_8.1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84c_Verificar_CBU": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84c_Evaluar_senales",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

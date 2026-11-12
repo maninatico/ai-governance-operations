@@ -1,0 +1,202 @@
+{
+  "name": "CA_8.3_PRUEBA",
+  "nodes": [
+    {
+      "id": "ca83p-manual",
+      "name": "CA83P_Ejecutar_prueba",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "ca83p-casos",
+      "name": "CA83P_Casos",
+      "notes": "Casos 1 a 6 del Motor de políticas y aprobaciones. El caso 6 deja una aprobación PRUEBA83-* pendiente, para decidirla con el formulario.",
+      "parameters": {
+        "jsCode": "const doc = 'PRUEBA83-' + Date.now();\nreturn [\n  { json: { caso: '1 clasificar documento (L0)', esperado: 'permitir', modo: 'evaluar', accion: 'clasificar_documento' } },\n  { json: { caso: '2 pago de $ 1.200.000', esperado: 'pedir aprobación, sin doble control', modo: 'evaluar', accion: 'aprobar_pago', monto: 1200000 } },\n  { json: { caso: '3 pago de $ 6.000.000', esperado: 'pedir aprobación con doble control', modo: 'evaluar', accion: 'aprobar_pago', monto: 6000000 } },\n  { json: { caso: '4 cambiar CBU (L4)', esperado: 'bloquear', modo: 'evaluar', accion: 'cambiar_cbu' } },\n  { json: { caso: '5 acción desconocida', esperado: 'bloquear (falla segura)', modo: 'evaluar', accion: 'borrar_todo' } },\n  { json: { caso: '6 pedir aprobación de $ 6.000.000', esperado: 'aprobación creada, doble control, con link', modo: 'pedir',\n            automatizacion_id: 'A07', objeto: doc, accion: 'aprobar_pago', monto: 6000000, motivo: 'Prueba del motor de políticas' } },\n];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca83p-llamar",
+      "name": "CA83P_Llamar_8.3",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "NHCxpMVGzqr0HxGv"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca83p-eval",
+      "name": "CA83P_Evaluar_1_a_6",
+      "parameters": {
+        "jsCode": "const casos = $('CA83P_Casos').all().map(i => i.json);\nconst res = $input.all().map(i => i.json);\nconst ok = [\n  r => r.permitido === true && r.decision === 'permitir',\n  r => r.requiere_aprobacion === true && r.doble_control === false,\n  r => r.requiere_aprobacion === true && r.doble_control === true && r.segundo_aprobador === 'Socio gerente',\n  r => r.bloqueado === true,\n  r => r.bloqueado === true && /Falla segura/.test(r.motivo || ''),\n  r => !!r.aprobacion_id && r.nivel === 'L3 + doble control' && /aprobacion_id=/.test(r.link_formulario || ''),\n];\nreturn casos.map((c, i) => { const r = res[i] || {};\n  return { json: { caso: c.caso, esperado: c.esperado, resultado: ok[i](r) ? 'PASA' : 'FALLA', detalle: JSON.stringify(r).slice(0, 300), aprobacion_id: r.aprobacion_id ?? null } }; });"
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca83p-c7",
+      "name": "CA83P_Caso_consultar",
+      "parameters": {
+        "jsCode": "const id = $input.all().map(i => i.json).find(r => r.aprobacion_id)?.aprobacion_id;\nreturn [{ json: { modo: 'consultar', aprobacion_id: id } }];"
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca83p-llamar2",
+      "name": "CA83P_Llamar_8.3_consultar",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "NHCxpMVGzqr0HxGv"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1100,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca83p-res",
+      "name": "CA83P_Resultado",
+      "parameters": {
+        "jsCode": "const filas = $('CA83P_Evaluar_1_a_6').all().map(i => i.json);\nconst r = $input.first().json;\nfilas.push({ caso: '7 consultar la aprobación del caso 6', esperado: 'pendiente; el silencio no es un sí',\n  resultado: r.estado === 'pendiente' && r.aprobado === false ? 'PASA' : 'FALLA', detalle: JSON.stringify(r).slice(0, 300), aprobacion_id: r.aprobacion_id });\nreturn filas.map(f => ({ json: f }));"
+      },
+      "position": [
+        1320,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA83P_Caso_consultar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83P_Llamar_8.3_consultar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83P_Casos": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83P_Llamar_8.3",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83P_Ejecutar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83P_Casos",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83P_Evaluar_1_a_6": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83P_Caso_consultar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83P_Llamar_8.3": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83P_Evaluar_1_a_6",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83P_Llamar_8.3_consultar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83P_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveManualExecutions": true
+  }
+}

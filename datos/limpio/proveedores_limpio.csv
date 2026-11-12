@@ -1,0 +1,121 @@
+﻿proveedor_id,razon_social,cuit,rubro,alicuota_iva,banco,cbu,email,telefono,condicion_pago_dias,activo
+PRV-001,Cementera Corvalis S.A.S.,30-57489709-9,Cementos y cales,0.21,BBVA,0172286018027544168095,facturacion@corvalis001.example,11-6771-9935,30,True
+PRV-002,Hierros Montefior S.A.,30-57806804-6,Hierros y aceros,0.21,Banco de la Nación,0118279604664421187245,facturacion@montefior002.example,11-6298-4257,60,True
+PRV-003,Canteras Quelvar S.R.L.,33-50218062-8,Áridos,0.21,Banco Provincia,0142615174375868752589,facturacion@quelvar003.example,11-5393-5552,30,True
+PRV-004,Sanitarios Tolveira S.A.,33-53245263-0,Sanitarios,0.21,Banco de la Nación,0115881460509539133639,facturacion@tolveira004.example,11-6472-5333,30,True
+PRV-005,Cables Jarandel S.A.,30-68523409-9,Electricidad,0.21,Santander,0724803663645475683218,facturacion@jarandel005.example,11-6364-4150,60,True
+PRV-006,Maderas Montefior S.A.S.,33-52677374-3,Maderas,0.105,Banco Galicia,0073814317775430122742,facturacion@montefior006.example,11-5556-5554,45,True
+PRV-007,Revestimientos Sindora S.R.L.,30-58958289-2,Cerámicos y revestimientos,0.21,BBVA,0171169993938285112339,facturacion@sindora007.example,11-6986-5010,30,True
+PRV-008,Membranas Duravel S.R.L.,30-60881122-9,Pinturas e impermeabilizantes,0.21,Banco Macro,2850916170579861278680,facturacion@duravel008.example,11-5096-2084,30,True
+PRV-009,Ferretería Industrial Tremarco S.A.S.,33-71570529-5,Herramientas,0.21,Santander,0727517746563581776679,facturacion@industrial009.example,11-4571-5040,60,True
+PRV-010,Perfiles Prolanda S.A.S.,33-62146585-1,Construcción en seco,0.21,Santander,0723593789641908770607,facturacion@prolanda010.example,11-6021-2489,30,True
+PRV-011,Cementera Valcuri S.A.S.,33-70012166-1,Cementos y cales,0.21,Banco Galicia,0071040667146864466615,facturacion@valcuri011.example,11-6440-8668,60,True
+PRV-012,Hierros Jarandel S.A.,30-68017734-8,Hierros y aceros,0.21,Banco Macro,2854371619599661295198,facturacion@jarandel012.example,11-5202-8123,30,True
+PRV-013,Canteras Corvalis S.A.S.,33-66796882-3,Áridos,0.21,Banco Macro,2852927952511356795980,facturacion@corvalis013.example,11-6617-9317,60,True
+PRV-014,Sanitarios Valcuri S.R.L.,30-68098556-8,Sanitarios,0.21,Credicoop,1918689200125348341414,facturacion@valcuri014.example,11-6453-6310,45,True
+PRV-015,Eléctrica Ortenza S.R.L.,33-58034686-9,Electricidad,0.21,Credicoop,1910949715035768125517,facturacion@ortenza015.example,11-6997-8962,30,True
+PRV-016,Maderas Valcuri S.A.S.,30-58893824-3,Maderas,0.105,Santander,0728645470193153729548,facturacion@valcuri016.example,11-6751-7118,45,True
+PRV-017,Revestimientos Ortenza S.A.,30-69740364-3,Cerámicos y revestimientos,0.21,Banco Galicia,0079075601254998780708,facturacion@ortenza017.example,11-4290-1964,30,True
+PRV-018,Pinturas Montefior S.R.L.,30-59344146-2,Pinturas e impermeabilizantes,0.21,Banco de la Nación,0117953694842079296585,facturacion@montefior018.example,11-4541-8744,30,True
+PRV-019,Ferretería Industrial Fenlobo S.A.,30-64463677-8,Herramientas,0.21,Banco de la Nación,0115804372302492155055,facturacion@industrial019.example,11-5912-1887,60,True
+PRV-020,Placas Montefior S.R.L.,33-53666460-8,Construcción en seco,0.21,Banco Macro,2854073133466023966729,facturacion@montefior020.example,11-6196-8350,30,True
+PRV-021,Calera Sindora S.R.L.,30-52529497-4,Cementos y cales,0.21,Santander,0727260496845326349900,facturacion@sindora021.example,11-4401-1828,60,True
+PRV-022,Aceros Bralitex S.A.,33-66295412-3,Hierros y aceros,0.21,Banco Galicia,0077886428950597946400,facturacion@bralitex022.example,11-5552-1035,45,True
+PRV-023,Canteras Gramonti S.R.L.,33-55194119-7,Áridos,0.21,Santander,0723111938280902111548,facturacion@gramonti023.example,11-4239-9883,30,True
+PRV-024,Griferías Montefior S.A.,33-66872858-3,Sanitarios,0.21,Banco Provincia,0148701309971085810934,facturacion@montefior024.example,11-6080-2312,30,True
+PRV-025,Eléctrica Lumbreras del Plata S.A.,30-63548459-0,Electricidad,0.21,Banco Macro,2851964343317737716401,facturacion@lumbreras025.example,11-6371-1651,60,True
+PRV-026,Maderas Fenlobo S.A.S.,33-58749844-3,Maderas,0.105,Banco Provincia,0143346741975324576269,facturacion@fenlobo026.example,11-5087-7484,30,True
+PRV-027,Revestimientos Gramonti S.R.L.,30-50312574-5,Cerámicos y revestimientos,0.21,Credicoop,1917508912889196050135,facturacion@gramonti027.example,11-6202-4492,60,True
+PRV-028,Membranas Valcuri S.R.L.,33-55293105-5,Pinturas e impermeabilizantes,0.21,Banco de la Nación,0117179295598831409148,facturacion@valcuri028.example,11-6881-5956,60,True
+PRV-029,Herramientas Nevaliz S.A.S.,30-54506062-7,Herramientas,0.21,BBVA,0174333927339752777199,facturacion@nevaliz029.example,11-5115-5616,60,True
+PRV-030,Placas Orvisa S.R.L.,33-66958713-4,Construcción en seco,0.21,Banco Galicia,0078004516237158174870,facturacion@orvisa030.example,11-6598-7939,45,True
+PRV-031,Cementera Corvalis S.R.L.,30-71377977-2,Cementos y cales,0.21,Credicoop,1914291997042287907294,facturacion@corvalis031.example,11-6890-8007,60,True
+PRV-032,Aceros Ortenza S.A.,30-68306972-4,Hierros y aceros,0.21,Banco Macro,2850590964975751098678,facturacion@ortenza032.example,11-6385-3426,45,True
+PRV-033,Áridos Montefior S.R.L.,30-62006085-9,Áridos,0.21,BBVA,0173441643923860306460,facturacion@montefior033.example,11-6731-2684,45,True
+PRV-034,Griferías Lumbreras del Plata S.A.S.,30-63834304-1,Sanitarios,0.21,Banco Galicia,0070406358451261652498,facturacion@lumbreras034.example,11-5686-5065,45,True
+PRV-035,Eléctrica Orvisa S.A.,30-56696552-2,Electricidad,0.21,Santander,0727541253702108914910,facturacion@orvisa035.example,11-4932-4652,30,True
+PRV-036,Maderas Duravel S.R.L.,30-59365880-1,Maderas,0.105,BBVA,0175753089620569225495,facturacion@duravel036.example,11-5637-9785,45,True
+PRV-037,Cerámicos Ortenza S.R.L.,30-70017609-2,Cerámicos y revestimientos,0.21,Banco Galicia,0077119155181156913630,facturacion@ortenza037.example,11-5787-9379,30,True
+PRV-038,Membranas Kalmera S.A.,30-64631662-2,Pinturas e impermeabilizantes,0.21,BBVA,0170027594738668254725,facturacion@kalmera038.example,11-6813-4228,45,True
+PRV-039,Ferretería Industrial Bralitex S.A.S.,33-54181731-5,Herramientas,0.21,BBVA,0174920754396066713262,facturacion@industrial039.example,11-6731-7691,45,True
+PRV-040,Perfiles Orvisa S.R.L.,30-56437085-8,Construcción en seco,0.21,Banco Provincia,0146888552938439971455,facturacion@orvisa040.example,11-5663-9977,30,True
+PRV-041,Calera Piedramar S.A.,33-65602414-9,Cementos y cales,0.21,Santander,0727238389902843910663,facturacion@piedramar041.example,11-5938-3780,60,True
+PRV-042,Aceros Piedramar S.A.S.,33-53133554-1,Hierros y aceros,0.21,Banco Macro,2853848254617930686087,facturacion@piedramar042.example,11-4920-4262,30,True
+PRV-043,Áridos Montefior S.A.,30-65281230-5,Áridos,0.21,Santander,0726790534212664553065,facturacion@montefior043.example,11-6942-7291,45,True
+PRV-044,Griferías Quelvar S.A.,30-53576476-6,Sanitarios,0.21,Banco Macro,2856965530933163686475,facturacion@quelvar044.example,11-6850-9486,45,True
+PRV-045,Eléctrica Jarandel S.A.,30-65316317-3,Electricidad,0.21,Credicoop,1912184681767648223839,facturacion@jarandel045.example,11-6734-9702,60,True
+PRV-046,Aserradero Gramonti S.A.S.,33-68383532-9,Maderas,0.105,Credicoop,1917305227998771891772,facturacion@gramonti046.example,11-5944-8373,45,True
+PRV-047,Cerámicos Marfonte S.R.L.,33-71030187-0,Cerámicos y revestimientos,0.21,Credicoop,1913919377364154871517,facturacion@marfonte047.example,11-4317-5681,30,True
+PRV-048,Membranas Tolveira S.R.L.,30-54643063-0,Pinturas e impermeabilizantes,0.21,Banco Provincia,0142471167355019806327,facturacion@tolveira048.example,11-6842-3503,60,True
+PRV-049,Herramientas Bralitex S.R.L.,33-68207008-6,Herramientas,0.21,Santander,0727633010970023972310,facturacion@bralitex049.example,11-4847-7883,45,True
+PRV-050,Placas Kalmera S.R.L.,30-61803066-7,Construcción en seco,0.21,Santander,0724892068622989227490,facturacion@kalmera050.example,11-5716-9818,60,True
+PRV-051,Cementera Hesperal S.A.,33-66295441-7,Cementos y cales,0.21,BBVA,0170475859115451282687,facturacion@hesperal051.example,11-6739-7624,60,True
+PRV-052,Aceros Gramonti S.A.,30-63221125-9,Hierros y aceros,0.21,Banco Provincia,0149697414732901849596,facturacion@gramonti052.example,11-6632-8022,30,True
+PRV-053,Canteras Sindora S.A.,33-60984132-5,Áridos,0.21,BBVA,0173467657486191607930,facturacion@sindora053.example,11-5382-7211,45,True
+PRV-054,Griferías Nordeste Austral S.A.,30-68099899-6,Sanitarios,0.21,Santander,0720853739442830459559,facturacion@nordeste054.example,11-6662-2124,60,True
+PRV-055,Eléctrica Corvalis S.A.,30-70848565-5,Electricidad,0.21,Banco Galicia,0072496622215226347547,facturacion@corvalis055.example,11-5939-2874,60,True
+PRV-056,Maderas Gramonti S.A.S.,33-55630069-6,Maderas,0.105,BBVA,0179926428811469600649,facturacion@gramonti056.example,11-5274-2771,60,True
+PRV-057,Cerámicos Piedramar S.A.S.,33-63309514-6,Cerámicos y revestimientos,0.21,Banco Macro,2853249142718914778028,facturacion@piedramar057.example,11-4417-5941,60,True
+PRV-058,Pinturas Kalmera S.A.,33-62434295-5,Pinturas e impermeabilizantes,0.21,BBVA,0171129302205089088444,facturacion@kalmera058.example,11-5720-9031,30,True
+PRV-059,Ferretería Industrial Arcaliz S.A.S.,33-55133531-9,Herramientas,0.21,Credicoop,1917135347530275227132,facturacion@industrial059.example,11-6522-9817,45,True
+PRV-060,Perfiles Fenlobo S.A.S.,33-60814747-6,Construcción en seco,0.21,Banco Provincia,0144022349052248663405,facturacion@fenlobo060.example,11-5846-4995,45,True
+PRV-061,Calera Tolveira S.A.,33-56101533-9,Cementos y cales,0.21,Santander,0727988962414985289031,facturacion@tolveira061.example,11-5058-6576,45,True
+PRV-062,Hierros Hesperal S.A.S.,33-65038242-6,Hierros y aceros,0.21,Credicoop,1910282351758352527828,facturacion@hesperal062.example,11-4907-7625,60,True
+PRV-063,Áridos Piedramar S.A.S.,33-65879986-5,Áridos,0.21,Banco Provincia,0149068660495942451098,facturacion@piedramar063.example,11-5742-6419,45,True
+PRV-064,Griferías Nordeste Austral S.R.L.,30-54048539-5,Sanitarios,0.21,BBVA,0173155421015942758464,facturacion@nordeste064.example,11-6194-4033,30,True
+PRV-065,Eléctrica Prolanda S.R.L.,33-53373096-0,Electricidad,0.21,BBVA,0173180639998869214466,facturacion@prolanda065.example,11-5478-3939,45,True
+PRV-066,Maderas Orvisa S.A.S.,30-68567645-8,Maderas,0.105,Banco Galicia,0074786818059945722723,facturacion@orvisa066.example,11-4050-5658,45,True
+PRV-067,Cerámicos Montefior S.R.L.,33-53828129-3,Cerámicos y revestimientos,0.21,Credicoop,1911070586517851594911,facturacion@montefior067.example,11-4303-1878,30,True
+PRV-068,Pinturas Kalmera S.R.L.,33-70344644-8,Pinturas e impermeabilizantes,0.21,Banco de la Nación,0119766266938034791158,facturacion@kalmera068.example,11-5845-8253,45,True
+PRV-069,Ferretería Industrial Piedramar S.A.S.,30-70455818-6,Herramientas,0.21,Banco Provincia,0141625946523559278929,facturacion@industrial069.example,11-6705-2330,30,True
+PRV-070,Placas Sindora S.A.S.,30-50089782-8,Construcción en seco,0.21,Banco de la Nación,0116693282660674771545,facturacion@sindora070.example,11-5192-1534,30,True
+PRV-071,Calera Orvisa S.R.L.,33-52388396-3,Cementos y cales,0.21,Banco Macro,2853824646554177493034,facturacion@orvisa071.example,11-6560-4241,45,True
+PRV-072,Aceros Jarandel S.A.,30-58913146-7,Hierros y aceros,0.21,Banco Macro,2852330110482787231504,facturacion@jarandel072.example,11-4679-6039,60,True
+PRV-073,Canteras Gramonti S.A.,33-63505944-9,Áridos,0.21,Santander,0724460794983222030983,facturacion@gramonti073.example,11-6022-8172,30,True
+PRV-074,Sanitarios Fenlobo S.A.S.,33-50867881-4,Sanitarios,0.21,BBVA,0171496447408769048717,facturacion@fenlobo074.example,11-6360-1659,30,True
+PRV-075,Cables Isolbrid S.A.S.,33-56089765-6,Electricidad,0.21,Santander,0729590286535612895648,facturacion@isolbrid075.example,11-4373-8700,45,True
+PRV-076,Aserradero Tolveira S.R.L.,30-55396386-5,Maderas,0.105,Banco Macro,2855403150701894325354,facturacion@tolveira076.example,11-6713-7561,60,True
+PRV-077,Cerámicos Gramonti S.A.,33-60847268-7,Cerámicos y revestimientos,0.21,BBVA,0171899700214238089049,facturacion@gramonti077.example,11-6693-9889,45,True
+PRV-078,Membranas Montefior S.A.,33-70985235-9,Pinturas e impermeabilizantes,0.21,Banco Provincia,0147242009095022339680,facturacion@montefior078.example,11-4833-5375,60,True
+PRV-079,Herramientas Piedramar S.R.L.,33-54074383-0,Herramientas,0.21,Banco Macro,2850472254638786295577,facturacion@piedramar079.example,11-6256-1224,60,True
+PRV-080,Perfiles Bralitex S.A.,30-71733530-5,Construcción en seco,0.21,Credicoop,1912522051355637065707,facturacion@bralitex080.example,11-6084-5479,45,True
+PRV-081,Calera Hesperal S.A.,30-62871010-0,Cementos y cales,0.21,Santander,0723122524046633959812,facturacion@hesperal081.example,11-4285-5526,45,True
+PRV-082,Hierros Isolbrid S.R.L.,30-59490501-2,Hierros y aceros,0.21,Credicoop,1914891786142438524337,facturacion@isolbrid082.example,11-4608-8316,60,True
+PRV-083,Canteras Arcaliz S.R.L.,33-65278829-2,Áridos,0.21,Banco Provincia,0145272533194496633197,facturacion@arcaliz083.example,11-6856-4912,60,True
+PRV-084,Griferías Quelvar S.R.L.,33-62954653-2,Sanitarios,0.21,Banco de la Nación,0112492522206570900645,facturacion@quelvar084.example,11-6057-6439,30,True
+PRV-085,Cables Ortenza S.A.S.,30-54837053-8,Electricidad,0.21,Santander,0726717227185852637954,facturacion@ortenza085.example,11-4306-8692,45,True
+PRV-086,Aserradero Lumbreras del Plata S.A.S.,30-61024831-0,Maderas,0.105,Santander,0728742685846062633584,facturacion@lumbreras086.example,11-6216-1588,60,True
+PRV-087,Cerámicos Quelvar S.A.S.,33-57633172-5,Cerámicos y revestimientos,0.21,Banco Macro,2851480817689792579480,facturacion@quelvar087.example,11-5817-3725,60,True
+PRV-088,Membranas Corvalis S.A.,30-59843789-7,Pinturas e impermeabilizantes,0.21,BBVA,0175873175779322403623,facturacion@corvalis088.example,11-4596-5000,60,True
+PRV-089,Ferretería Industrial Kalmera S.A.S.,30-55703704-3,Herramientas,0.21,Credicoop,1912868767296590131355,facturacion@industrial089.example,11-6538-4945,45,True
+PRV-090,Placas Quelvar S.R.L.,33-65420627-4,Construcción en seco,0.21,Banco Macro,2854183301660728163291,facturacion@quelvar090.example,11-5905-5712,60,True
+PRV-091,Cementera Bralitex S.R.L.,33-71439225-0,Cementos y cales,0.21,BBVA,0176951344010113850713,facturacion@bralitex091.example,11-5871-5949,30,True
+PRV-092,Hierros Hesperal S.A.,33-69190541-7,Hierros y aceros,0.21,Banco Galicia,0075881752036741939175,facturacion@hesperal092.example,11-6864-5837,30,True
+PRV-093,Canteras Nordeste Austral S.A.,30-70347625-9,Áridos,0.21,Banco Provincia,0148138150375797468519,facturacion@nordeste093.example,11-4942-6772,30,True
+PRV-094,Sanitarios Lumbreras del Plata S.R.L.,30-71054000-0,Sanitarios,0.21,Banco Macro,2850645205860088734645,facturacion@lumbreras094.example,11-6373-6977,60,True
+PRV-095,Eléctrica Bralitex S.R.L.,33-55893502-8,Electricidad,0.21,BBVA,0173289264380335253873,facturacion@bralitex095.example,11-6174-9221,45,True
+PRV-096,Maderas Nordeste Austral S.R.L.,33-61365397-5,Maderas,0.105,Credicoop,1911886024742245707930,facturacion@nordeste096.example,11-4924-7511,60,True
+PRV-097,Revestimientos Bralitex S.R.L.,33-68004379-0,Cerámicos y revestimientos,0.21,Banco de la Nación,0112024464830589407914,facturacion@bralitex097.example,11-6755-5295,60,True
+PRV-098,Membranas Marfonte S.R.L.,30-65820138-3,Pinturas e impermeabilizantes,0.21,Banco de la Nación,0110410798781806941027,facturacion@marfonte098.example,11-5343-4626,60,True
+PRV-099,Herramientas Marfonte S.R.L.,33-71784860-3,Herramientas,0.21,Banco Macro,2856689224572224126490,facturacion@marfonte099.example,11-4185-1609,45,True
+PRV-100,Perfiles Ortenza S.A.,30-63040790-3,Construcción en seco,0.21,Banco Galicia,0077432973724839890378,facturacion@ortenza100.example,11-6405-3531,45,True
+PRV-101,Cementera Hesperal S.A.S.,33-51097776-4,Cementos y cales,0.21,Santander,0726070678005937757268,facturacion@hesperal101.example,11-5821-4868,45,True
+PRV-102,Aceros Nevaliz S.R.L.,33-52031723-1,Hierros y aceros,0.21,Banco Provincia,0146523733383744907791,facturacion@nevaliz102.example,11-4500-8450,30,True
+PRV-103,Áridos Marfonte S.A.S.,30-51697133-5,Áridos,0.21,Banco Provincia,0145464636101973725918,facturacion@marfonte103.example,11-4281-4394,60,True
+PRV-104,Sanitarios Quelvar S.R.L.,30-69997825-2,Sanitarios,0.21,Credicoop,1910046925468470078977,facturacion@quelvar104.example,11-4532-9850,45,True
+PRV-105,Eléctrica Ortenza S.A.S.,30-54422582-7,Electricidad,0.21,Credicoop,1910243441866844339792,facturacion@ortenza105.example,11-6411-6304,30,True
+PRV-106,Maderas Nordeste Austral S.A.,33-67652501-2,Maderas,0.105,Banco Galicia,0071862211198941049535,facturacion@nordeste106.example,11-5950-8344,45,True
+PRV-107,Cerámicos Gramonti S.A.S.,30-67496999-2,Cerámicos y revestimientos,0.21,Banco Galicia,0074941305496013075316,facturacion@gramonti107.example,11-4249-8847,45,True
+PRV-108,Membranas Nevaliz S.A.,33-52465939-0,Pinturas e impermeabilizantes,0.21,Santander,0721323611559832915838,facturacion@nevaliz108.example,11-4516-5505,60,True
+PRV-109,Ferretería Industrial Duravel S.A.S.,33-65224163-3,Herramientas,0.21,Banco Provincia,0148282775703326638299,facturacion@industrial109.example,11-4406-2874,60,True
+PRV-110,Placas Fenlobo S.R.L.,33-61372657-3,Construcción en seco,0.21,Banco Galicia,0077430573160418381857,facturacion@fenlobo110.example,11-6988-2557,45,True
+PRV-111,Calera Tolveira S.A.S.,33-52252620-2,Cementos y cales,0.21,BBVA,0171494015025160193702,facturacion@tolveira111.example,11-4381-8075,30,True
+PRV-112,Hierros Valcuri S.A.S.,33-54101401-8,Hierros y aceros,0.21,Banco de la Nación,0116730074421058030079,facturacion@valcuri112.example,11-6953-1842,45,True
+PRV-113,Canteras Arcaliz S.A.,30-55191883-8,Áridos,0.21,Banco Provincia,0147900161594478968823,facturacion@arcaliz113.example,11-6278-7022,30,True
+PRV-114,Griferías Kalmera S.A.,33-68822885-4,Sanitarios,0.21,Credicoop,1919121805079548201625,facturacion@kalmera114.example,11-4738-5477,60,True
+PRV-115,Cables Tolveira S.R.L.,30-54806722-3,Electricidad,0.21,Banco de la Nación,0119278070508646064390,facturacion@tolveira115.example,11-4285-3324,60,True
+PRV-116,Maderas Bralitex S.A.S.,30-62622989-8,Maderas,0.105,Banco Provincia,0146878659977227390479,facturacion@bralitex116.example,11-4644-7062,45,True
+PRV-117,Revestimientos Kalmera S.A.S.,30-55220395-6,Cerámicos y revestimientos,0.21,Banco de la Nación,0112579947849439577333,facturacion@kalmera117.example,11-5814-7947,45,True
+PRV-118,Membranas Fenlobo S.R.L.,30-61582079-9,Pinturas e impermeabilizantes,0.21,Banco Galicia,0077043349826383313075,facturacion@fenlobo118.example,11-6777-8972,60,True
+PRV-119,Ferretería Industrial Montefior S.A.,30-50257935-1,Herramientas,0.21,Santander,0723349850906336936929,facturacion@industrial119.example,11-5343-2965,30,True
+PRV-120,Perfiles Prolanda S.R.L.,30-62757644-3,Construcción en seco,0.21,Banco Galicia,0078725140488814379185,facturacion@prolanda120.example,11-6049-6802,30,True

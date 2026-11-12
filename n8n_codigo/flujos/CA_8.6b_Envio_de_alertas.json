@@ -1,0 +1,330 @@
+{
+  "name": "CA_8.6b_Envio_de_alertas",
+  "nodes": [
+    {
+      "id": "e1",
+      "name": "CA86E_Desde_otro_flujo",
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1
+    },
+    {
+      "id": "e2",
+      "name": "CA86E_Parametros",
+      "notes": "Prefijo vacío = operación real. Con prefijo PRUEBA-... solo envía las alertas de esa corrida y marca el asunto.",
+      "parameters": {
+        "jsCode": "const j = ($input.first() && $input.first().json) || {};\nconst p = String(j.prefijo ?? '');\nif (!/^[A-Za-z0-9_-]*$/.test(p)) throw new Error('Prefijo inválido');\nreturn [{ json: { prefijo: p } }];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "e3",
+      "name": "CA86E_Interruptor",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "SELECT activo FROM control.interruptores WHERE flujo = '8.6 Monitoreo'"
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "e4",
+      "name": "CA86E_Si_encendido",
+      "notes": "Falla segura: sin interruptor encendido no envía nada. Con prefijo de prueba pasa igual.",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "d1",
+              "leftValue": "={{ $('CA86E_Parametros').first().json.prefijo !== '' || $json.activo === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "e5",
+      "name": "CA86E_Pendientes",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "=SELECT alerta_id, tipo, severidad, destinatario, objeto, detalle, momento FROM control.alertas WHERE NOT enviada AND (('{{ $('CA86E_Parametros').first().json.prefijo }}' = '' AND objeto NOT LIKE 'PRUEBA-%') OR ('{{ $('CA86E_Parametros').first().json.prefijo }}' <> '' AND objeto LIKE '{{ $('CA86E_Parametros').first().json.prefijo }}%')) ORDER BY alerta_id LIMIT 25"
+      },
+      "position": [
+        880,
+        200
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "e6",
+      "name": "CA86E_Armar_correo",
+      "notes": "Un solo correo por pasada con todas las alertas pendientes. Solo IDs y cantidades: sin datos personales.",
+      "parameters": {
+        "jsCode": "const prefijo = $('CA86E_Parametros').first().json.prefijo;\nconst al = $input.all().map((i) => i.json).filter((j) => j.alerta_id);\nif (al.length === 0) return [{ json: { hay: false, enviadas: 0, ids: [] } }];\nconst marca = prefijo ? ' [PRUEBA]' : '';\nconst critica = al.some((a) => a.severidad === 'S1');\nconst asunto = `[Cumbre Andina]${marca} ${al.length} ${al.length === 1 ? 'alerta nueva' : 'alertas nuevas'}${critica ? ' (CRITICA)' : ''}`;\nconst bloques = al.map((a) => `[${a.severidad}] ${a.tipo}\\nPara: ${a.destinatario}\\n${a.detalle}\\nReferencia: ${a.objeto}\\n`);\nconst cuerpo = (prefijo ? 'CORREO DE PRUEBA: estas alertas son de una prueba del flujo, no son reales.\\n\\n' : '') +\n  `Alertas pendientes de envío: ${al.length}\\n\\n` + bloques.join('\\n') +\n  '\\nEste correo no contiene datos personales. Los datos reales solo los muestra el desenmascarador controlado (8.8).\\nProyecto de portafolio con datos ficticios.';\nreturn [{ json: { hay: true, asunto, cuerpo, ids: al.map((a) => Number(a.alerta_id)), enviadas: al.length } }];"
+      },
+      "position": [
+        1100,
+        200
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "e7",
+      "name": "CA86E_Hay_alertas",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "d2",
+              "leftValue": "={{ $json.hay }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        1320,
+        200
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "e8",
+      "maxTries": 2,
+      "name": "CA86E_Enviar_correo",
+      "parameters": {
+        "emailFormat": "text",
+        "fromEmail": "<CORREO>",
+        "options": {
+          "appendAttribution": false
+        },
+        "subject": "={{ $('CA86E_Armar_correo').first().json.asunto }}",
+        "text": "={{ $('CA86E_Armar_correo').first().json.cuerpo }}",
+        "toEmail": "<CORREO>"
+      },
+      "position": [
+        1540,
+        100
+      ],
+      "retryOnFail": true,
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "webhookId": "b93f7eda-c437-48af-a698-0cd9190c7fa8"
+    },
+    {
+      "id": "e9",
+      "name": "CA86E_Marcar_enviadas",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "=UPDATE control.alertas SET enviada = true, enviada_momento = now() WHERE alerta_id IN ({{ $('CA86E_Armar_correo').first().json.ids.map(Number).join(',') }}) AND NOT enviada RETURNING alerta_id"
+      },
+      "position": [
+        1760,
+        100
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "e10",
+      "name": "CA86E_Resultado",
+      "parameters": {
+        "jsCode": "const a = $('CA86E_Armar_correo').first().json;\nlet marcadas = 0; try { marcadas = $('CA86E_Marcar_enviadas').all().filter((i) => i.json.alerta_id).length; } catch (e) { marcadas = 0; }\nreturn [{ json: { estado: a.hay ? 'enviado' : 'sin alertas pendientes', alertas_enviadas: a.hay ? marcadas : 0, asunto: a.asunto || null } }];"
+      },
+      "position": [
+        1980,
+        200
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "e11",
+      "name": "CA86E_Apagado",
+      "parameters": {
+        "jsCode": "return [{ json: { estado: 'apagado', alertas_enviadas: 0, asunto: null } }];"
+      },
+      "position": [
+        880,
+        440
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA86E_Armar_correo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86E_Hay_alertas",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86E_Desde_otro_flujo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86E_Parametros",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86E_Enviar_correo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86E_Marcar_enviadas",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86E_Hay_alertas": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86E_Enviar_correo",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA86E_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86E_Interruptor": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86E_Si_encendido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86E_Marcar_enviadas": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86E_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86E_Parametros": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86E_Interruptor",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86E_Pendientes": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86E_Armar_correo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86E_Si_encendido": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86E_Pendientes",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA86E_Apagado",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

@@ -1,0 +1,258 @@
+{
+  "name": "CA_8.8c_Pedir_consulta_manual",
+  "nodes": [
+    {
+      "id": "p1",
+      "name": "CA88CP_Formulario",
+      "notes": "Pide ver un dato real fuera de un flujo aprobado (A13). No muestra ningún dato: crea la solicitud para el Gerente. Quién pide se elige de un desplegable; en una empresa real sería el inicio de sesión.",
+      "parameters": {
+        "formDescription": "Pedir ver un dato real exige la aprobación del Gerente de Administración. Este paso NO muestra ningún dato. Tené a mano el documento y el marcador (por ejemplo [NOMBRE_1]).",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Quién pide",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Analista CxP"
+                  },
+                  {
+                    "option": "Agente de atención"
+                  },
+                  {
+                    "option": "Jefe de Atención"
+                  },
+                  {
+                    "option": "Responsable de Sistemas"
+                  },
+                  {
+                    "option": "Analista de Procesos"
+                  }
+                ]
+              },
+              "fieldType": "dropdown",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Documento",
+              "fieldType": "text",
+              "placeholder": "Por ejemplo RL-001 o LOTE-004.pdf",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Marcador",
+              "fieldType": "text",
+              "placeholder": "Por ejemplo [NOMBRE_1]",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Motivo",
+              "fieldType": "textarea",
+              "placeholder": "Para qué necesitás ver el dato real (mínimo 15 caracteres)",
+              "requiredField": true
+            }
+          ]
+        },
+        "formTitle": "Materiales Cumbre Andina · Pedir consulta de un dato real",
+        "options": {
+          "buttonLabel": "Pedir aprobación",
+          "path": "ca-reident-pedir"
+        }
+      },
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "webhookId": "8c1b7c0e-2a43-4d58-9a11-5c0b88a1c101"
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "p2",
+      "name": "CA88CP_Interruptores",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "SELECT (count(*) = 2 AND bool_and(activo)) AS encendido FROM control.interruptores WHERE flujo IN ('GENERAL', '8.8 Desenmascarador y cola');"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "p3",
+      "name": "CA88CP_Encendido",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.encendido === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "p4",
+      "name": "CA88CP_Pedir",
+      "onError": "continueErrorOutput",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($('CA88CP_Formulario').first().json['Quién pide']), String($('CA88CP_Formulario').first().json['Documento']).trim(), String($('CA88CP_Formulario').first().json['Marcador']).trim(), String($('CA88CP_Formulario').first().json['Motivo']) ] }}"
+        },
+        "query": "SELECT * FROM boveda.pedir_consulta_manual($1, $2, $3, $4);"
+      },
+      "position": [
+        660,
+        200
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "p5",
+      "name": "CA88CP_Fin_pedida",
+      "parameters": {
+        "completionMessage": "={{ String($json.o_mensaje).replace(/&/g,'&amp;').replace(/</g,'&lt;') }}<br><br>Anotá el número de solicitud: <b>{{ $json.o_aprobacion_id }}</b>.<br>Cuando el Gerente la apruebe, usá el formulario <b>Ver dato aprobado</b> con ese número. El dato se muestra una sola vez y dentro de las 24 horas de la aprobación.",
+        "completionTitle": "Solicitud creada",
+        "operation": "completion",
+        "respondWith": "text"
+      },
+      "position": [
+        880,
+        100
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "8c1b7c0e-2a43-4d58-9a11-5c0b88a1c102"
+    },
+    {
+      "id": "p6",
+      "name": "CA88CP_Fin_rechazada",
+      "parameters": {
+        "completionMessage": "={{ String($json.message || $json.error?.message || $json.error?.description || 'Error desconocido').replace(/^.*ERROR:\\s*/, '').replace(/&/g,'&amp;').replace(/</g,'&lt;') }}<br>No se creó ninguna solicitud. Volvé a abrir el formulario.",
+        "completionTitle": "No se pudo crear la solicitud",
+        "operation": "completion",
+        "respondWith": "text"
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "8c1b7c0e-2a43-4d58-9a11-5c0b88a1c103"
+    },
+    {
+      "id": "p7",
+      "name": "CA88CP_Fin_apagado",
+      "parameters": {
+        "completionMessage": "El interruptor del desenmascarador y la cola está apagado (o el interruptor general). No se crean solicitudes mientras esté así.",
+        "completionTitle": "Consultas apagadas",
+        "operation": "completion",
+        "respondWith": "text"
+      },
+      "position": [
+        660,
+        420
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "8c1b7c0e-2a43-4d58-9a11-5c0b88a1c104"
+    }
+  ],
+  "connections": {
+    "CA88CP_Encendido": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88CP_Pedir",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA88CP_Fin_apagado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88CP_Formulario": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88CP_Interruptores",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88CP_Interruptores": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88CP_Encendido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA88CP_Pedir": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA88CP_Fin_pedida",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA88CP_Fin_rechazada",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

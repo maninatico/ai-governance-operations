@@ -1,0 +1,4 @@
+escenario,costo_hora,horas_ahorradas,ahorro_por_horas,ahorro_por_errores,costo_anual,beneficio_neto_anual,inversion_A,inversion_B,roi_A_pct,roi_B_pct,recupero_A_meses,recupero_B_meses
+Base,12812.32,1502.0,19244112,84400000,4829983,98814129,192185,7687395,51316.2,1185.4,0.02,0.93
+Sin pagos duplicados extra evitados,12812.32,1502.0,19244112,0,4829983,14414129,192185,7687395,7400.1,87.5,0.16,6.4
+Peor caso combinado,8541.55,82.0,700407,0,8019989,-7319582,128123,5124930,-5812.9,-242.8,,

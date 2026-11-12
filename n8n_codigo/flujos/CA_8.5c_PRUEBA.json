@@ -1,0 +1,419 @@
+{
+  "name": "CA_8.5c_PRUEBA",
+  "nodes": [
+    {
+      "id": "w1",
+      "name": "CA85cP_Ejecutar_prueba",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "w2",
+      "name": "CA85cP_Parametros",
+      "notes": "4 reclamos por 8.5a, 8.5b y 8.5c. Las decisiones del agente se simulan con registrar_decision. Prefijo PRUEBA-<corrida>-.",
+      "parameters": {
+        "jsCode": "// 4 reclamos: RL-002 queda esperando al agente, RL-003 recibe un borrador simulado con promesas (el control lo tiene que frenar),\n// RL-005 se aprueba y RL-034 se rechaza.\nreturn [{ json: { ids: ['RL-002', 'RL-003', 'RL-005', 'RL-034'], archivo: 'http://cumbre_archivos/reclamos_lote.csv' } }];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "w3",
+      "name": "CA85cP_Leer_reclamos",
+      "parameters": {
+        "method": "GET",
+        "options": {
+          "response": {
+            "response": {
+              "outputPropertyName": "data",
+              "responseFormat": "text"
+            }
+          }
+        },
+        "url": "={{ $json.archivo }}"
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2
+    },
+    {
+      "id": "w4",
+      "name": "CA85cP_Ordenar",
+      "parameters": {
+        "jsCode": "// Reclamos del lote: CSV con comillas y comas en el texto. Se quita el BOM y se ordena por ingreso.\nconst p = $('CA85cP_Parametros').first().json;\nconst n = new Date(), z = (x) => String(x).padStart(2, '0');\nconst prefijo = `PRUEBA-${n.getFullYear()}${z(n.getMonth() + 1)}${z(n.getDate())}${z(n.getHours())}${z(n.getMinutes())}${z(n.getSeconds())}-`;\nlet txt = String($input.first().json.data || '').replace(/^﻿/, '');\nconst filas = []; let fila = [], campo = '', comillas = false;\nfor (let i = 0; i < txt.length; i++) {\n  const ch = txt[i];\n  if (comillas) {\n    if (ch === '\"' && txt[i + 1] === '\"') { campo += '\"'; i++; }\n    else if (ch === '\"') comillas = false;\n    else campo += ch;\n  } else if (ch === '\"') comillas = true;\n  else if (ch === ',') { fila.push(campo); campo = ''; }\n  else if (ch === '\\n' || ch === '\\r') { if (ch === '\\r' && txt[i + 1] === '\\n') i++; fila.push(campo); filas.push(fila); fila = []; campo = ''; }\n  else campo += ch;\n}\nif (campo !== '' || fila.length) { fila.push(campo); filas.push(fila); }\nconst cab = filas.shift().map((c) => c.trim());\nlet correos = filas.filter((f) => f.length === cab.length).map((f) => Object.fromEntries(cab.map((c, k) => [c, f[k]])));\ncorreos.sort((a, b) => a.fecha_hora_ingreso.localeCompare(b.fecha_hora_ingreso) || a.reclamo_id.localeCompare(b.reclamo_id));\ncorreos = correos.filter((c) => p.ids.includes(c.reclamo_id));\nreturn correos.map((c) => ({ json: { ...c, prefijo_id: prefijo } }));\n"
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "w5",
+      "name": "CA85cP_Clasificar",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "BUSthIsunrQgFadJ"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "w6",
+      "name": "CA85cP_Modo_derivar",
+      "parameters": {
+        "jsCode": "return $input.all().map((i) => ({ json: { ...i.json, modo: 'derivar' } }));"
+      },
+      "position": [
+        1100,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "w7",
+      "name": "CA85cP_Derivar",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "7boib0vvwltFmdBt"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1320,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "w8",
+      "name": "CA85cP_Datos_redactar",
+      "parameters": {
+        "jsCode": "const base = (id) => String(id || '').replace(/^PRUEBA-\\d+-/, '');\nconst SIMULADO = { 'RL-003': 'Hola [NOMBRE_1], lamentamos la demora. Le vamos a hacer el reintegro total y mañana le llevamos el pedido sin cargo. Materiales Cumbre Andina.' };\nreturn $input.all().map((i) => ({ json: { modo: 'redactar', reclamo_id: i.json.reclamo_id, borrador_simulado: SIMULADO[base(i.json.reclamo_id)] || null } }));"
+      },
+      "position": [
+        1540,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "w9",
+      "name": "CA85cP_Redactar",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "D8ngD74TUvA08weN"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1760,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "w10",
+      "name": "CA85cP_Decisiones",
+      "parameters": {
+        "jsCode": "// Simula la decisión del agente con registrar_decision, la misma función que usa el formulario.\nconst base = (id) => String(id || '').replace(/^PRUEBA-\\d+-/, '');\nconst QUE = { 'RL-005': ['aprobado', 'PRUEBA 8.5c: borrador correcto'], 'RL-034': ['rechazado', 'PRUEBA 8.5c: falta pedir el número de factura'] };\nconst out = [];\nfor (const i of $input.all()) { const r = i.json, q = QUE[base(r.reclamo_id)];\n  if (q && r.aprobacion_id) out.push({ json: { aprobacion_id: String(r.aprobacion_id), quien: r.aprobador, decision: q[0], motivo: q[1] } }); }\nreturn out.length ? out : [{ json: { sin_decisiones: true } }];"
+      },
+      "position": [
+        1980,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "w11",
+      "name": "CA85cP_Decidir",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryBatching": "independently",
+          "queryReplacement": "={{ [ String($json.aprobacion_id || ''), String($json.quien || ''), String($json.decision || 'aprobado'), String($json.motivo || 'sin decisiones') ] }}"
+        },
+        "query": "SELECT * FROM control.registrar_decision(NULLIF($1, '')::bigint, $2, $3, $4);"
+      },
+      "position": [
+        2200,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "w12",
+      "name": "CA85cP_Datos_actualizar",
+      "parameters": {
+        "jsCode": "return [{ json: { modo: 'actualizar', prefijo: $('CA85cP_Ordenar').first().json.prefijo_id } }];"
+      },
+      "position": [
+        2420,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "w13",
+      "name": "CA85cP_Actualizar",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "D8ngD74TUvA08weN"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        2640,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "w14",
+      "name": "CA85cP_Resultado",
+      "parameters": {
+        "jsCode": "const base = (id) => String(id || '').replace(/^PRUEBA-\\d+-/, '');\nconst red = Object.fromEntries($('CA85cP_Redactar').all().map((i) => [base(i.json.reclamo_id), i.json]));\nconst act = $input.first().json;\nconst fin = (id) => { const c = (act.cambios || []).find((x) => base(x.reclamo_id) === id); return c ? c.estado : ((act.pendientes || []).map(base).includes(id) ? 'pendiente_aprobacion' : 'sin cambio'); };\nconst casos = [\n  ['RL-002', 'Borrador de la IA válido, en aprobación del Agente de atención; sigue pendiente', (r) => r.estado === 'pendiente_aprobacion' && r.aprobador === 'Agente de atención' && r.nivel === 'L3' && fin('RL-002') === 'pendiente_aprobacion'],\n  ['RL-003', 'Borrador con promesas: el control lo descarta y va a la cola', (r) => r.estado === 'Borrador descartado' && (r.motivos || []).some((m) => /reintegro/.test(m))],\n  ['RL-005', 'Borrador aprobado por el agente', (r) => r.estado === 'pendiente_aprobacion' && fin('RL-005') === 'aprobada'],\n  ['RL-034', 'Borrador rechazado: vuelve al agente por la cola', (r) => r.estado === 'pendiente_aprobacion' && fin('RL-034') === 'rechazada'],\n];\nreturn casos.map(([id, esperado, ok]) => { const r = red[id] || {};\n  let pasa = false; try { pasa = ok(r); } catch (e) {}\n  return { json: { caso: id, esperado, resultado: pasa ? 'PASA' : 'FALLA', estado_final: fin(id), fuente: r.fuente, borrador: r.borrador, motivos: (r.motivos || []).join('; ') } }; });"
+      },
+      "position": [
+        2860,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA85cP_Actualizar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85cP_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85cP_Clasificar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85cP_Modo_derivar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85cP_Datos_actualizar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85cP_Actualizar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85cP_Datos_redactar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85cP_Redactar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85cP_Decidir": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85cP_Datos_actualizar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85cP_Decisiones": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85cP_Decidir",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85cP_Derivar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85cP_Datos_redactar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85cP_Ejecutar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85cP_Parametros",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85cP_Leer_reclamos": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85cP_Ordenar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85cP_Modo_derivar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85cP_Derivar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85cP_Ordenar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85cP_Clasificar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85cP_Parametros": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85cP_Leer_reclamos",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85cP_Redactar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85cP_Decisiones",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveManualExecutions": true
+  }
+}

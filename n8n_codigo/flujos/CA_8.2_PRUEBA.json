@@ -1,0 +1,113 @@
+{
+  "name": "CA_8.2_PRUEBA",
+  "nodes": [
+    {
+      "id": "ca82p-manual",
+      "name": "CA82P_Ejecutar_prueba",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "ca82p-casos",
+      "name": "CA82P_Casos",
+      "notes": "6 casos del subflujo CA_8.2. Datos sintéticos. Los casos que van a la cola dejan filas PRUEBA82-* en control.cola_revision.",
+      "parameters": {
+        "jsCode": "const t = Date.now();\nconst doc = n => `PRUEBA82-${t}-${n}`;\nreturn [\n  { json: { caso: '1 CUIT válido (sin guiones)', esperado: 'proveedor_id = PRV-001', modo: 'proveedor', cuit: '30574897099', documento_id: doc(1), origen: 'facturas' } },\n  { json: { caso: '2 CUIT inexistente', esperado: 'a la cola', modo: 'proveedor', cuit: '30-99999999-1', documento_id: doc(2), origen: 'facturas' } },\n  { json: { caso: '3 DNI válido', esperado: 'cliente_id = CLI-00006', modo: 'cliente', dni: '29402417', documento_id: doc(3), origen: 'reclamos' } },\n  { json: { caso: '4 DNI repetido en dos clientes', esperado: 'a la cola (2 coincidencias)', modo: 'cliente', dni: '45645285', documento_id: doc(4), origen: 'reclamos' } },\n  { json: { caso: '5 texto con datos personales', esperado: 'sin correo, teléfono ni dirección; 3 marcadores', modo: 'texto', documento_id: doc(5), origen: 'reclamos',\n            texto: 'Me llegó el pedido de ladrillos huecos con varias piezas rotas. Les mando fotos. La dirección de entrega es Lavalle 1920, Haedo. Pueden escribirme a <CORREO>. Mi teléfono es 11-3850-1749.' } },\n  { json: { caso: '6 texto sin datos personales', esperado: 'texto igual, 0 marcadores', modo: 'texto', documento_id: doc(6), origen: 'reclamos',\n            texto: 'El pedido P-1234 llegó con el remito equivocado.' } },\n];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca82p-llamar",
+      "name": "CA82P_Llamar_8.2",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "2hcDYOeWMoCVjmvk"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca82p-evaluar",
+      "name": "CA82P_Resultado",
+      "parameters": {
+        "jsCode": "const casos = $('CA82P_Casos').all().map(i => i.json);\nconst res = $input.all().map(i => i.json);\nconst ok = [\n  r => r.resuelto === true && r.proveedor_id === 'PRV-001',\n  r => r.resuelto === false && r.derivado_a_cola === true,\n  r => r.resuelto === true && r.cliente_id === 'CLI-00006',\n  r => r.resuelto === false && /2 coincidencias/.test(r.motivo || ''),\n  r => r.resuelto === true && r.cantidad_marcadores === 3 && !/@|11-3850-1749|Lavalle 1920/.test(r.texto_enmascarado || '@'),\n  r => r.resuelto === true && r.cantidad_marcadores === 0 && r.texto_enmascarado === casos[5].texto,\n];\nreturn casos.map((c, i) => {\n  const r = res[i] || {};\n  return { json: { caso: c.caso, esperado: c.esperado, resultado: ok[i](r) ? 'PASA' : 'FALLA', detalle: JSON.stringify(r).slice(0, 400) } };\n});"
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA82P_Casos": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82P_Llamar_8.2",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82P_Ejecutar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82P_Casos",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82P_Llamar_8.2": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82P_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveManualExecutions": true
+  }
+}

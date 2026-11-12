@@ -1,0 +1,178 @@
+{
+  "name": "CA_8.4b_PRUEBA",
+  "nodes": [
+    {
+      "id": "q1",
+      "name": "CA84bP_Ejecutar_prueba",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "q2",
+      "name": "CA84bP_Casos",
+      "notes": "11 casos: 8 del lote, 2 monotributistas y una repetición. Pasan primero por el 8.4a (recepción) y después por el 8.4b. Los comprobantes quedan con prefijo PRUEBA-<corrida>-.",
+      "parameters": {
+        "jsCode": "const P = '<CORREO>';\nconst saludo = 'Buenos días, les enviamos la factura del pedido. Quedamos atentos.';\nconst c = (caso, esperado, correo_id, fecha_hora, de, adjunto, extra = {}) =>\n  ({ json: { caso, esperado, correo_id, fecha_hora, de, para: P, asunto: 'Factura ' + adjunto, cuerpo: saludo, adjunto, ...extra } });\n// En orden: la original (caso 7) antes que su duplicada (caso 8), y el caso 11 repite el 2.\nreturn [\n  c('1 PDF con QR', 'Recibida, fuente qr', 'COR-003', '2026-10-06 12:22', '<CORREO>', 'LOTE-003.pdf'),\n  c('2 PDF sin QR', 'Recibida, fuente texto', 'COR-002', '2026-10-26 17:24', '<CORREO>', 'LOTE-002.pdf'),\n  c('3 escaneado sin QR', 'Recibida, fuente ocr', 'COR-048', '2026-10-16 08:57', '<CORREO>', 'LOTE-048.pdf'),\n  c('4 fecha en otro formato (21-10-26)', 'Recibida, fecha 2026-10-21', 'COR-131', '2026-10-22 16:37', '<CORREO>', 'LOTE-131.pdf'),\n  c('5 CUIT inválido', 'En cola, CUIT impreso distinto del QR', 'COR-024', '2026-10-16 16:22', '<CORREO>', 'LOTE-024.pdf'),\n  c('6 total que no cierra', 'En cola, el total no cierra', 'COR-135', '2026-10-28 17:33', '<CORREO>', 'LOTE-135.pdf'),\n  c('7 original de una duplicada', 'Recibida', 'COR-090', '2026-10-29 09:12', '<CORREO>', 'LOTE-090.pdf'),\n  c('8 duplicada con número cambiado', 'En cola prioridad alta, posible duplicada de LOTE-090', 'COR-151', '2026-10-28 17:10', '<CORREO>', 'LOTE-151.pdf'),\n  c('9 monotributista, PDF con texto', 'Recibida, Factura C, IVA 0, PRV-121', 'PRUEBA-MONO-1', '2026-10-15 10:00', '<CORREO>', 'MONO-PRV-121.pdf', { carpeta: 'pruebas_extra' }),\n  c('10 monotributista, escaneado', 'Recibida, Factura C, IVA 0, PRV-122', 'PRUEBA-MONO-2', '2026-10-17 10:00', '<CORREO>', 'MONO-PRV-122.pdf', { carpeta: 'pruebas_extra' }),\n  c('11 el mismo comprobante otra vez', 'Ya registrado antes, sin nueva fila en la cola', 'COR-002', '2026-10-26 17:24', '<CORREO>', 'LOTE-002.pdf'),\n];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "q3",
+      "name": "CA84bP_Llamar_8.4a",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "77QpOMooSITmOQf4"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "q4",
+      "name": "CA84bP_Marcar_prueba",
+      "parameters": {
+        "jsCode": "// Cada corrida usa su propio prefijo: las filas de prueba no se mezclan con las reales ni con otras corridas.\nconst n = new Date(), z = (x) => String(x).padStart(2, '0');\nconst prefijo = `PRUEBA-${n.getFullYear()}${z(n.getMonth() + 1)}${z(n.getDate())}${z(n.getHours())}${z(n.getMinutes())}${z(n.getSeconds())}-`;\nreturn $input.all().map((i) => ({ json: { ...i.json, prefijo_id: prefijo } }));"
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "q5",
+      "name": "CA84bP_Llamar_8.4b",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "izXbDwjYwl1nKObq"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "q6",
+      "name": "CA84bP_Resultado",
+      "parameters": {
+        "jsCode": "const casos = $('CA84bP_Casos').all().map((i) => i.json);\nconst a = $('CA84bP_Llamar_8.4a').all().map((i) => i.json);\nconst res = $input.all().map((i) => i.json);\nconst m = (r) => (r.motivos || []).join('; ');\nconst ok = [\n  (r) => r.estado === 'Recibida' && r.fuentes.total === 'qr',\n  (r) => r.estado === 'Recibida' && r.fuentes.total === 'texto',\n  (r) => r.estado === 'Recibida' && r.fuentes.total === 'ocr',\n  (r) => r.estado === 'Recibida' && r.datos.fecha === '2026-10-21',\n  (r) => r.estado === 'En cola de revisión' && /CUIT impreso/.test(m(r)),\n  (r) => r.estado === 'En cola de revisión' && /no cierra/.test(m(r)),\n  (r) => r.estado === 'Recibida',\n  (r) => r.estado === 'En cola de revisión' && r.posible_duplicada === true && /LOTE-090/.test(m(r)),\n  (r) => r.estado === 'Recibida' && r.datos.tipo === 'Factura C' && r.datos.iva === 0 && r.proveedor_id === 'PRV-121',\n  (r) => r.estado === 'Recibida' && r.datos.tipo === 'Factura C' && r.datos.iva === 0 && r.proveedor_id === 'PRV-122',\n  (r) => r.estado === 'Ya registrado antes' && r.registrado === false,\n];\nreturn casos.map((c, i) => { const r = res[i] || {};\n  let pasa = false; try { pasa = a[i].estado === 'recibido' && ok[i](r); } catch (e) {}\n  return { json: { caso: c.caso, esperado: c.esperado, resultado: pasa ? 'PASA' : 'FALLA',\n    detalle: JSON.stringify({ recepcion: a[i] && a[i].estado, tipo: r.datos && r.datos.tipo, estado: r.estado, proveedor: r.proveedor_id,\n      fecha: r.datos && r.datos.fecha, total: r.datos && r.datos.total, fuente_total: r.fuentes && r.fuentes.total, motivos: m(r) }) } }; });"
+      },
+      "position": [
+        1100,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA84bP_Casos": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84bP_Llamar_8.4a",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84bP_Ejecutar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84bP_Casos",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84bP_Llamar_8.4a": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84bP_Marcar_prueba",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84bP_Llamar_8.4b": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84bP_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84bP_Marcar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84bP_Llamar_8.4b",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveManualExecutions": true
+  }
+}

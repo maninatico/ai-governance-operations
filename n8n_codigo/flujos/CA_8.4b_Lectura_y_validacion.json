@@ -1,0 +1,366 @@
+{
+  "name": "CA_8.4b_Lectura_y_validacion",
+  "nodes": [
+    {
+      "id": "ca84b-trigger",
+      "name": "CA84b_Disparador",
+      "notes": "A05 Lectura y validación. Sin IA: todo por código. Entrada: la salida del 8.4a (estado recibido). Salida: comprobante registrado (Recibida) o en la cola de revisión, con los motivos.",
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1
+    },
+    {
+      "id": "ca84b-ext",
+      "name": "CA84b_Extraer",
+      "parameters": {
+        "jsCode": "// CA_8.4b: extracción por código (sin IA). QR primero; texto u OCR para lo que el QR no trae.\nfunction numAR(s) {                       // \"1.234.567,89\" -> 1234567.89\n  if (s == null) return null;\n  const t = String(s).replace(/[^\\d.,]/g, '');\n  if (!t) return null;\n  const n = Number(t.replace(/\\./g, '').replace(',', '.'));\n  return Number.isFinite(n) ? Math.round(n * 100) / 100 : null;\n}\nfunction fechaISO(s) {\n  if (!s) return null;\n  let m = s.match(/(\\d{4})-(\\d{2})-(\\d{2})/); if (m) return `${m[1]}-${m[2]}-${m[3]}`;\n  m = s.match(/(\\d{2})[./-](\\d{2})[./-](\\d{4}|\\d{2})\\b/);\n  if (m) return `${m[3].length === 2 ? '20' + m[3] : m[3]}-${m[2]}-${m[1]}`;\n  return null;\n}\nfunction cuitFmt(x) { const d = String(x || '').replace(/\\D/g, ''); return d.length === 11 ? `${d.slice(0,2)}-${d.slice(2,10)}-${d[10]}` : null; }\nfunction cuitValido(c) {\n  const d = String(c || '').replace(/\\D/g, ''); if (d.length !== 11) return false;\n  const w = [5,4,3,2,7,6,5,4,3,2]; let s = 0; for (let i = 0; i < 10; i++) s += +d[i] * w[i];\n  let v = 11 - (s % 11); if (v === 11) v = 0; if (v === 10) v = 9; return v === +d[10];\n}\nconst CUIT_PROPIO = '30-71234567-0';   // Materiales Cumbre Andina (receptor), nunca es el emisor\nfunction cuitEmisor(t) {                // primer CUIT del documento que no sea el propio; tolera OCR (CUJT, CU1T)\n  for (const m of t.matchAll(/CU\\S{1,2}:?\\s*([\\d-]{11,13})/g)) { const c = cuitFmt(m[1]); if (c && c !== CUIT_PROPIO) return c; }\n  return null;\n}\nfunction ocNorm(x) {                   // OCR confunde O y 0: OC-L0O049 -> OC-L0049. La base después confirma que la OC exista, sea del proveedor y cierre el monto\n  if (!x) return null;\n  const m = String(x).toUpperCase().match(/^OC-L([0-9O]+)$/);\n  return m ? 'OC-L' + m[1].replace(/O/g, '0').slice(-4) : String(x).toUpperCase();\n}\nfunction extraer(lectura) {\n  const q = lectura.qr && lectura.qr.datos;\n  const t = lectura.escaneado ? (lectura.ocr || '') : (lectura.texto || '');\n  const fuenteTexto = lectura.escaneado ? 'ocr' : 'texto';\n  const campo = (valor, fuente) => ({ valor, fuente: valor == null ? null : fuente });\n  const g = (re) => { const m = t.match(re); return m ? m[1] : null; };\n  const nro = t.match(/N\\S{0,2}\\s*(\\d{4})\\s*-\\s*(\\d{8})/);\n  const TIPOS_QR = { 1: 'Factura A', 2: 'Nota de débito A', 3: 'Nota de crédito A', 11: 'Factura C', 12: 'Nota de débito C', 13: 'Nota de crédito C' };\n  const tTipo = t.match(/\\b(FACTURA|NOTA DE CR[EÉ]DITO|NOTA DE D[EÉ]BITO)\\s*([ABC])\\s*N/i);\n  const tipoTexto = tTipo ? ({ FACTURA: 'Factura', 'NOTA DE CREDITO': 'Nota de crédito', 'NOTA DE CRÉDITO': 'Nota de crédito', 'NOTA DE DEBITO': 'Nota de débito', 'NOTA DE DÉBITO': 'Nota de débito' }[tTipo[1].toUpperCase()] + ' ' + tTipo[2].toUpperCase()) : null;\n  const d = {\n    tipo:   q && TIPOS_QR[q.tipoCmp] ? campo(TIPOS_QR[q.tipoCmp], 'qr') : campo(tipoTexto, fuenteTexto),\n    cuit:   q ? campo(cuitFmt(q.cuit), 'qr') : campo(cuitEmisor(t), fuenteTexto),\n    punto_venta: q ? campo(String(q.ptoVta).padStart(4, '0'), 'qr') : campo(nro ? nro[1] : null, fuenteTexto),\n    numero: q ? campo(String(q.nroCmp).padStart(8, '0'), 'qr') : campo(nro ? nro[2] : null, fuenteTexto),\n    fecha:  q ? campo(q.fecha, 'qr') : campo(fechaISO(g(/Fecha de emisi\\S*n:?\\s*([\\d./-]{8,10})/i)), fuenteTexto),\n    total:  q ? campo(Math.round(q.importe * 100) / 100, 'qr') : campo(numAR(g(/TOTAL:?\\s*\\$?\\s*([\\d.,]+)/)), fuenteTexto),\n    total_texto: campo(numAR(g(/TOTAL:?\\s*\\$?\\s*([\\d.,]+)/)), fuenteTexto),\n    neto:   campo(numAR(g(/neto gravado:?\\s*\\$?\\s*([\\d.,]+)/i)), fuenteTexto),\n    alicuota: campo((() => { const a = g(/IVA\\s*(\\d+(?:[.,]\\d+)?)\\s*%/); return a ? Number(a.replace(',', '.')) / 100 : null; })(), fuenteTexto),\n    iva:    campo(numAR(g(/IVA\\s*\\d+(?:[.,]\\d+)?\\s*%:?\\s*\\$?\\s*([\\d.,]+)/)), fuenteTexto),\n    oc_id:  campo(ocNorm(g(/Orden de compra:?\\s*(OC-[A-Z0-9]+)/i)), fuenteTexto),\n    cbu:    campo(g(/CBU\\s*(\\d{22})/), fuenteTexto),\n    cuit_impreso: campo(cuitEmisor(t), fuenteTexto),\n    cae:    campo(q ? String(q.codAut) : null, 'qr'),\n  };\n  // Comprobante C (monotributista): no discrimina IVA. Neto = total, IVA 0\n  if (d.tipo.valor && d.tipo.valor.endsWith(' C') && d.total.valor != null) {\n    d.neto = campo(d.total.valor, 'letra C'); d.iva = campo(0, 'letra C'); d.alicuota = campo(0, 'letra C');\n  }\n  // IVA ilegible (OCR): se calcula total - neto y solo se acepta si coincide con una alícuota válida\n  if (d.iva.valor == null && d.neto.valor != null && d.total.valor != null) {\n    const ivaCalc = Math.round((d.total.valor - d.neto.valor) * 100) / 100;\n    for (const a of [0.21, 0.105]) if (Math.abs(d.neto.valor * a - ivaCalc) <= 0.05) { d.iva = campo(ivaCalc, 'calculado'); d.alicuota = campo(a, 'calculado'); }\n  }\n  const motivos = [];\n  for (const k of ['tipo', 'cuit', 'numero', 'fecha', 'total', 'neto', 'iva']) if (d[k].valor == null) motivos.push(`No se pudo leer: ${k}`);\n  if (d.cuit.valor && !cuitValido(d.cuit.valor)) motivos.push('CUIT inválido (dígito verificador)');\n  if (d.neto.valor != null && d.iva.valor != null && d.total.valor != null && Math.abs(d.neto.valor + d.iva.valor - d.total.valor) > 0.05)\n    motivos.push(`El total no cierra: neto + IVA = ${(d.neto.valor + d.iva.valor).toFixed(2)} y el total es ${d.total.valor.toFixed(2)}`);\n  if (q && d.cuit_impreso.valor && d.cuit_impreso.valor !== d.cuit.valor)\n    motivos.push(`El CUIT impreso (${d.cuit_impreso.valor}) no coincide con el del QR de ARCA`);\n  if (d.cuit_impreso.valor && !cuitValido(d.cuit_impreso.valor) && !(d.cuit.valor && !cuitValido(d.cuit.valor)))\n    motivos.push('CUIT impreso inválido (dígito verificador)');\n  if (q && d.total_texto.valor != null && Math.abs(d.total_texto.valor - d.total.valor) > 0.05)\n    motivos.push('El total del texto no coincide con el del QR de ARCA');\n  return { datos: d, motivos };\n}\n\n// ---- Entrada: la salida del 8.4a (correo + lectura del lector) ----\nconst r = $input.first().json;\nconst { datos: d, motivos } = extraer(r.lectura);\nconst v = (k) => d[k].valor;\nconst REQUERIDOS = ['tipo', 'cuit', 'punto_venta', 'numero', 'fecha', 'neto', 'alicuota', 'iva', 'total'];\nconst faltan = REQUERIDOS.filter((k) => v(k) == null);\nconst q = r.lectura.qr && r.lectura.qr.datos;\nreturn [{ json: {\n  correo_id: r.correo_id, adjunto: r.adjunto,\n  prefijo: r.prefijo_id || '',   // solo en pruebas: PRUEBA-<corrida>-\n  comprobante_id: (r.prefijo_id || '') + String(r.adjunto).replace(/\\.pdf$/i, ''),\n  fecha_recepcion: String(r.fecha_hora || new Date().toISOString()).slice(0, 10),\n  fuente_lectura: q ? 'qr' : (r.lectura.escaneado ? 'ocr' : 'texto'),\n  datos: d, motivos, faltan,\n  pide_cambio_cbu: r.pide_cambio_cbu ?? false, cbu_en_correo: r.cbu_en_correo ?? null,\n} }];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca84b-d82",
+      "name": "CA84b_Datos_para_8.2",
+      "parameters": {
+        "jsCode": "const e = $input.first().json;\nreturn [{ json: { modo: 'proveedor', cuit: e.datos.cuit.valor || '', documento_id: e.comprobante_id, origen: 'facturas' } }];"
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca84b-82",
+      "name": "CA84b_Buscar_proveedor",
+      "notes": "8.2 bóveda: devuelve solo el proveedor_id. Funciona también para monotributistas (CUIT en la bóveda).",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "2hcDYOeWMoCVjmvk"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca84b-prep",
+      "name": "CA84b_Preparar_registro",
+      "parameters": {
+        "jsCode": "// Se puede registrar si el proveedor quedó identificado y no falta ningún dato obligatorio.\nconst e = $('CA84b_Extraer').first().json;\nconst p = $input.first().json;   // respuesta del 8.2\nconst v = (k) => e.datos[k].valor;\nconst payload = { comprobante_id: e.comprobante_id, proveedor_id: p.proveedor_id, tipo: v('tipo'),\n  punto_venta: v('punto_venta'), numero: v('numero'), fecha: v('fecha'), fecha_recepcion: e.fecha_recepcion,\n  fuente_lectura: e.fuente_lectura, cae: v('cae'), oc_id: v('oc_id'), neto: v('neto'), alicuota: v('alicuota'),\n  iva: v('iva'), total: v('total'), motivos: e.motivos, prefijo: e.prefijo };\nconst motivo = !p.resuelto ? ('Proveedor no identificado: ' + (p.motivo || '')) :\n  (e.faltan.length ? 'No se pudo leer: ' + e.faltan.join(', ') : null);\nreturn [{ json: { registrable: !!p.resuelto && e.faltan.length === 0, proveedor_resuelto: !!p.resuelto,\n  proveedor_id: p.proveedor_id || null, payload_json: JSON.stringify(payload), motivo_sin_registrar: motivo } }];"
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca84b-ifreg",
+      "name": "CA84b_Se_puede_registrar",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "ca84b-ifregc",
+              "leftValue": "={{ $json.registrable }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        1100,
+        300
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "ca84b-reg",
+      "name": "CA84b_Validar_y_registrar",
+      "notes": "Una sola sentencia: valida la OC (existe, es del proveedor, está abierta, neto dentro del 2%), busca posibles duplicadas, registra y manda a la cola lo que no cierra.",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ $json.payload_json ] }}"
+        },
+        "query": "-- CA84b_Validar_y_registrar. Entrada: el comprobante leído por código (JSON). Una sola sentencia: valida contra la base y registra.\nWITH e AS (SELECT $1::jsonb AS j),\nv AS (\n  SELECT j->>'comprobante_id' AS id, j->>'proveedor_id' AS prov, j->>'tipo' AS tipo,\n         j->>'punto_venta' AS pv, j->>'numero' AS nro, (j->>'fecha')::date AS fecha,\n         (j->>'fecha_recepcion')::date AS recepcion, j->>'fuente_lectura' AS fuente, j->>'cae' AS cae,\n         nullif(j->>'oc_id', '') AS oc, (j->>'neto')::numeric AS neto, (j->>'alicuota')::numeric AS alicuota,\n         (j->>'iva')::numeric AS iva, (j->>'total')::numeric AS total,\n         ARRAY(SELECT jsonb_array_elements_text(coalesce(j->'motivos', '[]'))) AS motivos_lectura,\n         coalesce(j->>'prefijo', '') AS prefijo   -- pruebas: 'PRUEBA-<corrida>-'. Solo se comparan con su misma corrida\n  FROM e),\noc AS (SELECT o.* FROM negocio.ordenes_compra o JOIN v ON o.oc_id = v.oc),\ndup AS (   -- posible duplicada: otro comprobante del mismo proveedor con el mismo número, o con la misma fecha y total, o la misma OC\n  SELECT c.comprobante_id,\n         CASE WHEN c.punto_venta = v.pv AND c.numero = v.nro THEN 'el mismo número'\n              WHEN c.fecha_emision = v.fecha AND c.total = v.total THEN 'la misma fecha y el mismo total'\n              ELSE 'la misma orden de compra' END AS como\n  FROM negocio.comprobantes c JOIN v ON c.proveedor_id = v.prov AND c.comprobante_id <> v.id\n  WHERE c.comprobante_id LIKE v.prefijo || '%' AND (v.prefijo <> '' OR c.comprobante_id NOT LIKE 'PRUEBA%')\n    AND ((c.punto_venta = v.pv AND c.numero = v.nro) OR (c.fecha_emision = v.fecha AND c.total = v.total)\n     OR (v.oc IS NOT NULL AND c.oc_id = v.oc AND c.tipo_comprobante LIKE 'Factura%' AND v.tipo LIKE 'Factura%'))\n  ORDER BY 2 LIMIT 1),\nm AS (\n  SELECT v.*, array_remove(v.motivos_lectura || ARRAY[\n      CASE WHEN v.tipo LIKE 'Factura%' AND v.oc IS NULL THEN 'Factura sin orden de compra' END,\n      CASE WHEN v.oc IS NOT NULL AND NOT EXISTS (SELECT 1 FROM oc) THEN 'La orden de compra ' || v.oc || ' no existe' END,\n      (SELECT 'La orden de compra ' || oc.oc_id || ' es de otro proveedor' FROM oc WHERE oc.proveedor_id <> v.prov),\n      (SELECT 'La orden de compra ' || oc.oc_id || ' está cerrada' FROM oc WHERE oc.estado_oc <> 'Abierta'),\n      (SELECT format('El neto difiere %s%% de la orden de compra (tolerancia 2%%)', round(abs(v.neto - oc.monto_neto_oc) / oc.monto_neto_oc * 100, 1))\n         FROM oc WHERE abs(v.neto - oc.monto_neto_oc) > 0.02 * oc.monto_neto_oc),\n      (SELECT 'Posible duplicada de ' || dup.comprobante_id || ': ' || dup.como FROM dup)\n    ]::text[], NULL) AS motivos,\n    EXISTS (SELECT 1 FROM dup) AS posible_duplicada\n  FROM v),\nins AS (\n  INSERT INTO negocio.comprobantes (comprobante_id, proveedor_id, tipo_comprobante, punto_venta, numero, fecha_emision,\n      fecha_recepcion, canal, fuente_lectura, cae, oc_id, neto, alicuota_iva, iva, total, con_error_datos, estado, origen)\n  SELECT id, prov, tipo, pv, nro, fecha, recepcion, 'PDF por correo', fuente, cae,\n         CASE WHEN EXISTS (SELECT 1 FROM oc WHERE oc.proveedor_id = m.prov) THEN oc END,\n         neto, alicuota, iva, total, cardinality(motivos) > 0,\n         CASE WHEN cardinality(motivos) = 0 THEN 'Recibida' ELSE 'En cola de revisión' END, 'lote_prueba'\n  FROM m\n  ON CONFLICT (comprobante_id) DO NOTHING\n  RETURNING comprobante_id, estado),\ncola AS (\n  INSERT INTO control.cola_revision (origen, automatizacion_id, documento_id, motivo, prioridad)\n  SELECT 'facturas', 'A05', ins.comprobante_id, array_to_string(m.motivos, '; '),\n         CASE WHEN m.posible_duplicada THEN 'alta' ELSE 'media' END\n  FROM ins, m WHERE ins.estado = 'En cola de revisión')\nSELECT m.id AS comprobante_id,\n       coalesce(ins.estado, 'Ya registrado antes') AS estado,\n       (ins.comprobante_id IS NOT NULL) AS registrado,\n       CASE WHEN ins.comprobante_id IS NULL THEN '{}'::text[] ELSE m.motivos END AS motivos,\n       ins.comprobante_id IS NOT NULL AND m.posible_duplicada AS posible_duplicada\nFROM m LEFT JOIN ins ON true;\n"
+      },
+      "position": [
+        1320,
+        200
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "ca84b-cola",
+      "name": "CA84b_Cola_sin_registrar",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ $('CA84b_Extraer').first().json.comprobante_id, $json.motivo_sin_registrar, String($json.proveedor_resuelto) ] }}"
+        },
+        "query": "-- Solo si el proveedor está identificado: si no, el 8.2 ya lo mandó a la cola.\nINSERT INTO control.cola_revision (origen, automatizacion_id, documento_id, motivo, prioridad)\nSELECT 'facturas', 'A05', $1, $2, 'media' WHERE $3 = 'true';"
+      },
+      "position": [
+        1320,
+        420
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca84b-res",
+      "name": "CA84b_Resultado",
+      "parameters": {
+        "jsCode": "const e = $('CA84b_Extraer').first().json;\nconst p = $('CA84b_Preparar_registro').first().json;\nlet estado, registrado = false, motivos = [], posible_duplicada = false;\nif ($('CA84b_Validar_y_registrar').isExecuted) {\n  const r = $('CA84b_Validar_y_registrar').first().json;\n  estado = r.estado; registrado = r.registrado; motivos = r.motivos || []; posible_duplicada = r.posible_duplicada;\n} else { estado = 'Sin registrar, en cola de revisión'; motivos = [p.motivo_sin_registrar]; }\nconst datos = Object.fromEntries(Object.entries(e.datos).map(([k, x]) => [k, x.valor]));\nconst fuentes = Object.fromEntries(Object.entries(e.datos).map(([k, x]) => [k, x.fuente]));\nreturn [{ json: { correo_id: e.correo_id, adjunto: e.adjunto, comprobante_id: e.comprobante_id,\n  proveedor_id: p.proveedor_id, estado, registrado, motivos, posible_duplicada,\n  sigue_a_cbu: estado === 'Recibida', pide_cambio_cbu: e.pide_cambio_cbu, cbu_en_correo: e.cbu_en_correo,\n  datos, fuentes } }];"
+      },
+      "position": [
+        1540,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca84b-d81",
+      "name": "CA84b_Datos_para_8.1",
+      "parameters": {
+        "jsCode": "const r = $input.first().json;\nreturn [{ json: { modo: 'fin', automatizacion_id: 'A05', documento_id: r.comprobante_id,\n  estado: r.estado === 'Recibida' || r.estado === 'Ya registrado antes' ? 'ok' : 'derivado_a_cola',\n  intervencion_humana: false, modelo_ia: '', auditar: false, actor: 'A05', accion: 'lectura y validación',\n  motivo: (r.motivos || []).join('; ') } }];"
+      },
+      "position": [
+        1760,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca84b-81",
+      "name": "CA84b_Registrar_en_8.1",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HRAb0YG1KsqhYDbf"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1980,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca84b-fin",
+      "name": "CA84b_Devolver",
+      "parameters": {
+        "jsCode": "return [{ json: $('CA84b_Resultado').first().json }];"
+      },
+      "position": [
+        2200,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA84b_Buscar_proveedor": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84b_Preparar_registro",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84b_Cola_sin_registrar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84b_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84b_Datos_para_8.1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84b_Registrar_en_8.1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84b_Datos_para_8.2": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84b_Buscar_proveedor",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84b_Disparador": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84b_Extraer",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84b_Extraer": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84b_Datos_para_8.2",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84b_Preparar_registro": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84b_Se_puede_registrar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84b_Registrar_en_8.1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84b_Devolver",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84b_Resultado": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84b_Datos_para_8.1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84b_Se_puede_registrar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84b_Validar_y_registrar",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA84b_Cola_sin_registrar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84b_Validar_y_registrar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84b_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

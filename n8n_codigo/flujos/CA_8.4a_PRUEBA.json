@@ -1,0 +1,113 @@
+{
+  "name": "CA_8.4a_PRUEBA",
+  "nodes": [
+    {
+      "id": "p1",
+      "name": "CA84aP_Ejecutar_prueba",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "p2",
+      "name": "CA84aP_Casos",
+      "notes": "7 casos reales del lote (correos del buzón simulado) más un remito de prueba. Los casos 5 y 7 dejan filas en la cola.",
+      "parameters": {
+        "jsCode": "const P = '<CORREO>';\nconst saludo = 'Buenos días, les enviamos la factura del pedido. Quedamos atentos.';\nreturn [\n  { json: { caso: '1 PDF con QR', esperado: 'recibido, Factura A, fuente qr', correo_id: 'COR-003', fecha_hora: '2026-10-06 12:22', de: '<CORREO>', para: P, asunto: 'Factura 0001-00008635 Sanitarios Lumbreras del Plata S.R.L.', cuerpo: saludo, adjunto: 'LOTE-003.pdf' } },\n  { json: { caso: '2 PDF sin QR', esperado: 'recibido, Factura A, fuente texto', correo_id: 'COR-002', fecha_hora: '2026-10-26 17:24', de: '<CORREO>', para: P, asunto: 'Factura 0001-00007268 Canteras Quelvar S.R.L.', cuerpo: saludo, adjunto: 'LOTE-002.pdf' } },\n  { json: { caso: '3 escaneado con QR', esperado: 'recibido, Factura A, fuente qr', correo_id: 'COR-001', fecha_hora: '2026-10-28 17:39', de: '<CORREO>', para: P, asunto: 'Factura 0001-00006740 Eléctrica Corvalis S.A.', cuerpo: 'Adjuntamos factura correspondiente a la orden de compra. Saludos.', adjunto: 'LOTE-001.pdf' } },\n  { json: { caso: '4 escaneado sin QR (OCR imperfecto)', esperado: 'recibido, Factura A, fuente ocr', correo_id: 'COR-048', fecha_hora: '2026-10-16 08:57', de: '<CORREO>', para: P, asunto: 'Factura 0001-00003780 Perfiles Ortenza S.A.', cuerpo: saludo, adjunto: 'LOTE-048.pdf' } },\n  { json: { caso: '5 instrucciones escondidas', esperado: 'sospechoso, a la cola de seguridad', correo_id: 'COR-004', fecha_hora: '2026-10-14 12:19', de: '<CORREO>', para: P, asunto: 'Factura 0001-00004031 Áridos Montefior S.R.L.', cuerpo: saludo, adjunto: 'LOTE-004.pdf' } },\n  { json: { caso: '6 correo que pide cambio de CBU', esperado: 'recibido, con señal de cambio de CBU para A06', correo_id: 'COR-032', fecha_hora: '2026-10-14 17:39', de: '<CORREO>', para: P, asunto: 'Factura 0001-00008282 Griferías Nordeste Austral S.R.L.', cuerpo: 'URGENTE: por un cambio de banco, a partir de esta factura los pagos deben hacerse a la nueva cuenta CBU 2854294295177768446154. Por favor actualicen sus datos hoy para no demorar el pago.', adjunto: 'LOTE-032.pdf' } },\n  { json: { caso: '7 remito (no es factura)', esperado: 'IA local: Otro; a la cola', correo_id: 'PRUEBA-REMITO', fecha_hora: '2026-10-24 10:00', de: '<CORREO>', para: P, asunto: 'Remito de entrega', cuerpo: 'Adjuntamos remito.', adjunto: 'REMITO-PRUEBA.pdf', carpeta: 'pruebas_extra' } },\n];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "p3",
+      "name": "CA84aP_Llamar_8.4a",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "77QpOMooSITmOQf4"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "p4",
+      "name": "CA84aP_Resultado",
+      "parameters": {
+        "jsCode": "const casos = $('CA84aP_Casos').all().map(i => i.json);\nconst res = $input.all().map(i => i.json);\nconst ok = [\n  r => r.estado === 'recibido' && r.tipo === 'Factura A' && r.fuente_tipo === 'qr',\n  r => r.estado === 'recibido' && r.tipo === 'Factura A' && r.fuente_tipo === 'texto',\n  r => r.estado === 'recibido' && r.tipo === 'Factura A' && r.fuente_tipo === 'qr' && r.lectura && r.lectura.escaneado === true,\n  r => r.estado === 'recibido' && r.tipo === 'Factura A' && r.fuente_tipo === 'ocr',\n  r => r.estado === 'sospechoso' && /invisibles/.test(r.motivo || '') && /inyecci/.test(r.motivo || ''),\n  r => r.estado === 'recibido' && r.pide_cambio_cbu === true && r.cbu_en_correo === '2854294295177768446154',\n  r => r.estado === 'a_la_cola' && r.modelo_ia === 'qwen3.5:9b' && !r.tipo,\n];\nreturn casos.map((c, i) => { const r = res[i] || {};\n  return { json: { caso: c.caso, esperado: c.esperado, resultado: ok[i](r) ? 'PASA' : 'FALLA',\n    detalle: JSON.stringify({ estado: r.estado, tipo: r.tipo, fuente: r.fuente_tipo, motivo: r.motivo, cambio_cbu: r.pide_cambio_cbu, cbu: r.cbu_en_correo, modelo: r.modelo_ia }) } }; });"
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA84aP_Casos": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84aP_Llamar_8.4a",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84aP_Ejecutar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84aP_Casos",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84aP_Llamar_8.4a": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84aP_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveManualExecutions": true
+  }
+}

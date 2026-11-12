@@ -1,0 +1,634 @@
+{
+  "name": "CA_8.6_PRUEBA",
+  "nodes": [
+    {
+      "id": "p1",
+      "name": "CA86P_Ejecutar_prueba",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "p2",
+      "name": "CA86P_Parametros",
+      "notes": "Prefijo PRUEBA-<corrida>-. La prueba usa el interruptor 8.7 (apagado y sin uso) y lo deja como estaba.",
+      "parameters": {
+        "jsCode": "const n = new Date(), z = (x) => String(x).padStart(2, '0');\nconst prefijo = `PRUEBA-${n.getFullYear()}${z(n.getMonth() + 1)}${z(n.getDate())}${z(n.getHours())}${z(n.getMinutes())}${z(n.getSeconds())}-`;\nreturn [{ json: { prefijo } }];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "p3",
+      "name": "CA86P_Preparar",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "WITH o AS (SELECT activo, cambiado_por, motivo FROM control.interruptores WHERE flujo = '8.7 Reporte semanal') UPDATE control.interruptores i SET activo = true, errores_seguidos = 0, cambiado = now(), cambiado_por = 'PRUEBA 8.6', motivo = 'Prueba del cortacircuitos' FROM o WHERE i.flujo = '8.7 Reporte semanal' RETURNING o.activo AS prev_activo, o.cambiado_por AS prev_por, o.motivo AS prev_motivo, to_char(clock_timestamp(), 'YYYY-MM-DD HH24:MI:SS.US') AS t0"
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "p4",
+      "name": "CA86P_Sembrar_1",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "=INSERT INTO control.ejecuciones (automatizacion_id, documento_id, inicio, estado) VALUES ('A12', '{{ $('CA86P_Parametros').first().json.prefijo }}1', now() + interval '1 second', 'error'), ('A12', '{{ $('CA86P_Parametros').first().json.prefijo }}2', now() + interval '2 seconds', 'error') RETURNING ejecucion_id"
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "p5",
+      "name": "CA86P_C1",
+      "parameters": {
+        "jsCode": "return [{ json: { prefijo: $('CA86P_Parametros').first().json.prefijo, caso: 'C1' } }];"
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "p6",
+      "name": "CA86P_Revisar_1",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "zKMyzzPdVgkFw1Tt"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1100,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "p7",
+      "name": "CA86P_Sembrar_2",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "=INSERT INTO control.ejecuciones (automatizacion_id, documento_id, inicio, estado) VALUES ('A12', '{{ $('CA86P_Parametros').first().json.prefijo }}3', now() + interval '3 seconds', 'ok'), ('A12', '{{ $('CA86P_Parametros').first().json.prefijo }}4', now() + interval '4 seconds', 'error'), ('A12', '{{ $('CA86P_Parametros').first().json.prefijo }}5', now() + interval '5 seconds', 'error') RETURNING ejecucion_id"
+      },
+      "position": [
+        1320,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "p8",
+      "name": "CA86P_C2",
+      "parameters": {
+        "jsCode": "return [{ json: { prefijo: $('CA86P_Parametros').first().json.prefijo, caso: 'C2' } }];"
+      },
+      "position": [
+        1540,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "p9",
+      "name": "CA86P_Revisar_2",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "zKMyzzPdVgkFw1Tt"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1760,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "p10",
+      "name": "CA86P_Sembrar_3",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "=INSERT INTO control.ejecuciones (automatizacion_id, documento_id, inicio, estado) VALUES ('A12', '{{ $('CA86P_Parametros').first().json.prefijo }}6', now() + interval '6 seconds', 'error') RETURNING ejecucion_id"
+      },
+      "position": [
+        1980,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "p11",
+      "name": "CA86P_C3",
+      "parameters": {
+        "jsCode": "return [{ json: { prefijo: $('CA86P_Parametros').first().json.prefijo, caso: 'C3' } }];"
+      },
+      "position": [
+        2200,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "p12",
+      "name": "CA86P_Revisar_3",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "zKMyzzPdVgkFw1Tt"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        2420,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "p13",
+      "name": "CA86P_C4",
+      "parameters": {
+        "jsCode": "return [{ json: { prefijo: $('CA86P_Parametros').first().json.prefijo, caso: 'C4 repetir' } }];"
+      },
+      "position": [
+        2640,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "p14",
+      "name": "CA86P_Revisar_4",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "zKMyzzPdVgkFw1Tt"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        2860,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "p15",
+      "name": "CA86P_Estado",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "=SELECT (SELECT activo FROM control.interruptores WHERE flujo = '8.7 Reporte semanal') AS activo, (SELECT motivo FROM control.interruptores WHERE flujo = '8.7 Reporte semanal') AS motivo, (SELECT cambiado_por FROM control.interruptores WHERE flujo = '8.7 Reporte semanal') AS por, (SELECT errores_seguidos FROM control.interruptores WHERE flujo = '8.7 Reporte semanal') AS errores, (SELECT count(*) FROM control.auditoria WHERE accion = 'cortacircuitos' AND objeto = '8.7 Reporte semanal' AND momento >= '{{ $('CA86P_Preparar').first().json.t0 }}'::timestamp) AS auditorias, (SELECT count(*) FROM control.incidentes WHERE descripcion LIKE '[PRUEBA]%8.7 Reporte%' AND detectado >= '{{ $('CA86P_Preparar').first().json.t0 }}'::timestamp) AS incidentes, (SELECT count(*) FROM control.alertas WHERE tipo = 'cortacircuitos' AND objeto LIKE '{{ $('CA86P_Parametros').first().json.prefijo }}%') AS alertas, (SELECT coalesce(bool_and(enviada), false) FROM control.alertas WHERE objeto LIKE '{{ $('CA86P_Parametros').first().json.prefijo }}%') AS alertas_enviadas"
+      },
+      "position": [
+        3080,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "p16",
+      "name": "CA86P_Leer_8_6",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "SELECT activo FROM control.interruptores WHERE flujo = '8.6 Monitoreo'"
+      },
+      "position": [
+        3300,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "p17",
+      "name": "CA86P_Si_apagado",
+      "notes": "El caso de falla segura solo corre si el monitoreo real está apagado. Si está encendido se informa OMITIDO para no hacer una revisión real desde la prueba.",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c5",
+              "leftValue": "={{ $json.activo === false }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        3520,
+        300
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "p18",
+      "name": "CA86P_C5",
+      "parameters": {
+        "jsCode": "return [{ json: { prefijo: '', caso: 'C5 falla segura' } }];"
+      },
+      "position": [
+        3740,
+        200
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "p19",
+      "name": "CA86P_Revisar_5",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "zKMyzzPdVgkFw1Tt"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        3960,
+        200
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "p20",
+      "name": "CA86P_Limpiar",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ $('CA86P_Preparar').first().json.prev_activo, $('CA86P_Preparar').first().json.prev_por, $('CA86P_Preparar').first().json.prev_motivo ] }}"
+        },
+        "query": "UPDATE control.interruptores SET activo = $1::boolean, errores_seguidos = 0, cambiado = now(), cambiado_por = $2, motivo = $3 WHERE flujo = '8.7 Reporte semanal' RETURNING activo, cambiado_por, motivo"
+      },
+      "position": [
+        4180,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "p21",
+      "name": "CA86P_Resultado",
+      "parameters": {
+        "jsCode": "const j = (n) => $(n).first().json;\nconst r1 = j('CA86P_Revisar_1'), r2 = j('CA86P_Revisar_2'), r3 = j('CA86P_Revisar_3'), r4 = j('CA86P_Revisar_4');\nconst est = j('CA86P_Estado'), prep = j('CA86P_Preparar'), lim = j('CA86P_Limpiar');\nlet r5 = null; try { r5 = j('CA86P_Revisar_5'); } catch (e) { r5 = null; }\nconst pf = (ok) => (ok ? 'PASA' : 'FALLA');\nconst casos = [\n  { caso: 'C1 2 errores seguidos: no corta', esperado: '0 cortes', resultado: pf(r1.estado === 'revisado' && r1.cortes === 0), detalle: JSON.stringify({ estado: r1.estado, cortes: r1.cortes }) },\n  { caso: 'C2 error, error, ok, error, error: la racha se reinicia, no corta', esperado: '0 cortes', resultado: pf(r2.cortes === 0), detalle: JSON.stringify({ cortes: r2.cortes }) },\n  { caso: 'C3 3 errores seguidos: corta el flujo 8.7', esperado: '1 corte y 8.7 apagado', resultado: pf(r3.cortes === 1 && r3.acciones[0].o_objeto === '8.7 Reporte semanal' && est.activo === false), detalle: JSON.stringify({ cortes: r3.cortes, acciones: r3.acciones, activo_8_7: est.activo }) },\n  { caso: 'C4 motivo, responsable y errores registrados', esperado: 'Cortacircuitos: 3 errores seguidos / Monitoreo (cortacircuitos) / 3', resultado: pf(est.motivo === 'Cortacircuitos: 3 errores seguidos' && est.por === 'Monitoreo (cortacircuitos)' && Number(est.errores) === 3), detalle: JSON.stringify({ motivo: est.motivo, por: est.por, errores: est.errores }) },\n  { caso: 'C5 deja auditoría, incidente y alerta (una de cada una; la alerta de prueba nace enviada)', esperado: '1 / 1 / 1 / enviada', resultado: pf(Number(est.auditorias) === 1 && Number(est.incidentes) === 1 && Number(est.alertas) === 1 && est.alertas_enviadas === true), detalle: JSON.stringify({ auditorias: est.auditorias, incidentes: est.incidentes, alertas: est.alertas, alertas_enviadas: est.alertas_enviadas }) },\n  { caso: 'C6 repetir la revisión no duplica', esperado: '0 cortes', resultado: pf(r4.cortes === 0), detalle: JSON.stringify({ cortes: r4.cortes }) },\n  { caso: 'C7 con el monitoreo apagado no revisa nada (falla segura)', esperado: 'estado apagado', resultado: r5 ? pf(r5.estado === 'apagado' && r5.hubo_acciones === false) : 'OMITIDO', detalle: r5 ? JSON.stringify({ estado: r5.estado }) : 'El monitoreo real está encendido: no se corre una revisión real desde la prueba' },\n  { caso: 'C8 el interruptor 8.7 queda como estaba', esperado: JSON.stringify({ activo: prep.prev_activo, motivo: prep.prev_motivo }), resultado: pf(lim.activo === prep.prev_activo && lim.motivo === prep.prev_motivo && lim.cambiado_por === prep.prev_por), detalle: JSON.stringify({ activo: lim.activo, por: lim.cambiado_por, motivo: lim.motivo }) },\n];\nreturn casos.map((c) => ({ json: c }));"
+      },
+      "position": [
+        4400,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA86P_C1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Revisar_1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_C2": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Revisar_2",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_C3": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Revisar_3",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_C4": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Revisar_4",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_C5": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Revisar_5",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Ejecutar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Parametros",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Estado": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Leer_8_6",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Leer_8_6": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Si_apagado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Limpiar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Parametros": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Preparar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Preparar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Sembrar_1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Revisar_1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Sembrar_2",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Revisar_2": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Sembrar_3",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Revisar_3": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_C4",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Revisar_4": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Estado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Revisar_5": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Limpiar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Sembrar_1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_C1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Sembrar_2": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_C2",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Sembrar_3": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_C3",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA86P_Si_apagado": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA86P_C5",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA86P_Limpiar",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveManualExecutions": true
+  }
+}

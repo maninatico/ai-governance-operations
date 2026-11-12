@@ -1,0 +1,402 @@
+{
+  "name": "CA_8.4d_PRUEBA",
+  "nodes": [
+    {
+      "id": "s1",
+      "name": "CA84dP_Ejecutar_prueba",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "s2",
+      "name": "CA84dP_Casos",
+      "notes": "4 facturas que pasan todos los controles: normal, dos de más de $ 5.000.000 (doble control) y un monotributista. Recorren 8.4a a 8.4d; las decisiones se simulan con registrar_decision, la misma función que usa el formulario.",
+      "parameters": {
+        "jsCode": "const P = '<CORREO>';\nconst c = (caso, esperado, correo_id, fecha_hora, de, adjunto, decision, extra = {}) =>\n  ({ json: { caso, esperado, decision, correo_id, fecha_hora, de, para: P, asunto: 'Factura ' + adjunto, cuerpo: 'Adjuntamos la factura. Saludos.', adjunto, ...extra } });\n// decision: lo que la prueba simula que deciden las personas (en la realidad, en el formulario del 8.3)\nreturn [\n  c('1 factura normal, aprobada', 'L3 al Gerente; queda Aprobada para pago', 'COR-002', '2026-10-26 17:24', '<CORREO>', 'LOTE-002.pdf', 'aprobar'),\n  c('2 más de $ 5.000.000, aprueban los dos', 'Doble control; queda Aprobada para pago', 'COR-040', '2026-10-12 11:05', '<CORREO>', 'LOTE-040.pdf', 'aprobar_los_dos'),\n  c('3 más de $ 5.000.000, falta el segundo', 'Doble control; sigue Registrada esperando al Socio gerente', 'COR-091', '2026-10-09 08:55', '<CORREO>', 'LOTE-091.pdf', 'solo_primer_paso'),\n  c('4 monotributista, rechazada', 'L3; queda En espera y va a la cola', 'PRUEBA-MONO-1', '2026-10-15 10:00', '<CORREO>', 'MONO-PRV-121.pdf', 'rechazar', { carpeta: 'pruebas_extra' }),\n];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "s3",
+      "name": "CA84dP_Llamar_8.4a",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "77QpOMooSITmOQf4"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "s4",
+      "name": "CA84dP_Marcar_prueba",
+      "parameters": {
+        "jsCode": "const n = new Date(), z = (x) => String(x).padStart(2, '0');\nconst prefijo = `PRUEBA-${n.getFullYear()}${z(n.getMonth() + 1)}${z(n.getDate())}${z(n.getHours())}${z(n.getMinutes())}${z(n.getSeconds())}-`;\nreturn $input.all().map((i) => ({ json: { ...i.json, prefijo_id: prefijo } }));"
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "s5",
+      "name": "CA84dP_Llamar_8.4b",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "izXbDwjYwl1nKObq"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "s6",
+      "name": "CA84dP_Llamar_8.4c",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "LYnavaXekeN7Ggm4"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1100,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "s7",
+      "name": "CA84dP_Modo_pedir",
+      "parameters": {
+        "jsCode": "return $input.all().map((i) => ({ json: { ...i.json, modo: 'pedir' } }));"
+      },
+      "position": [
+        1320,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "s8",
+      "name": "CA84dP_Pedir_aprobacion",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "GMxaHrI8Dtzy3qDv"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1540,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "s9",
+      "name": "CA84dP_Decisiones",
+      "parameters": {
+        "jsCode": "// Simula las decisiones del formulario con la misma función de la base que usa el formulario (registrar_decision).\nconst casos = $('CA84dP_Casos').all().map((i) => i.json);\nconst out = [];\n$input.all().forEach((i, k) => { const r = i.json, d = casos[k].decision;\n  if (!r.aprobacion_id) return;\n  const paso = (quien, decision, motivo) => out.push({ json: { aprobacion_id: String(r.aprobacion_id), quien, decision, motivo } });\n  if (d === 'aprobar') paso(r.aprobador, 'aprobado', 'PRUEBA 8.4d: controles completos');\n  if (d === 'aprobar_los_dos') { paso(r.aprobador, 'aprobado', 'PRUEBA 8.4d: primer paso'); paso(r.segundo_aprobador, 'aprobado', 'PRUEBA 8.4d: segundo paso'); }\n  if (d === 'solo_primer_paso') paso(r.aprobador, 'aprobado', 'PRUEBA 8.4d: primer paso');\n  if (d === 'rechazar') paso(r.aprobador, 'rechazado', 'PRUEBA 8.4d: la obra se suspendió');\n});\nreturn out;"
+      },
+      "position": [
+        1760,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "s10",
+      "name": "CA84dP_Decidir",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryBatching": "independently",
+          "queryReplacement": "={{ [ $json.aprobacion_id, $json.quien, $json.decision, $json.motivo ] }}"
+        },
+        "query": "SELECT * FROM control.registrar_decision($1::bigint, $2, $3, $4);"
+      },
+      "position": [
+        1980,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "s11",
+      "name": "CA84dP_Datos_actualizar",
+      "parameters": {
+        "jsCode": "return [{ json: { modo: 'actualizar', prefijo: $('CA84dP_Marcar_prueba').first().json.prefijo_id } }];"
+      },
+      "position": [
+        2200,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "s12",
+      "name": "CA84dP_Actualizar",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "GMxaHrI8Dtzy3qDv"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        2420,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "s13",
+      "name": "CA84dP_Resultado",
+      "parameters": {
+        "jsCode": "const casos = $('CA84dP_Casos').all().map((i) => i.json);\nconst p = $('CA84dP_Pedir_aprobacion').all().map((i) => i.json);\nconst act = $input.first().json;\nconst fin = (id) => { const c = (act.cambios || []).find((x) => x.comprobante_id === id); return c ? c.estado : ((act.pendientes || []).includes(id) ? 'Registrada' : 'sin cambio'); };\nconst ok = [\n  (r, f) => r.nivel === 'L3' && r.aprobador === 'Gerente de Administración' && f === 'Aprobada para pago',\n  (r, f) => r.nivel === 'L3 + doble control' && r.segundo_aprobador === 'Socio gerente' && f === 'Aprobada para pago',\n  (r, f) => r.nivel === 'L3 + doble control' && f === 'Registrada',\n  (r, f) => r.nivel === 'L3' && f === 'En espera',\n];\nreturn casos.map((c, i) => { const r = p[i] || {}; const f = fin(r.comprobante_id);\n  let pasa = false; try { pasa = r.estado === 'Registrada' && !!r.link_formulario && ok[i](r, f); } catch (e) {}\n  return { json: { caso: c.caso, esperado: c.esperado, resultado: pasa ? 'PASA' : 'FALLA',\n    detalle: JSON.stringify({ registro: r.estado, aprobacion: r.aprobacion_id, nivel: r.nivel, aprobador: r.aprobador, segundo: r.segundo_aprobador, vence: r.vence, estado_final: f, motivo: r.motivo }) } }; });"
+      },
+      "position": [
+        2640,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA84dP_Actualizar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84dP_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84dP_Casos": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84dP_Llamar_8.4a",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84dP_Datos_actualizar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84dP_Actualizar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84dP_Decidir": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84dP_Datos_actualizar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84dP_Decisiones": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84dP_Decidir",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84dP_Ejecutar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84dP_Casos",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84dP_Llamar_8.4a": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84dP_Marcar_prueba",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84dP_Llamar_8.4b": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84dP_Llamar_8.4c",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84dP_Llamar_8.4c": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84dP_Modo_pedir",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84dP_Marcar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84dP_Llamar_8.4b",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84dP_Modo_pedir": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84dP_Pedir_aprobacion",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA84dP_Pedir_aprobacion": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA84dP_Decisiones",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveManualExecutions": true
+  }
+}

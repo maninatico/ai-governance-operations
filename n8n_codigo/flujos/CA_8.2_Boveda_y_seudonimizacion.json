@@ -1,0 +1,572 @@
+{
+  "name": "CA_8.2_Boveda_y_seudonimizacion",
+  "nodes": [
+    {
+      "id": "ca82-trigger",
+      "name": "CA82_Disparador",
+      "notes": "Subflujo A02. Contrato: modo ('proveedor'|'cliente'|'texto'); proveedor: cuit; cliente: dni y/o telefono; texto: texto, cliente_id opcional; siempre: documento_id, origen ('facturas'|'reclamos'). Devuelve id o texto_enmascarado; si no cierra, resuelto=false y el caso va a la cola.",
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "position": [
+        0,
+        400
+      ],
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1
+    },
+    {
+      "id": "ca82-modo",
+      "name": "CA82_Modo",
+      "parameters": {
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "modo_invalido"
+        },
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "m1",
+                    "leftValue": "={{ $json.modo }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "proveedor"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              },
+              "outputKey": "proveedor",
+              "renameOutput": true
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "m2",
+                    "leftValue": "={{ $json.modo }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "cliente"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              },
+              "outputKey": "cliente",
+              "renameOutput": true
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "m3",
+                    "leftValue": "={{ $json.modo }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "texto"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              },
+              "outputKey": "texto",
+              "renameOutput": true
+            }
+          ]
+        }
+      },
+      "position": [
+        220,
+        400
+      ],
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2
+    },
+    {
+      "id": "ca82-invalido",
+      "name": "CA82_Modo_invalido",
+      "parameters": {
+        "errorMessage": "=CA_8.2: modo inválido '{{ $json.modo }}'. Usar 'proveedor', 'cliente' o 'texto'."
+      },
+      "position": [
+        460,
+        760
+      ],
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1
+    },
+    {
+      "id": "ca82-qprov",
+      "name": "CA82_Buscar_proveedor",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($json.cuit ?? '') ] }}"
+        },
+        "query": "SELECT coalesce(array_agg(id), '{}') AS ids\nFROM boveda.buscar_proveedor(\n  CASE WHEN length(regexp_replace($1, '\\D', '', 'g')) = 11\n       THEN regexp_replace(regexp_replace($1, '\\D', '', 'g'), '^(\\d{2})(\\d{8})(\\d)$', '\\1-\\2-\\3')\n  END) AS id;"
+      },
+      "position": [
+        460,
+        160
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca82-qcli",
+      "name": "CA82_Buscar_cliente",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($json.dni ?? ''), String($json.telefono ?? '') ] }}"
+        },
+        "query": "SELECT coalesce(array_agg(id), '{}') AS ids\nFROM boveda.buscar_cliente(NULLIF(regexp_replace($1, '\\D', '', 'g'), ''), NULLIF($2, '')) AS id;"
+      },
+      "position": [
+        460,
+        340
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca82-evalid",
+      "name": "CA82_Evaluar_id",
+      "parameters": {
+        "jsCode": "// Un solo ID: resuelto. Cero o varios: a la cola (nunca se adivina).\nconst d = $('CA82_Disparador').first().json;\nconst ids = $input.first().json.ids || [];\nconst campo = d.modo === 'proveedor' ? 'proveedor_id' : 'cliente_id';\nconst base = { modo: d.modo, documento_id: d.documento_id ?? null };\nif (ids.length === 1) return [{ json: { ...base, resuelto: true, [campo]: ids[0], motivo: null } }];\nconst dato = d.modo === 'proveedor' ? 'CUIT' : 'DNI o teléfono';\nconst motivo = ids.length === 0 ? `Sin coincidencia en la base para el ${dato}` : `${ids.length} coincidencias para el mismo ${dato}`;\nreturn [{ json: { ...base, resuelto: false, [campo]: null, motivo } }];"
+      },
+      "position": [
+        700,
+        250
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "ca82-qdatos",
+      "name": "CA82_Datos_del_cliente",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($json.cliente_id ?? '') ] }}"
+        },
+        "query": "SELECT nombre, apellido, dni, telefono, email, direccion\nFROM boveda.clientes_datos\nWHERE cliente_id = NULLIF($1, '');"
+      },
+      "position": [
+        460,
+        560
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca82-mask",
+      "name": "CA82_Enmascarar",
+      "parameters": {
+        "jsCode": "// CA_8.2 A02: enmascarado del texto libre en 3 capas, con falla segura.\n// Capa 1: cruce con la base (si se conoce el cliente). Capa 2: patrones. Capa 3: reglas de nombres.\nfunction enmascarar(texto, c) {\n  let t = String(texto ?? '');\n  const cuenta = {}, marc = [];\n  const marcar = (tipo, valor) => { cuenta[tipo] = (cuenta[tipo] || 0) + 1; const m = `[${tipo}_${cuenta[tipo]}]`; marc.push({ marcador: m, tipo, valor_real: valor }); return m; };\n  // Capa 1: cruce con la base (datos del cliente identificado)\n  if (c && c.nombre) {\n    for (const [tipo, valor] of [['NOMBRE', `${c.nombre} ${c.apellido}`], ['DNI', c.dni], ['TEL', c.telefono], ['EMAIL', c.email], ['DIRECCION', c.direccion]]) {\n      if (valor && t.includes(valor)) { const m = marcar(tipo, valor); t = t.split(valor).join(m); }\n    }\n  }\n  // Capa 2: patrones\n  const patrones = [\n    ['EMAIL', /[\\w.+-]+@[\\w-]+(\\.[\\w-]+)+/g],\n    ['CBU', /\\b\\d{22}\\b/g],\n    ['CUIT', /\\b(20|23|24|27|30|33|34)-?\\d{8}-?\\d\\b/g],\n    ['TEL', /(\\+?54\\s?9?\\s?)?\\b\\d{2,4}[-\\s]\\d{4}[-\\s]\\d{4}\\b/g],\n    ['DNI', /\\b\\d{7,8}\\b/g],\n    ['DNI', /\\bDNI:?\\s*\\d{1,2}\\.\\d{3}\\.\\d{3}\\b/gi],\n    ['DIRECCION', /\\b(?:Av\\.\\s|Avenida\\s|Calle\\s)?[A-ZÁÉÍÓÚÑ][a-záéíóúñü.]+(?:\\s(?:de\\s|del\\s)?[A-ZÁÉÍÓÚÑ][a-záéíóúñü.]+){0,3}\\s\\d{3,5}\\b/g],\n  ];\n  for (const [tipo, re] of patrones) t = t.replace(re, v => marcar(tipo, v));\n  // Capa 3: reglas de nombres (\"Soy ...\", \"me llamo ...\", \"mi nombre es ...\")\n  const nombre = /\\b([Ss]oy|[Mm]e llamo|[Mm]i nombre es)\\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+){0,2})/g;\n  t = t.replace(nombre, (all, pre, n) => `${pre} ${marcar('NOMBRE', n)}`);\n  // Falla segura: no puede quedar nada reconocible\n  const restos = [];\n  if (c && c.nombre) for (const v of [c.dni, c.telefono, c.email, c.direccion, c.apellido]) if (v && t.includes(v)) restos.push('dato del cliente');\n  if (/[\\w.+-]+@[\\w-]+\\.[\\w.-]+/.test(t)) restos.push('correo');\n  if (/\\b\\d{7,8}\\b/.test(t)) restos.push('número tipo DNI');\n  if (/\\b\\d{2,4}[-\\s]\\d{4}[-\\s]\\d{4}\\b/.test(t)) restos.push('teléfono');\n  return { texto: t, marc, seguro: restos.length === 0, restos };\n}\n\n\nconst d = $('CA82_Disparador').first().json;\nconst c = $input.first().json || {};\nconst o = enmascarar(d.texto, c.nombre ? c : null);\nreturn [{ json: {\n  modo: 'texto',\n  documento_id: d.documento_id ?? null,\n  resuelto: o.seguro,\n  texto_enmascarado: o.seguro ? o.texto : null,\n  cantidad_marcadores: o.marc.length,\n  marcadores_json: JSON.stringify(o.marc.map(m => ({ marcador: m.marcador, tipo: m.tipo, valor: m.valor_real }))),\n  motivo: o.seguro ? null : 'Falla segura: quedaron datos personales después de enmascarar (' + o.restos.join(', ') + ')',\n} }];"
+      },
+      "position": [
+        700,
+        560
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca82-ifid",
+      "name": "CA82_Resuelto_id",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "ca82-ifidc",
+              "leftValue": "={{ $json.resuelto }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        940,
+        250
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "ca82-ifmask",
+      "name": "CA82_Texto_seguro",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "ca82-ifmaskc",
+              "leftValue": "={{ $json.resuelto }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        940,
+        560
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "ca82-guardar",
+      "name": "CA82_Guardar_marcadores",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($json.documento_id ?? 'SIN-DOCUMENTO'), $json.marcadores_json ] }}"
+        },
+        "query": "INSERT INTO boveda.marcadores (documento_id, marcador, tipo, valor_real)\nSELECT $1, x->>'marcador', x->>'tipo', x->>'valor'\nFROM jsonb_array_elements($2::jsonb) AS x\nON CONFLICT (documento_id, marcador) DO NOTHING;"
+      },
+      "position": [
+        1180,
+        480
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca82-cola",
+      "name": "CA82_A_la_cola",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ $json.modo === 'proveedor' ? 'facturas' : ($('CA82_Disparador').first().json.origen === 'facturas' ? 'facturas' : 'reclamos'), String($json.documento_id ?? 'SIN-DOCUMENTO'), String($json.motivo ?? 'Sin motivo') ] }}"
+        },
+        "query": "INSERT INTO control.cola_revision (origen, automatizacion_id, documento_id, motivo, prioridad)\nVALUES ($1, 'A02', $2, $3, 'media');"
+      },
+      "position": [
+        1180,
+        700
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca82-resp",
+      "name": "CA82_Respuesta",
+      "parameters": {
+        "jsCode": "const src = $('CA82_Evaluar_id').isExecuted ? $('CA82_Evaluar_id').first().json : $('CA82_Enmascarar').first().json;\nconst r = { ...src };\ndelete r.marcadores_json;  // los datos reales no salen de la bóveda\nr.derivado_a_cola = r.resuelto !== true;\nreturn [{ json: r }];"
+      },
+      "position": [
+        1420,
+        400
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca82-datos81",
+      "name": "CA82_Datos_para_8.1",
+      "parameters": {
+        "jsCode": "const r = $input.first().json;\nreturn [{ json: { modo: 'fin', automatizacion_id: 'A02', documento_id: r.documento_id ?? '', estado: r.resuelto ? 'ok' : 'derivado_a_cola', intervencion_humana: false } }];"
+      },
+      "position": [
+        1640,
+        400
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca82-llamar81",
+      "name": "CA82_Registrar_en_8.1",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HRAb0YG1KsqhYDbf"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1860,
+        400
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca82-final",
+      "name": "CA82_Devolver",
+      "parameters": {
+        "jsCode": "return [{ json: $('CA82_Respuesta').first().json }];"
+      },
+      "position": [
+        2080,
+        400
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA82_A_la_cola": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82_Respuesta",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82_Buscar_cliente": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82_Evaluar_id",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82_Buscar_proveedor": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82_Evaluar_id",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82_Datos_del_cliente": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82_Enmascarar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82_Datos_para_8.1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82_Registrar_en_8.1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82_Disparador": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82_Modo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82_Enmascarar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82_Texto_seguro",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82_Evaluar_id": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82_Resuelto_id",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82_Guardar_marcadores": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82_Respuesta",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82_Modo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82_Buscar_proveedor",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA82_Buscar_cliente",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA82_Datos_del_cliente",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA82_Modo_invalido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82_Registrar_en_8.1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82_Devolver",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82_Respuesta": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82_Datos_para_8.1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82_Resuelto_id": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82_Respuesta",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA82_A_la_cola",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA82_Texto_seguro": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA82_Guardar_marcadores",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA82_A_la_cola",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

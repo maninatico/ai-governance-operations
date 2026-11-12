@@ -1,0 +1,412 @@
+{
+  "name": "CA_8.3_Motor_de_politicas_y_aprobaciones",
+  "nodes": [
+    {
+      "id": "ca83-trigger",
+      "name": "CA83_Disparador",
+      "notes": "Subflujo A03, Motor de políticas y aprobaciones. Contrato: modo 'evaluar' (accion, monto) | 'pedir' (automatizacion_id, objeto, accion, monto, motivo) | 'consultar' (aprobacion_id). Las reglas viven en control.politicas; acción desconocida = bloquear.",
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1
+    },
+    {
+      "id": "ca83-modo",
+      "name": "CA83_Modo",
+      "parameters": {
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "modo_invalido"
+        },
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "r-evaluar",
+                    "leftValue": "={{ $json.modo }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "evaluar"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              },
+              "outputKey": "evaluar",
+              "renameOutput": true
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "r-pedir",
+                    "leftValue": "={{ $json.modo }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "pedir"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              },
+              "outputKey": "pedir",
+              "renameOutput": true
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "r-consultar",
+                    "leftValue": "={{ $json.modo }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "consultar"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              },
+              "outputKey": "consultar",
+              "renameOutput": true
+            }
+          ]
+        }
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2
+    },
+    {
+      "id": "ca83-invalido",
+      "name": "CA83_Modo_invalido",
+      "parameters": {
+        "errorMessage": "=CA_8.3: modo inválido '{{ $json.modo }}'. Usar 'evaluar', 'pedir' o 'consultar'."
+      },
+      "position": [
+        460,
+        620
+      ],
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1
+    },
+    {
+      "id": "ca83-qeval",
+      "name": "CA83_Evaluar_politica",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($json.accion ?? ''), String($json.monto ?? '') ] }}"
+        },
+        "query": "SELECT * FROM control.evaluar_politica($1, NULLIF($2, '')::numeric);"
+      },
+      "position": [
+        460,
+        100
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca83-qpedir",
+      "name": "CA83_Pedir_aprobacion",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($json.automatizacion_id ?? ''), String($json.objeto ?? ''), String($json.accion ?? ''), String($json.monto ?? ''), String($json.motivo ?? '') ] }}"
+        },
+        "query": "SELECT * FROM control.pedir_aprobacion($1, $2, $3, NULLIF($4, '')::numeric, NULLIF($5, ''));"
+      },
+      "position": [
+        460,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "ca83-qcons",
+      "name": "CA83_Consultar_aprobacion",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($json.aprobacion_id ?? '') ] }}"
+        },
+        "query": "SELECT aprobacion_id, accion, objeto, nivel, aprobador, segundo_aprobador, primera_decision, decision, escalado_a,\n       to_char(vence, 'YYYY-MM-DD HH24:MI') AS vence, to_char(decidido, 'YYYY-MM-DD HH24:MI') AS decidido, motivo\nFROM control.aprobaciones WHERE aprobacion_id = NULLIF($1, '')::bigint;"
+      },
+      "position": [
+        460,
+        460
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca83-reval",
+      "name": "CA83_Respuesta_evaluar",
+      "parameters": {
+        "jsCode": "const r = $input.first().json;\nreturn [{ json: { modo: 'evaluar', accion: r.accion, decision: r.decision, nivel: r.nivel,\n  permitido: ['permitir', 'permitir_con_revision'].includes(r.decision),\n  requiere_aprobacion: r.decision === 'pedir_aprobacion',\n  bloqueado: r.decision === 'bloquear',\n  revision_posterior: r.decision === 'permitir_con_revision',\n  aprobador: r.aprobador, segundo_aprobador: r.segundo_aprobador, doble_control: r.doble_control === true,\n  motivo: r.motivo } }];"
+      },
+      "position": [
+        700,
+        100
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca83-rpedir",
+      "name": "CA83_Respuesta_pedir",
+      "parameters": {
+        "jsCode": "const r = $input.first().json;\nconst vence = new Date(r.vence).toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', dateStyle: 'short', timeStyle: 'short' });\nreturn [{ json: { modo: 'pedir', aprobacion_id: r.aprobacion_id, nivel: r.nivel, aprobador: r.aprobador,\n  segundo_aprobador: r.segundo_aprobador, vence, estado: 'pendiente',\n  link_formulario: 'http://localhost:5678/form/ca-aprobacion?aprobacion_id=' + r.aprobacion_id } }];"
+      },
+      "position": [
+        700,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca83-rcons",
+      "name": "CA83_Respuesta_consultar",
+      "parameters": {
+        "jsCode": "const r = $input.first().json;\nlet estado;\nif (!r.aprobacion_id) estado = 'inexistente';\nelse if (r.decision) estado = r.decision;\nelse if (r.primera_decision === 'aprobado') estado = 'falta segundo aprobador';\nelse estado = r.escalado_a ? 'pendiente (escalada a ' + r.escalado_a + ')' : 'pendiente';\nreturn [{ json: { modo: 'consultar', ...r, estado, aprobado: estado === 'aprobado' } }];\n// El silencio nunca es un sí: solo 'aprobado' habilita la acción."
+      },
+      "position": [
+        700,
+        460
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca83-datos81",
+      "name": "CA83_Datos_para_8.1",
+      "parameters": {
+        "jsCode": "const r = $input.first().json;\nconst d = $('CA83_Disparador').first().json;\nreturn [{ json: { modo: 'fin', automatizacion_id: 'A03', documento_id: String(d.objeto || r.aprobacion_id || r.accion || ''),\n  estado: r.bloqueado ? 'bloqueado' : 'ok', intervencion_humana: false, respuesta: r } }];"
+      },
+      "position": [
+        1140,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "ca83-llamar81",
+      "name": "CA83_Registrar_en_8.1",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HRAb0YG1KsqhYDbf"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1380,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "ca83-final",
+      "name": "CA83_Devolver",
+      "parameters": {
+        "jsCode": "return [{ json: $('CA83_Datos_para_8.1').first().json.respuesta }];"
+      },
+      "position": [
+        1600,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA83_Consultar_aprobacion": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83_Respuesta_consultar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83_Datos_para_8.1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83_Registrar_en_8.1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83_Disparador": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83_Modo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83_Evaluar_politica": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83_Respuesta_evaluar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83_Modo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83_Evaluar_politica",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA83_Pedir_aprobacion",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA83_Consultar_aprobacion",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA83_Modo_invalido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83_Pedir_aprobacion": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83_Respuesta_pedir",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83_Registrar_en_8.1": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83_Devolver",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83_Respuesta_consultar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83_Datos_para_8.1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83_Respuesta_evaluar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83_Datos_para_8.1",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83_Respuesta_pedir": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83_Datos_para_8.1",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

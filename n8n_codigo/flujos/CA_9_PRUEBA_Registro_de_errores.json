@@ -1,0 +1,146 @@
+{
+  "name": "CA_9_PRUEBA_Registro_de_errores",
+  "nodes": [
+    {
+      "id": "r1",
+      "name": "CA9R_Ejecutar_prueba",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "r2",
+      "name": "CA9R_Llamar_falla",
+      "notes": "Llama al subflujo que siempre falla. El error no debe frenar esta prueba.",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "fLShK0LhrjMEoItL"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "r3",
+      "name": "CA9R_Esperar",
+      "notes": "El flujo de errores corre aparte, despues de la falla: se le da unos segundos.",
+      "parameters": {
+        "amount": 8,
+        "unit": "seconds"
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "webhookId": "9c1b7c0e-2a43-4d58-9a11-5c0b88a1c901"
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "r4",
+      "name": "CA9R_Ver_fila",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "SELECT automatizacion_id, estado, documento_id, detalle_error, (inicio > now() - interval '3 minutes') AS reciente FROM control.ejecuciones WHERE documento_id LIKE 'PRUEBA-ERR-%' ORDER BY ejecucion_id DESC LIMIT 1;"
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "r5",
+      "name": "CA9R_Resultado",
+      "parameters": {
+        "jsCode": "const llamada = $('CA9R_Llamar_falla').first().json;\nconst f = $input.first().json;\nconst pf = ok => (ok ? 'PASA' : 'FALLA');\nconst pruebas = [\n  { caso: '1 La falla forzada llego al flujo de pruebas como error', resultado: pf(!!llamada.error), detalle: llamada.error ? String(llamada.error.message || llamada.error).slice(0, 120) : 'no hubo error' },\n  { caso: '2 El flujo de errores dejo una fila de error reciente en control.ejecuciones', resultado: pf(f.estado === 'error' && f.reciente === true), detalle: JSON.stringify(f) },\n  { caso: '3 La fila esta asociada a una automatizacion y marcada como prueba (el monitoreo la ignora)', resultado: pf(f.automatizacion_id === 'A08' && String(f.documento_id || '').startsWith('PRUEBA-ERR-')), detalle: (f.automatizacion_id || '-') + ' / ' + (f.documento_id || '-') },\n  { caso: '4 Guarda solo el mensaje de la falla, sin datos', resultado: pf(String(f.detalle_error || '').includes('Falla forzada de la Fase 9')), detalle: f.detalle_error || 'sin detalle' },\n];\nconst pasan = pruebas.filter(x => x.resultado === 'PASA').length;\nreturn [{ json: { resumen: pasan + ' de ' + pruebas.length + ' PASA', pruebas } }];"
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA9R_Ejecutar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9R_Llamar_falla",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA9R_Esperar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9R_Ver_fila",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA9R_Llamar_falla": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9R_Esperar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA9R_Ver_fila": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9R_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true
+  }
+}

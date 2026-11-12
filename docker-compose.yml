@@ -1,0 +1,79 @@
+# Base de datos del proyecto Gobernanza de IA en Operaciones (Materiales Cumbre Andina, caso ficticio)
+# Uso (desde WSL, en esta carpeta, con n8n-local ya corriendo):
+#   1. cp .env.example .env   y definir las contraseñas en .env (ese archivo no se comparte)
+#   2. docker compose up -d                               -> base (esquema, usuarios, vistas) + servidor de archivos
+#   3. docker compose --profile carga run --rm cargador   -> carga los datos del histórico limpio
+# No modifica n8n: estos contenedores se suman a la red de n8n (migracion-docker_default).
+# Desde n8n: Postgres en host cumbre_andina_db, puerto 5432; archivos en http://cumbre_archivos/;
+# lector en http://cumbre_lector:8000/leer?archivo=facturas_pdf/LOTE-001.pdf
+name: cumbre_andina
+
+services:
+  db:
+    image: postgres:16
+    container_name: cumbre_andina_db
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_DB: cumbre_andina
+    ports:
+      - "127.0.0.1:5433:5432"                     # solo accesible desde esta PC (pandas, Power BI)
+    volumes:
+      - datos_pg:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d:ro      # se ejecutan solo la primera vez, en orden
+    networks: [proyecto, n8n]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d cumbre_andina"]
+      interval: 5s
+      retries: 10
+
+  # Simula el buzón y el portal: sirve SOLO el lote de prueba, en solo lectura.
+  # La carpeta datos/verdad NO se publica: los flujos no pueden ver las respuestas correctas.
+  archivos:
+    image: nginx:1.27-alpine
+    container_name: cumbre_archivos
+    restart: unless-stopped
+    volumes:
+      - ./datos/lote_prueba:/usr/share/nginx/html:ro
+    networks: [n8n]                               # sin puertos hacia afuera: solo lo ve n8n
+
+  # Lee los comprobantes sin IA externa: texto, QR de ARCA, OCR local y texto oculto.
+  # Solo ve el lote de prueba, en solo lectura, y no tiene puertos hacia afuera.
+  lector:
+    build: ./lector
+    container_name: cumbre_lector
+    restart: unless-stopped
+    volumes:
+      - ./datos/lote_prueba:/datos:ro
+    networks: [n8n]
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/salud')\""]
+      interval: 10s
+      retries: 5
+
+  cargador:
+    image: python:3.12-slim
+    profiles: ["carga"]
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      PGHOST: db
+      PGDATABASE: cumbre_andina
+    volumes:
+      - ./:/proyecto:ro
+    working_dir: /proyecto
+    networks: [proyecto]
+    command: >
+      sh -c "pip install -q pandas psycopg2-binary &&
+             PGUSER=$${POSTGRES_USER} PGPASSWORD=$${POSTGRES_PASSWORD} python scripts/cargar_base.py"
+
+networks:
+  proyecto: {}
+  n8n:
+    external: true
+    name: migracion-docker_default
+
+volumes:
+  datos_pg:

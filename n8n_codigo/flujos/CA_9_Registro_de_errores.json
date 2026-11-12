@@ -1,0 +1,79 @@
+{
+  "name": "CA_9_Registro_de_errores",
+  "nodes": [
+    {
+      "id": "e1",
+      "name": "CA9E_Error",
+      "notes": "Flujo de errores de n8n: se activa cuando falla un flujo que lo tiene configurado como 'Error workflow'. No corre en ejecuciones manuales directas, solo cuando el flujo fallido corre como subflujo o en produccion.",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "e2",
+      "name": "CA9E_Armar_fila",
+      "notes": "Asocia el flujo que fallo con su automatizacion. Si no lo reconoce, no escribe nada. De la falla guarda solo la primera linea del mensaje (sin detalle de filas, que podria traer datos). Las pruebas llevan documento PRUEBA-ERR-: el monitoreo las ignora.",
+      "parameters": {
+        "jsCode": "const e = $input.first().json;\nconst wf = String((e.workflow && e.workflow.name) || '');\nconst ex = e.execution || {};\nconst MAPA = [['CA_8.1_', 'A01'], ['CA_8.2_', 'A02'], ['CA_8.3_', 'A03'], ['CA_8.4a_', 'A04'], ['CA_8.4b_', 'A05'], ['CA_8.4c_', 'A06'], ['CA_8.4d_', 'A07'], ['CA_8.4_Orquestador', 'A04'], ['CA_8.5a_', 'A08'], ['CA_8.5b_', 'A09'], ['CA_8.5c_', 'A10'], ['CA_8.5_Orquestador', 'A08'], ['CA_8.6', 'A11'], ['CA_8.7', 'A12'], ['CA_8.8a_', 'A14'], ['CA_8.8b_', 'A13'], ['CA_8.8c_', 'A13'], ['CA_9_PRUEBA', 'A08']];\nconst par = MAPA.find(([p]) => wf.startsWith(p));\nif (!par) return [];\nconst msg = String((ex.error && ex.error.message) || 'error sin mensaje').split('\\n')[0];\nconst detalle = ((ex.lastNodeExecuted || 'nodo desconocido') + ': ' + msg).slice(0, 300);\nconst doc = wf.includes('PRUEBA') ? 'PRUEBA-ERR-' + String(ex.id || '') : '';\nreturn [{ json: { automatizacion_id: par[1], documento_id: doc, detalle } }];"
+      },
+      "position": [
+        240,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "e3",
+      "name": "CA9E_Registrar",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($json.automatizacion_id), String($json.documento_id), String($json.detalle) ] }}"
+        },
+        "query": "INSERT INTO control.ejecuciones (automatizacion_id, documento_id, inicio, fin, estado, detalle_error) VALUES ($1, NULLIF($2, ''), now(), now(), 'error', $3);"
+      },
+      "position": [
+        480,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    }
+  ],
+  "connections": {
+    "CA9E_Armar_fila": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9E_Registrar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA9E_Error": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA9E_Armar_fila",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true
+  }
+}

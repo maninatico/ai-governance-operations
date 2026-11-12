@@ -1,0 +1,301 @@
+{
+  "name": "CA_8.3_Formulario_de_aprobacion",
+  "nodes": [
+    {
+      "id": "ca83f-trigger",
+      "name": "CA83F_Formulario",
+      "notes": "Formulario de aprobación humana (A03). En la demo, quien decide se elige en el formulario; en una empresa real se identifica con el inicio de sesión de la empresa.",
+      "parameters": {
+        "formDescription": "Ingresá el número de aprobación que recibiste. Vas a ver el detalle antes de decidir. Toda decisión queda registrada.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Número de aprobación",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Quién decide",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Gerente de Administración"
+                  },
+                  {
+                    "option": "Socio gerente"
+                  },
+                  {
+                    "option": "Agente de atención"
+                  },
+                  {
+                    "option": "Jefe de Atención"
+                  },
+                  {
+                    "option": "Responsable de Sistemas"
+                  }
+                ]
+              },
+              "fieldType": "dropdown",
+              "requiredField": true
+            }
+          ]
+        },
+        "formTitle": "Materiales Cumbre Andina · Aprobaciones",
+        "options": {
+          "buttonLabel": "Ver detalle",
+          "path": "ca-aprobacion"
+        }
+      },
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "webhookId": "925ac436-eb4f-4463-921e-c9625bb9c5f9"
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "ca83f-q",
+      "name": "CA83F_Consultar",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($('CA83F_Formulario').first().json['Número de aprobación'] ?? '') ] }}"
+        },
+        "query": "SELECT a.aprobacion_id, a.accion, p.descripcion, a.objeto, a.nivel, a.monto, a.aprobador, a.segundo_aprobador,\n       a.primera_decision, a.decision, a.escalado_a, to_char(a.vence, 'DD/MM/YYYY HH24:MI') AS vence, a.motivo\nFROM control.aprobaciones a JOIN control.politicas p ON p.accion = a.accion\nWHERE a.aprobacion_id = NULLIF($1, '')::bigint;"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca83f-if",
+      "name": "CA83F_Pendiente",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "p1",
+              "leftValue": "={{ !!$json.aprobacion_id && !$json.decision }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "ca83f-pag2",
+      "name": "CA83F_Detalle_y_decision",
+      "parameters": {
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Decisión",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Aprobar"
+                  },
+                  {
+                    "option": "Rechazar"
+                  }
+                ]
+              },
+              "fieldType": "dropdown",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Motivo",
+              "fieldType": "textarea",
+              "placeholder": "Ej.: OC y montos verificados",
+              "requiredField": true
+            }
+          ]
+        },
+        "operation": "page",
+        "options": {
+          "buttonLabel": "Registrar decisión",
+          "formDescription": "={{ '<b>' + $json.descripcion + '</b><br>Documento: ' + $json.objeto + '<br>Nivel: ' + $json.nivel + ($json.monto ? '<br>Monto: $ ' + Number($json.monto).toLocaleString('es-AR', {minimumFractionDigits: 2}) : '') + '<br>Aprobador: ' + $json.aprobador + ($json.segundo_aprobador ? '<br>Segundo aprobador: ' + $json.segundo_aprobador : '') + ($json.primera_decision ? '<br>Primer paso: ' + $json.primera_decision : '') + ($json.escalado_a ? '<br>Escalada a: ' + $json.escalado_a : '') + '<br>Vence: ' + $json.vence + '<br><br>Decide: <b>' + $('CA83F_Formulario').first().json['Quién decide'] + '</b>' }}",
+          "formTitle": "=Aprobación N.º {{ $json.aprobacion_id }}"
+        }
+      },
+      "position": [
+        680,
+        200
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "2a427884-5af7-4405-9a63-daf1643335ff"
+    },
+    {
+      "id": "ca83f-reg",
+      "name": "CA83F_Registrar_decision",
+      "onError": "continueErrorOutput",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {
+          "queryReplacement": "={{ [ String($('CA83F_Formulario').first().json['Número de aprobación']), String($('CA83F_Formulario').first().json['Quién decide']), $json['Decisión'] === 'Aprobar' ? 'aprobado' : 'rechazado', String($json['Motivo'] ?? '') ] }}"
+        },
+        "query": "SELECT * FROM control.registrar_decision($1::bigint, $2, $3, $4);"
+      },
+      "position": [
+        920,
+        200
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6
+    },
+    {
+      "id": "ca83f-ok",
+      "name": "CA83F_Fin_registrada",
+      "parameters": {
+        "completionMessage": "={{ $json.mensaje }}<br>Quedó en la auditoría con fecha, hora y motivo.",
+        "completionTitle": "Decisión registrada",
+        "operation": "completion",
+        "respondWith": "text"
+      },
+      "position": [
+        1160,
+        120
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "22472c55-c390-4eef-a125-7af6302088a3"
+    },
+    {
+      "id": "ca83f-err",
+      "name": "CA83F_Fin_rechazada",
+      "parameters": {
+        "completionMessage": "={{ String($json.message || $json.error?.message || $json.error?.description || 'Error desconocido').replace(/^.*ERROR:\\s*/, '') }}",
+        "completionTitle": "No se pudo registrar la decisión",
+        "operation": "completion",
+        "respondWith": "text"
+      },
+      "position": [
+        1160,
+        300
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "57474bcf-320c-4521-9921-e7355ee376a0"
+    },
+    {
+      "id": "ca83f-nada",
+      "name": "CA83F_Fin_nada_para_decidir",
+      "parameters": {
+        "completionMessage": "={{ $json.aprobacion_id ? 'La aprobación N.º ' + $json.aprobacion_id + ' ya fue decidida: ' + $json.decision + '.' : 'No existe una aprobación con ese número.' }}",
+        "completionTitle": "No hay nada para decidir",
+        "operation": "completion",
+        "respondWith": "text"
+      },
+      "position": [
+        680,
+        420
+      ],
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "webhookId": "fe957609-555a-4a1d-87ff-b7e718d68f9e"
+    }
+  ],
+  "connections": {
+    "CA83F_Consultar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83F_Pendiente",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83F_Detalle_y_decision": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83F_Registrar_decision",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83F_Formulario": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83F_Consultar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83F_Pendiente": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83F_Detalle_y_decision",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA83F_Fin_nada_para_decidir",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA83F_Registrar_decision": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA83F_Fin_registrada",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA83F_Fin_rechazada",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true
+  }
+}

@@ -1,0 +1,856 @@
+{
+  "name": "CA_8.5_Orquestador_reclamos",
+  "nodes": [
+    {
+      "id": "r1",
+      "name": "CA85_Ejecutar",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "r2",
+      "name": "CA85_Parametros",
+      "notes": "Orquestador del proceso de reclamos (P2). Recorre la bandeja en orden de llegada: 8.5a clasificar, 8.5b derivar, 8.5c borrador. Cada etapa decide si el reclamo sigue; lo que no sigue ya quedó en la cola.",
+      "parameters": {
+        "jsCode": "// limite: cuántos reclamos procesar (0 = todos). Primera vuelta: 10.\n// seguimiento: el control de plazos se corre al final. Para el lote de octubre queda apagado: con la hora de hoy\n// todos saldrían vencidos. Los tiempos del después se miden en la Fase 10.\nreturn [{ json: { limite: 0, seguimiento: false, archivo: 'http://cumbre_archivos/reclamos_lote.csv' } }];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "r3",
+      "name": "CA85_Datos_inicio",
+      "parameters": {
+        "jsCode": "return [{ json: { modo: 'inicio', flujo: '8.5 Reclamos' } }];"
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "r4",
+      "name": "CA85_Verificar_interruptor",
+      "notes": "8.1: falla segura. Sin el interruptor GENERAL y el de 8.5 encendidos, no se procesa nada.",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HRAb0YG1KsqhYDbf"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "r5",
+      "name": "CA85_Permitido",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "r5c",
+              "leftValue": "={{ $json.permitido === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "r6",
+      "name": "CA85_Detenido",
+      "parameters": {
+        "jsCode": "const r = $input.first().json;\nreturn [{ json: { procesado: false, motivo: 'No se procesó nada: ' + (r.motivo || 'interruptor apagado') } }];"
+      },
+      "position": [
+        1100,
+        480
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "r7",
+      "name": "CA85_Datos_actualizar",
+      "parameters": {
+        "jsCode": "return [{ json: { modo: 'actualizar' } }];"
+      },
+      "position": [
+        1100,
+        200
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "r8",
+      "name": "CA85_Actualizar_respuestas",
+      "notes": "Primero pasa a los reclamos las decisiones del agente sobre los borradores.",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "D8ngD74TUvA08weN"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        1320,
+        200
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "r9",
+      "name": "CA85_Leer_bandeja",
+      "parameters": {
+        "method": "GET",
+        "options": {
+          "response": {
+            "response": {
+              "outputPropertyName": "data",
+              "responseFormat": "text"
+            }
+          }
+        },
+        "url": "={{ $('CA85_Parametros').first().json.archivo }}"
+      },
+      "position": [
+        1540,
+        200
+      ],
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2
+    },
+    {
+      "id": "r10",
+      "name": "CA85_Ordenar",
+      "parameters": {
+        "jsCode": "// Bandeja de reclamos (lote de octubre): CSV con comillas y comas en el texto. Se quita el BOM y se ordena por ingreso.\nconst p = $('CA85_Parametros').first().json;\nlet txt = String($input.first().json.data || '').replace(/^﻿/, '');\nconst filas = []; let fila = [], campo = '', comillas = false;\nfor (let i = 0; i < txt.length; i++) {\n  const ch = txt[i];\n  if (comillas) {\n    if (ch === '\"' && txt[i + 1] === '\"') { campo += '\"'; i++; }\n    else if (ch === '\"') comillas = false;\n    else campo += ch;\n  } else if (ch === '\"') comillas = true;\n  else if (ch === ',') { fila.push(campo); campo = ''; }\n  else if (ch === '\\n' || ch === '\\r') { if (ch === '\\r' && txt[i + 1] === '\\n') i++; fila.push(campo); filas.push(fila); fila = []; campo = ''; }\n  else campo += ch;\n}\nif (campo !== '' || fila.length) { fila.push(campo); filas.push(fila); }\nconst cab = filas.shift().map((c) => c.trim());\nlet correos = filas.filter((f) => f.length === cab.length).map((f) => Object.fromEntries(cab.map((c, k) => [c, f[k]])));\ncorreos.sort((a, b) => a.fecha_hora_ingreso.localeCompare(b.fecha_hora_ingreso) || a.reclamo_id.localeCompare(b.reclamo_id));\nif (p.limite > 0) correos = correos.slice(0, p.limite);\nreturn correos.map((c) => ({ json: c }));\n"
+      },
+      "position": [
+        1760,
+        200
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "r11",
+      "name": "CA85_Por_reclamo",
+      "parameters": {
+        "options": {}
+      },
+      "position": [
+        1980,
+        200
+      ],
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3
+    },
+    {
+      "id": "r12",
+      "name": "CA85_8.5a_Clasificar",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "BUSthIsunrQgFadJ"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        2200,
+        360
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "r13",
+      "name": "CA85_Sigue_a_derivar",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "r13c",
+              "leftValue": "={{ $json.sigue_a_derivacion === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        2420,
+        360
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "r14",
+      "name": "CA85_Modo_derivar",
+      "parameters": {
+        "jsCode": "return [{ json: { ...$input.first().json, modo: 'derivar' } }];"
+      },
+      "position": [
+        2640,
+        280
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "r15",
+      "name": "CA85_8.5b_Derivar",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "7boib0vvwltFmdBt"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        2860,
+        280
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "r16",
+      "name": "CA85_Derivado",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "r16c",
+              "leftValue": "={{ ['derivado', 'Ya derivado antes'].includes($json.estado) }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "loose"
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        3080,
+        280
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "r17",
+      "name": "CA85_Datos_redactar",
+      "parameters": {
+        "jsCode": "return [{ json: { modo: 'redactar', reclamo_id: $input.first().json.reclamo_id } }];"
+      },
+      "position": [
+        3300,
+        200
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "r18",
+      "name": "CA85_8.5c_Borrador",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "D8ngD74TUvA08weN"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        3520,
+        200
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "r19",
+      "name": "CA85_Fin_reclamo",
+      "parameters": {
+        "jsCode": "// Una fila por reclamo: hasta dónde llegó y en qué estado quedó.\nconst c = $('CA85_Por_reclamo').first().json;\nconst r = $input.first().json;\nconst err = r.error ? (r.error.message || String(r.error)) : null;\nreturn [{ json: { reclamo_id: c.reclamo_id, canal: c.canal, estado: err ? 'error' : (r.estado || 'sin estado'),\n  area: r.area || null, link_formulario_en_borrador: /\\[LINK_FORMULARIO\\]/.test(r.borrador || ''),\n  motivos: (r.motivos || []).join ? (r.motivos || []).join('; ') : (r.motivo || null), error: err } }];"
+      },
+      "position": [
+        3740,
+        440
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "r20",
+      "name": "CA85_Resumen_reclamos",
+      "parameters": {
+        "jsCode": "const filas = $input.all().map((i) => i.json);\nconst por = {}; for (const f of filas) por[f.estado] = (por[f.estado] || 0) + 1;\nreturn [{ json: { reclamos: filas.length, por_estado: por,\n  borradores_con_link_al_formulario: filas.filter((f) => f.link_formulario_en_borrador).length,\n  errores: filas.filter((f) => f.estado === 'error') } }, ...filas.map((f) => ({ json: f }))];"
+      },
+      "position": [
+        2200,
+        40
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "r21",
+      "name": "CA85_Hacer_seguimiento",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "r21c",
+              "leftValue": "={{ $('CA85_Parametros').first().json.seguimiento === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        2420,
+        40
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "r22",
+      "name": "CA85_Datos_seguimiento",
+      "parameters": {
+        "jsCode": "return [{ json: { modo: 'seguimiento' } }];"
+      },
+      "position": [
+        2640,
+        -40
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "r23",
+      "name": "CA85_Seguimiento_plazos",
+      "parameters": {
+        "mode": "once",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "7boib0vvwltFmdBt"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        2860,
+        -40
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "r24",
+      "name": "CA85_Resumen",
+      "parameters": {
+        "jsCode": "const r = $('CA85_Resumen_reclamos').all().map((i) => i.json);\nconst s = $('CA85_Seguimiento_plazos').isExecuted ? $('CA85_Seguimiento_plazos').first().json : { nota: 'Seguimiento de plazos no corrido en esta vuelta' };\nreturn [{ json: { ...r[0], seguimiento: s } }, ...r.slice(1).map((f) => ({ json: f }))];"
+      },
+      "position": [
+        3080,
+        40
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "r25",
+      "name": "CA85_Ya_registrado",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2640,
+        480
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "r25c",
+              "leftValue": "={{ $json.estado === 'Ya registrado antes' }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "loose"
+          }
+        },
+        "options": {}
+      },
+      "notes": "Si el reclamo ya estaba registrado de una vuelta anterior, no se vuelve a clasificar ni derivar, pero se intenta el borrador si todavía no tiene uno."
+    }
+  ],
+  "connections": {
+    "CA85_8.5a_Clasificar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Sigue_a_derivar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_8.5b_Derivar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Derivado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_8.5c_Borrador": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Fin_reclamo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Actualizar_respuestas": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Leer_bandeja",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Datos_actualizar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Actualizar_respuestas",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Datos_inicio": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Verificar_interruptor",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Datos_redactar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_8.5c_Borrador",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Datos_seguimiento": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Seguimiento_plazos",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Derivado": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Datos_redactar",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA85_Fin_reclamo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Ejecutar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Parametros",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Fin_reclamo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Por_reclamo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Hacer_seguimiento": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Datos_seguimiento",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA85_Resumen",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Leer_bandeja": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Ordenar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Modo_derivar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_8.5b_Derivar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Ordenar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Por_reclamo",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Parametros": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Datos_inicio",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Permitido": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Datos_actualizar",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA85_Detenido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Por_reclamo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Resumen_reclamos",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA85_8.5a_Clasificar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Resumen_reclamos": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Hacer_seguimiento",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Seguimiento_plazos": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Resumen",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Sigue_a_derivar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Modo_derivar",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "node": "CA85_Ya_registrado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CA85_Verificar_interruptor": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA85_Permitido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA85_Ya_registrado": {
+      "main": [
+        [
+          {
+            "node": "CA85_Datos_redactar",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CA85_Fin_reclamo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}

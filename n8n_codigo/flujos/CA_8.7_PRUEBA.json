@@ -1,0 +1,139 @@
+{
+  "name": "CA_8.7_PRUEBA",
+  "nodes": [
+    {
+      "id": "s1",
+      "name": "CA87P_Ejecutar_prueba",
+      "parameters": {},
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1
+    },
+    {
+      "id": "s2",
+      "name": "CA87P_Parametros",
+      "notes": "Genera un reporte marcado de prueba y manda UN correo real [PRUEBA] al buzón de pruebas. No ocupa la semana del reporte real.",
+      "parameters": {
+        "jsCode": "return [{ json: { prueba: true } }];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "s3",
+      "name": "CA87P_Generar_y_enviar",
+      "parameters": {
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        },
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "2lKKxNzYSCmX7umX"
+        },
+        "workflowInputs": {
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true,
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [],
+          "value": {}
+        }
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2
+    },
+    {
+      "id": "s4",
+      "name": "CA87P_Verificar",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "=SELECT (SELECT count(*) FROM control.cola_revision WHERE estado = 'pendiente' AND documento_id NOT ILIKE 'PRUEBA%') AS cola, (SELECT count(*) FROM control.aprobaciones WHERE decision IS NULL AND objeto NOT ILIKE 'PRUEBA%') AS aprob, (SELECT count(*) FROM control.ejecuciones WHERE inicio >= (now()::date - 7) AND coalesce(documento_id, '') NOT ILIKE 'PRUEBA%' AND automatizacion_id = 'A04') AS a04, (SELECT count(*) FROM control.ejecuciones WHERE inicio >= (now()::date - 7) AND coalesce(documento_id, '') NOT ILIKE 'PRUEBA%' AND automatizacion_id = 'A11') AS a11, (SELECT enviado FROM control.reportes WHERE reporte_id = {{ Number($('CA87P_Generar_y_enviar').first().json.reporte_id) }}) AS enviado, (SELECT es_prueba FROM control.reportes WHERE reporte_id = {{ Number($('CA87P_Generar_y_enviar').first().json.reporte_id) }}) AS es_prueba"
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "s5",
+      "name": "CA87P_Resultado",
+      "parameters": {
+        "jsCode": "const r = $('CA87P_Generar_y_enviar').first().json, v = $input.first().json;\nconst d = r.datos || {};\nconst act = (k) => Number(((d.actividad || {})[k] || {}).total || 0);\nconst pf = (ok) => (ok ? 'PASA' : 'FALLA');\nconst casos = [\n  { caso: 'C1 genera el reporte de prueba y lo envia', esperado: 'enviado, es_prueba, asunto con [PRUEBA]', resultado: pf(r.estado === 'enviado' && r.es_prueba === true && String(r.asunto).includes('[PRUEBA]')), detalle: JSON.stringify({ estado: r.estado, es_prueba: r.es_prueba, asunto: r.asunto }) },\n  { caso: 'C2 cola pendiente del reporte = conteo independiente', esperado: String(Number(v.cola)), resultado: pf(Number(d.cola_pendiente_total) === Number(v.cola)), detalle: JSON.stringify({ reporte: d.cola_pendiente_total, independiente: Number(v.cola) }) },\n  { caso: 'C3 aprobaciones sin decision del reporte = conteo independiente', esperado: String(Number(v.aprob)), resultado: pf(Number(d.aprobaciones_sin_decision) === Number(v.aprob)), detalle: JSON.stringify({ reporte: d.aprobaciones_sin_decision, independiente: Number(v.aprob) }) },\n  { caso: 'C4 actividad A04 de los ultimos 7 dias = conteo independiente', esperado: String(Number(v.a04)), resultado: pf(act('A04') === Number(v.a04)), detalle: JSON.stringify({ reporte: act('A04'), independiente: Number(v.a04) }) },\n  { caso: 'C5 actividad A11 (monitoreo) = conteo independiente', esperado: String(Number(v.a11)), resultado: pf(act('A11') === Number(v.a11)), detalle: JSON.stringify({ reporte: act('A11'), independiente: Number(v.a11) }) },\n  { caso: 'C6 el reporte queda marcado como enviado y de prueba en la base', esperado: 'enviado true, es_prueba true', resultado: pf(v.enviado === true && v.es_prueba === true), detalle: JSON.stringify({ enviado: v.enviado, es_prueba: v.es_prueba }) },\n  { caso: 'C7 el correo llego al buzon de pruebas', esperado: 'Revisar a mano: asunto ' + r.asunto, resultado: 'MANUAL', detalle: 'Buscar en <CORREO>' },\n];\nreturn casos.map((c) => ({ json: c }));"
+      },
+      "position": [
+        880,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA87P_Ejecutar_prueba": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87P_Parametros",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA87P_Generar_y_enviar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87P_Verificar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA87P_Parametros": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87P_Generar_y_enviar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA87P_Verificar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87P_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "saveManualExecutions": true
+  }
+}

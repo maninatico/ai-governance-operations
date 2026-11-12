@@ -1,0 +1,331 @@
+{
+  "name": "CA_8.7_Reporte_semanal",
+  "nodes": [
+    {
+      "id": "r1",
+      "name": "CA87_Desde_otro_flujo",
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "position": [
+        0,
+        300
+      ],
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1
+    },
+    {
+      "id": "r2",
+      "name": "CA87_Parametros",
+      "notes": "prueba = true genera un reporte marcado de prueba y no mira el interruptor.",
+      "parameters": {
+        "jsCode": "const j = ($input.first() && $input.first().json) || {};\nreturn [{ json: { prueba: j.prueba === true || j.prueba === 'true' } }];"
+      },
+      "position": [
+        220,
+        300
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "alwaysOutputData": true,
+      "id": "r3",
+      "name": "CA87_Interruptor",
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "SELECT activo FROM control.interruptores WHERE flujo = '8.7 Reporte semanal'"
+      },
+      "position": [
+        440,
+        300
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "r4",
+      "name": "CA87_Si_encendido",
+      "notes": "Falla segura: apagado, inexistente o con error en la consulta = no genera nada. En prueba pasa igual.",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "k1",
+              "leftValue": "={{ $('CA87_Parametros').first().json.prueba === true || $json.activo === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        660,
+        300
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "r5",
+      "name": "CA87_Generar",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "=SELECT control.generar_reporte_semanal({{ $('CA87_Parametros').first().json.prueba ? 'true' : 'false' }}) AS reporte_id"
+      },
+      "position": [
+        880,
+        200
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "r6",
+      "name": "CA87_Leer",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "=SELECT reporte_id, es_prueba, enviado, texto, periodo_desde::text AS desde, periodo_hasta::text AS hasta, datos FROM control.reportes WHERE reporte_id = {{ Number($json.reporte_id) }}"
+      },
+      "position": [
+        1100,
+        200
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "r7",
+      "name": "CA87_Falta_enviar",
+      "notes": "Si el reporte de la semana ya se envió, no se vuelve a mandar.",
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "k2",
+              "leftValue": "={{ $json.enviado === false }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          }
+        },
+        "options": {}
+      },
+      "position": [
+        1320,
+        200
+      ],
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2
+    },
+    {
+      "id": "r8",
+      "maxTries": 2,
+      "name": "CA87_Enviar_correo",
+      "parameters": {
+        "emailFormat": "text",
+        "fromEmail": "<CORREO>",
+        "options": {
+          "appendAttribution": false
+        },
+        "subject": "={{ '[Cumbre Andina]' + ($('CA87_Leer').first().json.es_prueba ? ' [PRUEBA]' : '') + ' Reporte semanal ' + $('CA87_Leer').first().json.desde + ' a ' + $('CA87_Leer').first().json.hasta }}",
+        "text": "={{ ($('CA87_Leer').first().json.es_prueba ? 'CORREO DE PRUEBA: este reporte se generó desde una prueba del flujo.\\n\\n' : '') + $('CA87_Leer').first().json.texto }}",
+        "toEmail": "<CORREO>"
+      },
+      "position": [
+        1540,
+        100
+      ],
+      "retryOnFail": true,
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "webhookId": "0441350f-d96a-4f1f-a1ca-1c1bf411154b"
+    },
+    {
+      "id": "r9",
+      "name": "CA87_Marcar_enviado",
+      "parameters": {
+        "operation": "executeQuery",
+        "options": {},
+        "query": "=UPDATE control.reportes SET enviado = true, enviado_momento = now() WHERE reporte_id = {{ Number($('CA87_Leer').first().json.reporte_id) }} AND NOT enviado RETURNING reporte_id"
+      },
+      "position": [
+        1760,
+        100
+      ],
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5
+    },
+    {
+      "id": "r10",
+      "name": "CA87_Resultado",
+      "parameters": {
+        "jsCode": "const l = $('CA87_Leer').first().json;\nlet marcado = false; try { marcado = $('CA87_Marcar_enviado').all().some((i) => i.json.reporte_id); } catch (e) { marcado = false; }\nconst estado = marcado ? 'enviado' : (l.enviado ? 'ya enviado' : 'no marcado');\nreturn [{ json: { estado, reporte_id: Number(l.reporte_id), es_prueba: l.es_prueba, periodo: l.desde + ' a ' + l.hasta, asunto: '[Cumbre Andina]' + (l.es_prueba ? ' [PRUEBA]' : '') + ' Reporte semanal ' + l.desde + ' a ' + l.hasta, datos: l.datos } }];"
+      },
+      "position": [
+        1980,
+        200
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    },
+    {
+      "id": "r11",
+      "name": "CA87_Apagado",
+      "parameters": {
+        "jsCode": "return [{ json: { estado: 'apagado', reporte_id: null, es_prueba: false, periodo: null, asunto: null, datos: null } }];"
+      },
+      "position": [
+        880,
+        440
+      ],
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "CA87_Desde_otro_flujo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87_Parametros",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA87_Enviar_correo": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87_Marcar_enviado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA87_Falta_enviar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87_Enviar_correo",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA87_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA87_Generar": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87_Leer",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA87_Interruptor": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87_Si_encendido",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA87_Leer": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87_Falta_enviar",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA87_Marcar_enviado": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87_Resultado",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA87_Parametros": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87_Interruptor",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "CA87_Si_encendido": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "CA87_Generar",
+            "type": "main"
+          }
+        ],
+        [
+          {
+            "index": 0,
+            "node": "CA87_Apagado",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "errorWorkflow": "afNOjWbUvdOQ43T2"
+  }
+}
